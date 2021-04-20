@@ -1,4 +1,4 @@
-NAME=ncloud
+NAME=scaleway
 BINARY=packer-plugin-${NAME}
 
 COUNT?=1
