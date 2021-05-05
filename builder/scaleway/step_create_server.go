@@ -43,11 +43,11 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		Tags:           tags,
 	}
 
-	if c.ImageSizeInGB != nil {
+	if c.ImageSizeInGB != 0 {
 		createServerReq.Volumes = map[string]*instance.VolumeTemplate{
 			"0": {
 				VolumeType: instance.VolumeVolumeTypeBSSD,
-				Size:       scw.Size(*c.ImageSizeInGB) * scw.GB,
+				Size:       scw.Size(c.ImageSizeInGB) * scw.GB,
 			},
 		}
 	}
