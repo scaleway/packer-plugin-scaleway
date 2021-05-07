@@ -34,14 +34,25 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 
 	bootType := instance.BootType(c.BootType)
 
-	createServerResp, err := instanceAPI.CreateServer(&instance.CreateServerRequest{
+	createServerReq := &instance.CreateServerRequest{
 		BootType:       &bootType,
 		Bootscript:     bootscript,
 		CommercialType: c.CommercialType,
 		Name:           c.ServerName,
 		Image:          c.Image,
 		Tags:           tags,
-	}, scw.WithContext(ctx))
+	}
+
+	if c.ImageSizeInGB != 0 {
+		createServerReq.Volumes = map[string]*instance.VolumeTemplate{
+			"0": {
+				VolumeType: instance.VolumeVolumeTypeBSSD,
+				Size:       scw.Size(c.ImageSizeInGB) * scw.GB,
+			},
+		}
+	}
+
+	createServerResp, err := instanceAPI.CreateServer(createServerReq, scw.WithContext(ctx))
 	if err != nil {
 		err := fmt.Errorf("Error creating server: %s", err)
 		state.Put("error", err)

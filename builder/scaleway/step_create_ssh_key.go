@@ -101,5 +101,4 @@ func (s *stepCreateSSHKey) Run(ctx context.Context, state multistep.StateBag) mu
 
 func (s *stepCreateSSHKey) Cleanup(state multistep.StateBag) {
 	// SSH key is passed via tag. Nothing to do here.
-	return
 }
