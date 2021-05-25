@@ -76,7 +76,7 @@ access tokens:
 <Tab heading="HCL2">
 
 ```hcl
-builders "scaleway" {
+source "scaleway" "example" {
   project_id = "YOUR PROJECT ID"
   access_key = "YOUR ACCESS KEY"
   secret_key = "YOUR SECRET KEY"
@@ -85,6 +85,10 @@ builders "scaleway" {
   commercial_type = "DEV1-S"
   ssh_username = "root"
   ssh_private_key_file = "~/.ssh/id_rsa"
+}
+
+build {
+  sources = ["source.scaleway.example"]
 }
 ```
 
