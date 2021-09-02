@@ -9,7 +9,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/hashicorp/packer-plugin-scaleway/builder/scaleway/version"
+	"github.com/hashicorp/packer-plugin-scaleway/version"
 	"github.com/hashicorp/packer-plugin-sdk/common"
 	"github.com/hashicorp/packer-plugin-sdk/communicator"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
@@ -124,7 +124,7 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 
 	var warnings []string
 
-	c.UserAgent = useragent.String(version.ScalewayPluginVersion.FormattedVersion())
+	c.UserAgent = useragent.String(version.PluginVersion.FormattedVersion())
 
 	configFile, err := scw.LoadConfig()
 	// If the config file do not exist, don't return an error as we may find config in ENV or flags.
