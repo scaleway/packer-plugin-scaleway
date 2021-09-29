@@ -1,4 +1,4 @@
-module github.com/hashicorp/packer-plugin-scaleway
+module github.com/scaleway/packer-plugin-scaleway
 
 go 1.17
 
