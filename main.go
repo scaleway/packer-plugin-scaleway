@@ -6,8 +6,8 @@ import (
 
 	"github.com/hashicorp/packer-plugin-sdk/plugin"
 
-	"github.com/hashicorp/packer-plugin-scaleway/builder/scaleway"
-	"github.com/hashicorp/packer-plugin-scaleway/version"
+	"github.com/scaleway/packer-plugin-scaleway/builder/scaleway"
+	"github.com/scaleway/packer-plugin-scaleway/version"
 )
 
 func main() {
