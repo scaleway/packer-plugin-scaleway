@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/hashicorp/go-uuid v1.0.2
 	github.com/hashicorp/hcl/v2 v2.10.1
-	github.com/hashicorp/packer-plugin-sdk v0.2.6
+	github.com/hashicorp/packer-plugin-sdk v0.2.7
 	github.com/mitchellh/mapstructure v1.4.1
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.7
 	github.com/zclconf/go-cty v1.9.1
