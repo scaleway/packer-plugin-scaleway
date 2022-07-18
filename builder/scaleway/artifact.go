@@ -55,15 +55,16 @@ func (a *Artifact) State(name string) interface{} {
 }
 
 func (a *Artifact) Destroy() error {
-	log.Printf("Destroying image: %s (%s)", a.imageID, a.imageName)
 	instanceAPI := instance.NewAPI(a.client)
 
+	log.Printf("Destroying image: %s (%s)", a.imageID, a.imageName)
 	err := instanceAPI.DeleteImage(&instance.DeleteImageRequest{
 		ImageID: a.imageID,
 	})
 	if err != nil {
 		return err
 	}
+
 	log.Printf("Destroying snapshot: %s (%s)", a.snapshotID, a.snapshotName)
 	err = instanceAPI.DeleteSnapshot(&instance.DeleteSnapshotRequest{
 		SnapshotID: a.snapshotID,
@@ -71,5 +72,6 @@ func (a *Artifact) Destroy() error {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }

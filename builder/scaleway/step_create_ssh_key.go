@@ -50,11 +50,11 @@ func (s *stepCreateSSHKey) Run(ctx context.Context, state multistep.StateBag) mu
 	}
 
 	// ASN.1 DER encoded form
-	priv_der := x509.MarshalPKCS1PrivateKey(priv)
-	priv_blk := pem.Block{
+	privateDER := x509.MarshalPKCS1PrivateKey(priv)
+	privateBlock := pem.Block{
 		Type:    "RSA PRIVATE KEY",
 		Headers: nil,
-		Bytes:   priv_der,
+		Bytes:   privateDER,
 	}
 
 	pub, err := ssh.NewPublicKey(&priv.PublicKey)
@@ -68,7 +68,7 @@ func (s *stepCreateSSHKey) Run(ctx context.Context, state multistep.StateBag) mu
 	log.Printf("temporary ssh key created")
 
 	// Remember some state for the future
-	config.Comm.SSHPrivateKey = pem.EncodeToMemory(&priv_blk)
+	config.Comm.SSHPrivateKey = pem.EncodeToMemory(&privateBlock)
 	config.Comm.SSHPublicKey = ssh.MarshalAuthorizedKey(pub)
 
 	// If we're in debug mode, output the private key to the working directory.
@@ -76,21 +76,21 @@ func (s *stepCreateSSHKey) Run(ctx context.Context, state multistep.StateBag) mu
 		ui.Message(fmt.Sprintf("Saving key for debug purposes: %s", s.DebugKeyPath))
 		f, err := os.Create(s.DebugKeyPath)
 		if err != nil {
-			state.Put("error", fmt.Errorf("Error saving debug key: %s", err))
+			state.Put("error", fmt.Errorf("error saving debug key: %s", err))
 			return multistep.ActionHalt
 		}
 		defer f.Close()
 
 		// Write the key out
-		if _, err := f.Write(pem.EncodeToMemory(&priv_blk)); err != nil {
-			state.Put("error", fmt.Errorf("Error saving debug key: %s", err))
+		if _, err := f.Write(pem.EncodeToMemory(&privateBlock)); err != nil {
+			state.Put("error", fmt.Errorf("error saving debug key: %s", err))
 			return multistep.ActionHalt
 		}
 
 		// Chmod it so that it is SSH ready
 		if runtime.GOOS != "windows" {
 			if err := f.Chmod(0600); err != nil {
-				state.Put("error", fmt.Errorf("Error setting permissions of debug key: %s", err))
+				state.Put("error", fmt.Errorf("error setting permissions of debug key: %s", err))
 				return multistep.ActionHalt
 			}
 		}
@@ -99,6 +99,6 @@ func (s *stepCreateSSHKey) Run(ctx context.Context, state multistep.StateBag) mu
 	return multistep.ActionContinue
 }
 
-func (s *stepCreateSSHKey) Cleanup(state multistep.StateBag) {
+func (s *stepCreateSSHKey) Cleanup(_ multistep.StateBag) {
 	// SSH key is passed via tag. Nothing to do here.
 }

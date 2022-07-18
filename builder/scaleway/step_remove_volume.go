@@ -39,7 +39,7 @@ func (s *stepRemoveVolume) Cleanup(state multistep.StateBag) {
 		VolumeID: volumeID,
 	})
 	if err != nil {
-		err := fmt.Errorf("Error removing volume: %s", err)
+		err := fmt.Errorf("error removing volume: %s", err)
 		state.Put("error", err)
 		ui.Error(fmt.Sprintf("Error removing volume: %s. (Ignored)", err))
 	}

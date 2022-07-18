@@ -25,7 +25,7 @@ func (s *stepShutdown) Run(ctx context.Context, state multistep.StateBag) multis
 		ServerID: serverID,
 	}, scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("Error stopping server: %s", err)
+		err := fmt.Errorf("error stopping server: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -49,14 +49,14 @@ func (s *stepShutdown) Run(ctx context.Context, state multistep.StateBag) multis
 
 	instanceResp, err := instanceAPI.WaitForServer(waitRequest)
 	if err != nil {
-		err := fmt.Errorf("Error shutting down server: %s", err)
+		err := fmt.Errorf("error shutting down server: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
 	}
 
 	if instanceResp.State != instance.ServerStateStopped {
-		err := fmt.Errorf("Server is in state %s instead of stopped", instanceResp.State.String())
+		err := fmt.Errorf("server is in state %s instead of stopped", instanceResp.State.String())
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -65,6 +65,6 @@ func (s *stepShutdown) Run(ctx context.Context, state multistep.StateBag) multis
 	return multistep.ActionContinue
 }
 
-func (s *stepShutdown) Cleanup(state multistep.StateBag) {
+func (s *stepShutdown) Cleanup(_ multistep.StateBag) {
 	// no cleanup
 }

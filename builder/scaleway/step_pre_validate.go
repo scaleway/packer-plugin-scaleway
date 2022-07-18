@@ -11,7 +11,7 @@ import (
 )
 
 // StepPreValidate provides an opportunity to pre-validate any configuration for
-// the build before actually doing any time consuming work
+// the build before actually doing any time-consuming work
 //
 type stepPreValidate struct {
 	Force        bool
@@ -23,7 +23,7 @@ func (s *stepPreValidate) Run(ctx context.Context, state multistep.StateBag) mul
 	ui := state.Get("ui").(packersdk.Ui)
 
 	if s.Force {
-		ui.Say("Force flag found, skipping prevalidating image name")
+		ui.Say("Force flag found, skipping pre-validating image name")
 		return multistep.ActionContinue
 	}
 
@@ -34,7 +34,7 @@ func (s *stepPreValidate) Run(ctx context.Context, state multistep.StateBag) mul
 		&instance.ListImagesRequest{Name: &s.ImageName},
 		scw.WithAllPages(), scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("Error: getting image list: %s", err)
+		err := fmt.Errorf("error: getting image list: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -42,7 +42,7 @@ func (s *stepPreValidate) Run(ctx context.Context, state multistep.StateBag) mul
 
 	for _, im := range images.Images {
 		if im.Name == s.ImageName {
-			err := fmt.Errorf("Error: image name: '%s' is used by existing image with ID %s",
+			err := fmt.Errorf("error: image name: '%s' is used by existing image with ID %s",
 				s.ImageName, im.ID)
 			state.Put("error", err)
 			ui.Error(err.Error())
@@ -56,7 +56,7 @@ func (s *stepPreValidate) Run(ctx context.Context, state multistep.StateBag) mul
 		&instance.ListSnapshotsRequest{Name: &s.SnapshotName},
 		scw.WithAllPages(), scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("Error: getting snapshot list: %s", err)
+		err := fmt.Errorf("error: getting snapshot list: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -64,7 +64,7 @@ func (s *stepPreValidate) Run(ctx context.Context, state multistep.StateBag) mul
 
 	for _, sn := range snapshots.Snapshots {
 		if sn.Name == s.SnapshotName {
-			err := fmt.Errorf("Error: snapshot name: '%s' is used by existing snapshot with ID %s",
+			err := fmt.Errorf("error: snapshot name: '%s' is used by existing snapshot with ID %s",
 				s.SnapshotName, sn.ID)
 			state.Put("error", err)
 			ui.Error(err.Error())
@@ -76,5 +76,6 @@ func (s *stepPreValidate) Run(ctx context.Context, state multistep.StateBag) mul
 	return multistep.ActionContinue
 }
 
-func (s *stepPreValidate) Cleanup(multistep.StateBag) {
+func (s *stepPreValidate) Cleanup(_ multistep.StateBag) {
+	// no cleanup
 }

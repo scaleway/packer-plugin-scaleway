@@ -36,7 +36,7 @@ func (s *stepImage) Run(ctx context.Context, state multistep.StateBag) multistep
 			CommercialType: c.CommercialType,
 		})
 		if err != nil {
-			err := fmt.Errorf("Error getting initial image info from marketplace: %s", err)
+			err := fmt.Errorf("error getting initial image info from marketplace: %s", err)
 			state.Put("error", err)
 			ui.Error(err.Error())
 			return multistep.ActionHalt
@@ -47,7 +47,7 @@ func (s *stepImage) Run(ctx context.Context, state multistep.StateBag) multistep
 		ImageID: imageID,
 	}, scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("Error getting initial image info: %s", err)
+		err := fmt.Errorf("error getting initial image info: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -64,7 +64,7 @@ func (s *stepImage) Run(ctx context.Context, state multistep.StateBag) multistep
 		RootVolume:        snapshotID,
 	}, scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("Error creating image: %s", err)
+		err := fmt.Errorf("error creating image: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -79,6 +79,6 @@ func (s *stepImage) Run(ctx context.Context, state multistep.StateBag) multistep
 	return multistep.ActionContinue
 }
 
-func (s *stepImage) Cleanup(state multistep.StateBag) {
+func (s *stepImage) Cleanup(_ multistep.StateBag) {
 	// no cleanup
 }

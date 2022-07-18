@@ -16,7 +16,7 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
-// The unique id for the builder
+// BuilderId is the unique id for the builder
 const BuilderId = "hashicorp.scaleway"
 
 type Builder struct {
