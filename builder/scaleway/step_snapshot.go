@@ -25,7 +25,7 @@ func (s *stepSnapshot) Run(ctx context.Context, state multistep.StateBag) multis
 		VolumeID: volumeID,
 	}, scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("Error creating snapshot: %s", err)
+		err := fmt.Errorf("error creating snapshot: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -35,14 +35,14 @@ func (s *stepSnapshot) Run(ctx context.Context, state multistep.StateBag) multis
 		SnapshotID: createSnapshotResp.Snapshot.ID,
 	})
 	if err != nil {
-		err := fmt.Errorf("Snapshot is not available: %s", err)
+		err := fmt.Errorf("snapshot is not available: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
 	}
 
 	if snapshot.State != instance.SnapshotStateAvailable {
-		err := fmt.Errorf("Snapshot is in error state")
+		err := fmt.Errorf("snapshot is in error state")
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -57,6 +57,6 @@ func (s *stepSnapshot) Run(ctx context.Context, state multistep.StateBag) multis
 	return multistep.ActionContinue
 }
 
-func (s *stepSnapshot) Cleanup(state multistep.StateBag) {
+func (s *stepSnapshot) Cleanup(_ multistep.StateBag) {
 	// no cleanup
 }

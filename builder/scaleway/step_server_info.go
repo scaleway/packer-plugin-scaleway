@@ -23,21 +23,21 @@ func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) mult
 		ServerID: serverID,
 	})
 	if err != nil {
-		err := fmt.Errorf("Error waiting for server to become booted: %s", err)
+		err := fmt.Errorf("error waiting for server to become booted: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
 	}
 
 	if instanceResp.State != instance.ServerStateRunning {
-		err := fmt.Errorf("Server is in state %s", instanceResp.State.String())
+		err := fmt.Errorf("server is in state %s", instanceResp.State.String())
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
 	}
 
 	if instanceResp.PublicIP == nil {
-		err := fmt.Errorf("Server does not have a public IP")
+		err := fmt.Errorf("server does not have a public IP")
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -49,6 +49,6 @@ func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) mult
 	return multistep.ActionContinue
 }
 
-func (s *stepServerInfo) Cleanup(state multistep.StateBag) {
+func (s *stepServerInfo) Cleanup(_ multistep.StateBag) {
 	// no cleanup
 }

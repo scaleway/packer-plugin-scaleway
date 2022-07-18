@@ -19,7 +19,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	instanceAPI := instance.NewAPI(state.Get("client").(*scw.Client))
 	ui := state.Get("ui").(packersdk.Ui)
 	c := state.Get("config").(*Config)
-	tags := []string{}
+	var tags []string
 	var bootscript *string
 
 	ui.Say("Creating server...")
@@ -54,7 +54,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 
 	createServerResp, err := instanceAPI.CreateServer(createServerReq, scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("Error creating server: %s", err)
+		err := fmt.Errorf("error creating server: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -65,7 +65,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		ServerID: createServerResp.Server.ID,
 	}, scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("Error starting server: %s", err)
+		err := fmt.Errorf("error starting server: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
@@ -75,7 +75,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 
 	state.Put("server_id", createServerResp.Server.ID)
 	// instance_id is the generic term used so that users can have access to the
-	// instance id inside of the provisioners, used in step_provision.
+	// instance id inside the provisioners, used in step_provision.
 	state.Put("instance_id", s.serverID)
 
 	return multistep.ActionContinue
