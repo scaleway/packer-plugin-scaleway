@@ -6,7 +6,7 @@ version: 2.1
 executors:
   golang:
     docker:
-      - image: docker.mirror.hashicorp.services/circleci/golang:1.16
+      - image: docker.mirror.hashicorp.services/circleci/golang:1.18
     resource_class: medium+
   darwin:
     macos:
@@ -68,14 +68,14 @@ jobs:
     steps:
       - install-go-run-tests-unix:
           GOOS: darwin
-          GOVERSION: "1.16"
+          GOVERSION: "1.18"
   test-windows:
     executor:
       name: win/vs2019
       shell: bash.exe
     steps:
       - install-go-run-tests-windows:
-          GOVERSION: "1.16"
+          GOVERSION: "1.18"
   check-lint:
     executor: golang
     steps:
@@ -84,7 +84,7 @@ jobs:
       - run:
           command: |
             echo "==> Updating linter dependencies..."
-            curl -sSfL -q https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.23.8
+            curl -sSfL -q https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.47.0
             echo "==> Running linter on newly added Go source files..."
             GO111MODULE=on golangci-lint run --new-from-rev=$(shell git merge-base origin/main HEAD) ./...
           no_output_timeout: 30m
