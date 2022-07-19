@@ -21,8 +21,9 @@ func (s *stepSnapshot) Run(ctx context.Context, state multistep.StateBag) multis
 
 	ui.Say(fmt.Sprintf("Creating snapshot: %v", c.SnapshotName))
 	createSnapshotResp, err := instanceAPI.CreateSnapshot(&instance.CreateSnapshotRequest{
-		Name:     c.SnapshotName,
-		VolumeID: volumeID,
+		Name:       c.SnapshotName,
+		VolumeID:   volumeID,
+		VolumeType: instance.SnapshotVolumeTypeUnified,
 	}, scw.WithContext(ctx))
 	if err != nil {
 		err := fmt.Errorf("error creating snapshot: %s", err)
