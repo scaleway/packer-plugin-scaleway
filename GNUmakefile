@@ -18,7 +18,7 @@ test:
 	@go test -race -count $(COUNT) $(TEST) -timeout=3m
 
 install-packer-sdc: ## Install packer sofware development command
-	@go install github.com/hashicorp/packer-plugin-sdk/cmd/packer-sdc@${HASHICORP_PACKER_PLUGIN_SDK_VERSION}
+	go install github.com/hashicorp/packer-plugin-sdk/cmd/packer-sdc@${HASHICORP_PACKER_PLUGIN_SDK_VERSION}
 
 ci-release-docs: install-packer-sdc
 	@packer-sdc renderdocs -src docs -partials docs-partials/ -dst docs/
