@@ -23,5 +23,7 @@ jobs:
         run: make build
       - name: Run unit tests
         run: make test
+      - name: Setup go env
+        run: echo "/root/go/bin" >> $GITHUB_PATH
       - name: Generate
         run: make generate
