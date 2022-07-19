@@ -44,7 +44,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	}
 
 	if c.ImageSizeInGB != 0 {
-		createServerReq.Volumes = map[string]*instance.VolumeTemplate{
+		createServerReq.Volumes = map[string]*instance.VolumeServerTemplate{
 			"0": {
 				VolumeType: instance.VolumeVolumeTypeBSSD,
 				Size:       scw.Size(c.ImageSizeInGB) * scw.GB,
