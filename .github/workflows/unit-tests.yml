@@ -23,3 +23,5 @@ jobs:
         run: make build
       - name: Run unit tests
         run: make test
+      - name: Generate
+        run: make generate
