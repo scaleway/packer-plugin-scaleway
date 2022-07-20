@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/hashicorp/packer-plugin-sdk/common"
 	"github.com/hashicorp/packer-plugin-sdk/communicator"
@@ -78,8 +79,12 @@ type Config struct {
 
 	// Shutdown timeout. Default to 5m
 	ShutdownTimeout string `mapstructure:"shutdown_timeout" required:"false"`
-	UserAgent       string `mapstructure-to-hcl2:",skip"`
-	ctx             interpolate.Context
+
+	// Testing timeout
+	SnapshotTimeout time.Duration `mapstructure:"state_timeout" required:"false"`
+
+	UserAgent string `mapstructure-to-hcl2:",skip"`
+	ctx       interpolate.Context
 
 	// Deprecated configs
 
@@ -261,6 +266,10 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 
 	if c.ShutdownTimeout == "" {
 		c.ShutdownTimeout = "5m"
+	}
+
+	if c.SnapshotTimeout == 0 {
+		c.SnapshotTimeout = 5 * time.Minute
 	}
 
 	if errs != nil && len(errs.Errors) > 0 {

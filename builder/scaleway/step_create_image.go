@@ -63,6 +63,7 @@ func (s *stepImage) Run(ctx context.Context, state multistep.StateBag) multistep
 		Name:              c.ImageName,
 		RootVolume:        snapshotID,
 	}, scw.WithContext(ctx))
+
 	if err != nil {
 		err := fmt.Errorf("error creating image: %s", err)
 		state.Put("error", err)
