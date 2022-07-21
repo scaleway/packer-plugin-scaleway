@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 
 	"github.com/hashicorp/packer-plugin-sdk/common"
 	"github.com/hashicorp/packer-plugin-sdk/communicator"
@@ -21,6 +20,12 @@ import (
 	"github.com/scaleway/packer-plugin-scaleway/version"
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
 	"github.com/scaleway/scaleway-sdk-go/scw"
+)
+
+const (
+	defaultInstanceSnapshotWaitTimeout = "1h"
+	defaultInstanceImageTimeout        = "1h"
+	defaultInstanceServerWaitTimeout   = "10m"
 )
 
 type Config struct {
@@ -77,11 +82,12 @@ type Config struct {
 
 	RemoveVolume bool `mapstructure:"remove_volume"`
 
-	// Shutdown timeout. Default to 5m
-	ShutdownTimeout string `mapstructure:"shutdown_timeout" required:"false"`
+	// Timeouts
 
-	// Testing timeout
-	SnapshotTimeout time.Duration `mapstructure:"state_timeout" required:"false"`
+	SnapshotTimeout string `mapstructure:"snapshot_timeout" required:"false"`
+	ImageTimeout    string `mapstructure:"image_timeout" required:"false"`
+	ServerTimeout   string `mapstructure:"server_timeout" required:"false"`
+	ShutdownTimeout string `mapstructure:"shutdown_timeout" required:"false"`
 
 	UserAgent string `mapstructure-to-hcl2:",skip"`
 	ctx       interpolate.Context
@@ -265,11 +271,19 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 	}
 
 	if c.ShutdownTimeout == "" {
-		c.ShutdownTimeout = "5m"
+		c.ShutdownTimeout = defaultInstanceServerWaitTimeout
 	}
 
-	if c.SnapshotTimeout == 0 {
-		c.SnapshotTimeout = 5 * time.Minute
+	if c.SnapshotTimeout == "" {
+		c.SnapshotTimeout = defaultInstanceSnapshotWaitTimeout
+	}
+
+	if c.ImageTimeout == "" {
+		c.ImageTimeout = defaultInstanceImageTimeout
+	}
+
+	if c.ServerTimeout == "" {
+		c.ServerTimeout = defaultInstanceServerWaitTimeout
 	}
 
 	if errs != nil && len(errs.Errors) > 0 {

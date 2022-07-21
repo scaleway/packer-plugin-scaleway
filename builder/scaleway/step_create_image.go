@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/hashicorp/go-uuid"
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
@@ -63,9 +64,39 @@ func (s *stepImage) Run(ctx context.Context, state multistep.StateBag) multistep
 		Name:              c.ImageName,
 		RootVolume:        snapshotID,
 	}, scw.WithContext(ctx))
-
 	if err != nil {
 		err := fmt.Errorf("error creating image: %s", err)
+		state.Put("error", err)
+		ui.Error(err.Error())
+		return multistep.ActionHalt
+	}
+
+	waitImageRequest := &instance.WaitForImageRequest{
+		ImageID: createImageResp.Image.ID,
+		Zone:    scw.Zone(c.Zone),
+	}
+	timeout := c.ImageTimeout
+	duration, err := time.ParseDuration(timeout)
+	if err != nil {
+		err := fmt.Errorf("error: %s could not parse string %s as a duration", err, timeout)
+		state.Put("error", err)
+		ui.Error(err.Error())
+		return multistep.ActionHalt
+	}
+	if timeout != "" {
+		waitImageRequest.Timeout = scw.TimeDurationPtr(duration)
+	}
+
+	image, err := instanceAPI.WaitForImage(waitImageRequest)
+	if err != nil {
+		err := fmt.Errorf("image is not available: %s", err)
+		state.Put("error", err)
+		ui.Error(err.Error())
+		return multistep.ActionHalt
+	}
+
+	if image.State != instance.ImageStateAvailable {
+		err := fmt.Errorf("image is in error state")
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
@@ -37,8 +38,15 @@ func (s *stepSnapshot) Run(ctx context.Context, state multistep.StateBag) multis
 		Zone:       scw.Zone(c.Zone),
 	}
 	timeout := c.SnapshotTimeout
-	if timeout != 0 {
-		waitSnapshotRequest.Timeout = scw.TimeDurationPtr(timeout)
+	duration, err := time.ParseDuration(timeout)
+	if err != nil {
+		err := fmt.Errorf("error: %s could not parse string %s as a duration", err, timeout)
+		state.Put("error", err)
+		ui.Error(err.Error())
+		return multistep.ActionHalt
+	}
+	if timeout != "" {
+		waitSnapshotRequest.Timeout = scw.TimeDurationPtr(duration)
 	}
 
 	snapshot, err := instanceAPI.WaitForSnapshot(waitSnapshotRequest)
