@@ -23,13 +23,13 @@
 
 - `remove_volume` (bool) - Remove Volume
 
-- `snapshot_timeout` (string) - Snapshot Timeout
+- `snapshot_creation_timeout` (duration string | ex: "1h5m2s") - The time to wait for snapshot creation. Defaults to "1h"
 
-- `image_timeout` (string) - Image Timeout
+- `image_creation_timeout` (duration string | ex: "1h5m2s") - The time to wait for image creation. Defaults to "1h"
 
-- `server_timeout` (string) - Server Timeout
+- `server_creation_timeout` (duration string | ex: "1h5m2s") - The time to wait for server creation. Defaults to "10m"
 
-- `shutdown_timeout` (string) - Shutdown Timeout
+- `server_shutdown_timeout` (duration string | ex: "1h5m2s") - The time to wait for server shutdown. Defaults to "10m"
 
 - `api_token` (string) - The token to use to authenticate with your account.
   It can also be specified via environment variable SCALEWAY_API_TOKEN. You

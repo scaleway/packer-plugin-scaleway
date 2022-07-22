@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
@@ -64,17 +63,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	waitServerRequest := &instance.WaitForServerRequest{
 		ServerID: createServerResp.Server.ID,
 		Zone:     scw.Zone(c.Zone),
-	}
-	timeout := c.ServerTimeout
-	duration, err := time.ParseDuration(timeout)
-	if err != nil {
-		err := fmt.Errorf("error: %s could not parse string %s as a duration", err, timeout)
-		state.Put("error", err)
-		ui.Error(err.Error())
-		return multistep.ActionHalt
-	}
-	if timeout != "" {
-		waitServerRequest.Timeout = scw.TimeDurationPtr(duration)
+		Timeout:  &c.ServerCreationTimeout,
 	}
 
 	_, err = instanceAPI.ServerAction(&instance.ServerActionRequest{

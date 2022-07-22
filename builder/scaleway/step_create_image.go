@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"time"
 
 	"github.com/hashicorp/go-uuid"
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
@@ -74,17 +73,7 @@ func (s *stepImage) Run(ctx context.Context, state multistep.StateBag) multistep
 	waitImageRequest := &instance.WaitForImageRequest{
 		ImageID: createImageResp.Image.ID,
 		Zone:    scw.Zone(c.Zone),
-	}
-	timeout := c.ImageTimeout
-	duration, err := time.ParseDuration(timeout)
-	if err != nil {
-		err := fmt.Errorf("error: %s could not parse string %s as a duration", err, timeout)
-		state.Put("error", err)
-		ui.Error(err.Error())
-		return multistep.ActionHalt
-	}
-	if timeout != "" {
-		waitImageRequest.Timeout = scw.TimeDurationPtr(duration)
+		Timeout: &c.ImageCreationTimeout,
 	}
 
 	image, err := instanceAPI.WaitForImage(waitImageRequest)
