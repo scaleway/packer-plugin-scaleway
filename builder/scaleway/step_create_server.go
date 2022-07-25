@@ -1,8 +1,10 @@
 package scaleway
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"strings"
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
@@ -53,6 +55,27 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	}
 
 	createServerResp, err := instanceAPI.CreateServer(createServerReq, scw.WithContext(ctx))
+	if err != nil {
+		err := fmt.Errorf("error creating server: %s", err)
+		state.Put("error", err)
+		ui.Error(err.Error())
+		return multistep.ActionHalt
+	}
+
+	ui.Say("Waiting for any user data apply to finish if provided...")
+
+	m := map[string]io.Reader{}
+	for k, v := range c.UserData {
+		m[k] = bytes.NewBufferString(v)
+	}
+
+	createUserDataReq := &instance.SetAllServerUserDataRequest{
+		Zone:     scw.Zone(c.Zone),
+		ServerID: createServerResp.Server.ID,
+		UserData: m,
+	}
+
+	err = instanceAPI.SetAllServerUserData(createUserDataReq, scw.WithContext(ctx))
 	if err != nil {
 		err := fmt.Errorf("error creating server: %s", err)
 		state.Put("error", err)
