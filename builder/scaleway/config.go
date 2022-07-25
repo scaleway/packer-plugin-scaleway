@@ -92,6 +92,9 @@ type Config struct {
 	// The time to wait for server shutdown. Defaults to "10m"
 	ServerShutdownTimeout time.Duration `mapstructure:"server_shutdown_timeout" required:"false"`
 
+	// User data to apply when launching the instance
+	UserData map[string]string `mapstructure:"user_data" required:"false"`
+
 	UserAgent string `mapstructure-to-hcl2:",skip"`
 	ctx       interpolate.Context
 
