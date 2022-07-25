@@ -70,6 +70,27 @@ func (s *stepImage) Run(ctx context.Context, state multistep.StateBag) multistep
 		return multistep.ActionHalt
 	}
 
+	waitImageRequest := &instance.WaitForImageRequest{
+		ImageID: createImageResp.Image.ID,
+		Zone:    scw.Zone(c.Zone),
+		Timeout: &c.ImageCreationTimeout,
+	}
+
+	image, err := instanceAPI.WaitForImage(waitImageRequest)
+	if err != nil {
+		err := fmt.Errorf("image is not available: %s", err)
+		state.Put("error", err)
+		ui.Error(err.Error())
+		return multistep.ActionHalt
+	}
+
+	if image.State != instance.ImageStateAvailable {
+		err := fmt.Errorf("image is in error state")
+		state.Put("error", err)
+		ui.Error(err.Error())
+		return multistep.ActionHalt
+	}
+
 	log.Printf("Image ID: %s", createImageResp.Image.ID)
 	state.Put("image_id", createImageResp.Image.ID)
 	state.Put("image_name", c.ImageName)

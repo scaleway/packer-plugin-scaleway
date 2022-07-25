@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/hashicorp/packer-plugin-sdk/common"
 	"github.com/hashicorp/packer-plugin-sdk/communicator"
@@ -20,6 +21,12 @@ import (
 	"github.com/scaleway/packer-plugin-scaleway/version"
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
 	"github.com/scaleway/scaleway-sdk-go/scw"
+)
+
+const (
+	defaultInstanceSnapshotWaitTimeout = 1 * time.Hour
+	defaultInstanceImageWaitTimeout    = 1 * time.Hour
+	defaultInstanceServerWaitTimeout   = 10 * time.Minute
 )
 
 type Config struct {
@@ -76,10 +83,17 @@ type Config struct {
 
 	RemoveVolume bool `mapstructure:"remove_volume"`
 
-	// Shutdown timeout. Default to 5m
-	ShutdownTimeout string `mapstructure:"shutdown_timeout" required:"false"`
-	UserAgent       string `mapstructure-to-hcl2:",skip"`
-	ctx             interpolate.Context
+	// The time to wait for snapshot creation. Defaults to "1h"
+	SnapshotCreationTimeout time.Duration `mapstructure:"snapshot_creation_timeout" required:"false"`
+	// The time to wait for image creation. Defaults to "1h"
+	ImageCreationTimeout time.Duration `mapstructure:"image_creation_timeout" required:"false"`
+	// The time to wait for server creation. Defaults to "10m"
+	ServerCreationTimeout time.Duration `mapstructure:"server_creation_timeout" required:"false"`
+	// The time to wait for server shutdown. Defaults to "10m"
+	ServerShutdownTimeout time.Duration `mapstructure:"server_shutdown_timeout" required:"false"`
+
+	UserAgent string `mapstructure-to-hcl2:",skip"`
+	ctx       interpolate.Context
 
 	// Deprecated configs
 
@@ -259,8 +273,20 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 			errs, errors.New("image is required"))
 	}
 
-	if c.ShutdownTimeout == "" {
-		c.ShutdownTimeout = "5m"
+	if c.ServerShutdownTimeout == 0 {
+		c.ServerShutdownTimeout = defaultInstanceServerWaitTimeout
+	}
+
+	if c.ServerCreationTimeout == 0 {
+		c.ServerCreationTimeout = defaultInstanceServerWaitTimeout
+	}
+
+	if c.SnapshotCreationTimeout == 0 {
+		c.SnapshotCreationTimeout = defaultInstanceSnapshotWaitTimeout
+	}
+
+	if c.ImageCreationTimeout == 0 {
+		c.ImageCreationTimeout = defaultInstanceImageWaitTimeout
 	}
 
 	if errs != nil && len(errs.Errors) > 0 {

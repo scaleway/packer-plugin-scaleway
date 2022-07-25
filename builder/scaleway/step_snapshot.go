@@ -32,9 +32,13 @@ func (s *stepSnapshot) Run(ctx context.Context, state multistep.StateBag) multis
 		return multistep.ActionHalt
 	}
 
-	snapshot, err := instanceAPI.WaitForSnapshot(&instance.WaitForSnapshotRequest{
+	waitSnapshotRequest := &instance.WaitForSnapshotRequest{
 		SnapshotID: createSnapshotResp.Snapshot.ID,
-	})
+		Zone:       scw.Zone(c.Zone),
+		Timeout:    &c.SnapshotCreationTimeout,
+	}
+
+	snapshot, err := instanceAPI.WaitForSnapshot(waitSnapshotRequest)
 	if err != nil {
 		err := fmt.Errorf("snapshot is not available: %s", err)
 		state.Put("error", err)
