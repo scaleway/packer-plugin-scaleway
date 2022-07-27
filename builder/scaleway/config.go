@@ -27,6 +27,7 @@ const (
 	defaultInstanceSnapshotWaitTimeout = 1 * time.Hour
 	defaultInstanceImageWaitTimeout    = 1 * time.Hour
 	defaultInstanceServerWaitTimeout   = 10 * time.Minute
+	defaultUserDataWaitTimeout         = 0 * time.Second
 )
 
 type Config struct {
@@ -94,6 +95,8 @@ type Config struct {
 
 	// User data to apply when launching the instance
 	UserData map[string]string `mapstructure:"user_data" required:"false"`
+	// A custom timeout for user data to assure its completion. Defaults to "0s"
+	UserDataTimeout time.Duration `mapstructure:"user_data_timeout" required:"false"`
 
 	UserAgent string `mapstructure-to-hcl2:",skip"`
 	ctx       interpolate.Context
@@ -290,6 +293,10 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 
 	if c.ImageCreationTimeout == 0 {
 		c.ImageCreationTimeout = defaultInstanceImageWaitTimeout
+	}
+
+	if c.UserDataTimeout == 0 {
+		c.UserDataTimeout = defaultUserDataWaitTimeout
 	}
 
 	if errs != nil && len(errs.Errors) > 0 {

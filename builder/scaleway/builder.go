@@ -86,6 +86,7 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		&commonsteps.StepCleanupTempKeys{
 			Comm: &b.config.Comm,
 		},
+		new(stepWaitUserData),
 		new(stepShutdown),
 		new(stepSnapshot),
 		new(stepImage),

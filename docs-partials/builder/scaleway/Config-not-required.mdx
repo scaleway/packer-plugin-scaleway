@@ -31,7 +31,9 @@
 
 - `server_shutdown_timeout` (duration string | ex: "1h5m2s") - The time to wait for server shutdown. Defaults to "10m"
 
-- `user_data` (map[string]string) - User Data
+- `user_data` (map[string]string) - User data to apply when launching the instance
+
+- `user_data_timeout` (duration string | ex: "1h5m2s") - A custom timeout for user data to assure its completion. Defaults to "0s"
 
 - `api_token` (string) - The token to use to authenticate with your account.
   It can also be specified via environment variable SCALEWAY_API_TOKEN. You
