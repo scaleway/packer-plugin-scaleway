@@ -3,7 +3,7 @@ name: Nightly Tests
 on:
   schedule:
     # Will run at 00:00 every day
-    - cron: "55 17 * * *"
+    - cron: "0 0 * * *"
 
 jobs:
   nightly:
