@@ -85,6 +85,8 @@ type FlatConfig struct {
 	ImageCreationTimeout      *string           `mapstructure:"image_creation_timeout" required:"false" cty:"image_creation_timeout" hcl:"image_creation_timeout"`
 	ServerCreationTimeout     *string           `mapstructure:"server_creation_timeout" required:"false" cty:"server_creation_timeout" hcl:"server_creation_timeout"`
 	ServerShutdownTimeout     *string           `mapstructure:"server_shutdown_timeout" required:"false" cty:"server_shutdown_timeout" hcl:"server_shutdown_timeout"`
+	UserData                  map[string]string `mapstructure:"user_data" required:"false" cty:"user_data" hcl:"user_data"`
+	UserDataTimeout           *string           `mapstructure:"user_data_timeout" required:"false" cty:"user_data_timeout" hcl:"user_data_timeout"`
 	Token                     *string           `mapstructure:"api_token" required:"false" cty:"api_token" hcl:"api_token"`
 	Organization              *string           `mapstructure:"organization_id" required:"false" cty:"organization_id" hcl:"organization_id"`
 	Region                    *string           `mapstructure:"region" required:"false" cty:"region" hcl:"region"`
@@ -177,6 +179,8 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"image_creation_timeout":       &hcldec.AttrSpec{Name: "image_creation_timeout", Type: cty.String, Required: false},
 		"server_creation_timeout":      &hcldec.AttrSpec{Name: "server_creation_timeout", Type: cty.String, Required: false},
 		"server_shutdown_timeout":      &hcldec.AttrSpec{Name: "server_shutdown_timeout", Type: cty.String, Required: false},
+		"user_data":                    &hcldec.AttrSpec{Name: "user_data", Type: cty.Map(cty.String), Required: false},
+		"user_data_timeout":            &hcldec.AttrSpec{Name: "user_data_timeout", Type: cty.String, Required: false},
 		"api_token":                    &hcldec.AttrSpec{Name: "api_token", Type: cty.String, Required: false},
 		"organization_id":              &hcldec.AttrSpec{Name: "organization_id", Type: cty.String, Required: false},
 		"region":                       &hcldec.AttrSpec{Name: "region", Type: cty.String, Required: false},
