@@ -21,7 +21,7 @@ import (
 // BuilderId is the unique id for the builder
 const BuilderId = "hashicorp.scaleway"
 
-var nightly = flag.Bool("nightly", os.Getenv("PACKER_ACC") == "1", "Run nightly tests")
+var acceptanceTests = flag.Bool("acceptance tests", os.Getenv("PACKER_ACC") == "1", "Run acceptance tests")
 
 type Builder struct {
 	config Config
@@ -95,7 +95,7 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		new(stepImage),
 	}
 
-	if *nightly {
+	if *acceptanceTests {
 		steps = append(steps, new(stepSweep))
 	}
 

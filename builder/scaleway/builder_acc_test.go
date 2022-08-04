@@ -41,7 +41,7 @@ const testBuilderAccBasic = `
 source "scaleway" "basic" {
   commercial_type      = "DEV1-S"
   image                = "ubuntu_focal"
-  image_name 		   = "nightly"
+  image_name 		   = "Acceptance test"
   ssh_username         = "root"
   zone                 = "fr-par-1"
 }
