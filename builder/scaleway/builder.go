@@ -6,7 +6,9 @@ package scaleway
 import (
 	"context"
 	"errors"
+	"flag"
 	"fmt"
+	"os"
 
 	"github.com/hashicorp/hcl/v2/hcldec"
 	"github.com/hashicorp/packer-plugin-sdk/communicator"
@@ -18,6 +20,8 @@ import (
 
 // BuilderId is the unique id for the builder
 const BuilderId = "hashicorp.scaleway"
+
+var acceptanceTests = flag.Bool("run-acceptance-tests", os.Getenv("PACKER_ACC") == "1", "Run acceptance tests")
 
 type Builder struct {
 	config Config
@@ -90,6 +94,10 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		new(stepShutdown),
 		new(stepSnapshot),
 		new(stepImage),
+	}
+
+	if *acceptanceTests {
+		steps = append(steps, new(stepSweep))
 	}
 
 	b.runner = commonsteps.NewRunnerWithPauseFn(steps, b.config.PackerConfig, ui, state)
