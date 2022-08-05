@@ -21,7 +21,7 @@ import (
 // BuilderId is the unique id for the builder
 const BuilderId = "hashicorp.scaleway"
 
-var acceptanceTests = flag.Bool("acceptance tests", os.Getenv("PACKER_ACC") == "1", "Run acceptance tests")
+var acceptanceTests = flag.Bool("run-acceptance-tests", os.Getenv("PACKER_ACC") == "1", "Run acceptance tests")
 
 type Builder struct {
 	config Config
