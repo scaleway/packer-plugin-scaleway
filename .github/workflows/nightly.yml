@@ -19,6 +19,8 @@ jobs:
           go-version: ${{ matrix.go-version }}
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Install plugin
+        run: make install-plugin
       - name: Build binaries
         run: make build
       - name: Run e2e test
@@ -31,3 +33,11 @@ jobs:
           SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
           SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_DEFAULT_ORGANIZATION_ID }}
           SCW_DEFAULT_PROJECT_ID: ${{ secrets.SCW_DEFAULT_PROJECT_ID }}
+      - name: Fetch log file
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: packer-log
+          path: ./builder/scaleway/packer_log_test-scaleway-builder-basic.txt
+          if-no-files-found: error
+          retention-days: 2
