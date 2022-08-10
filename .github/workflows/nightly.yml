@@ -41,4 +41,3 @@ jobs:
           path: ./builder/scaleway/packer_log_test-scaleway-builder-basic.txt
           if-no-files-found: error
           retention-days: 2
-
