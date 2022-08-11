@@ -91,6 +91,7 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 			Comm: &b.config.Comm,
 		},
 		new(stepWaitUserData),
+		new(stepCleanupMachineData),
 		new(stepShutdown),
 		new(stepSnapshot),
 		new(stepImage),
