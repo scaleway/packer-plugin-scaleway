@@ -1,20 +1,24 @@
-## The Example Folder
+# Example
 
-This folder must contain a fully working example of the plugin usage. The example must define the `required_plugins`
-block. A pre-defined GitHub Action will run `packer init`, `packer validate`, and `packer build` to test your plugin 
-with the latest version available of Packer.
+## Simple Packer Build
 
-The folder can contain multiple HCL2 compatible files. The action will execute Packer at this folder level
-running `packer init -upgrade .` and `packer build .`.
+After cloning this repo, move to the `example` directory by running:
 
-If the plugin requires authentication, the configuration should be provided via GitHub Secrets and set as environment
-variables in the [test-plugin-example.yml](/.github/workflows/test-plugin-example.yml) file. Example:
+```sh
+$ cd packer-plugin-scaleway/example
+```
 
-```yml
-  - name: Build
-    working-directory: ${{ github.event.inputs.folder }}
-    run: PACKER_LOG=${{ github.event.inputs.logs }} packer build .
-    env:
-      AUTH_KEY: ${{ secrets.AUTH_KEY }}
-      AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
+Either modify `basic_scaleway.pkr.hcl` to reflect your Scaleway keys and project id, or comment that out and set the environment variables by running:
+
+```sh
+$ export SCW_DEFAULT_PROJECT_ID=<your scaleway project id>
+$ export SCW_ACCESS_KEY=<your scaleway access key>
+$ export SCW_SECRET_KEY=<your scaleway secret key>
+```
+
+Then run the following commands to build a simple Scaleway image via Packer:
+
+```sh
+$ packer init basic_scaleway.pkr.hcl
+$ packer build basic_scaleway.pkr.hcl
 ```
