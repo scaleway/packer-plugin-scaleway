@@ -81,6 +81,7 @@ type FlatConfig struct {
 	Bootscript                *string           `mapstructure:"bootscript" required:"false" cty:"bootscript" hcl:"bootscript"`
 	BootType                  *string           `mapstructure:"boottype" required:"false" cty:"boottype" hcl:"boottype"`
 	RemoveVolume              *bool             `mapstructure:"remove_volume" cty:"remove_volume" hcl:"remove_volume"`
+	CleanupMachineRelatedData *string           `mapstructure:"cleanup_machine_related_data" required:"false" cty:"cleanup_machine_related_data" hcl:"cleanup_machine_related_data"`
 	SnapshotCreationTimeout   *string           `mapstructure:"snapshot_creation_timeout" required:"false" cty:"snapshot_creation_timeout" hcl:"snapshot_creation_timeout"`
 	ImageCreationTimeout      *string           `mapstructure:"image_creation_timeout" required:"false" cty:"image_creation_timeout" hcl:"image_creation_timeout"`
 	ServerCreationTimeout     *string           `mapstructure:"server_creation_timeout" required:"false" cty:"server_creation_timeout" hcl:"server_creation_timeout"`
@@ -175,6 +176,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"bootscript":                   &hcldec.AttrSpec{Name: "bootscript", Type: cty.String, Required: false},
 		"boottype":                     &hcldec.AttrSpec{Name: "boottype", Type: cty.String, Required: false},
 		"remove_volume":                &hcldec.AttrSpec{Name: "remove_volume", Type: cty.Bool, Required: false},
+		"cleanup_machine_related_data": &hcldec.AttrSpec{Name: "cleanup_machine_related_data", Type: cty.String, Required: false},
 		"snapshot_creation_timeout":    &hcldec.AttrSpec{Name: "snapshot_creation_timeout", Type: cty.String, Required: false},
 		"image_creation_timeout":       &hcldec.AttrSpec{Name: "image_creation_timeout", Type: cty.String, Required: false},
 		"server_creation_timeout":      &hcldec.AttrSpec{Name: "server_creation_timeout", Type: cty.String, Required: false},

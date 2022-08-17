@@ -24,10 +24,11 @@ import (
 )
 
 const (
-	defaultInstanceSnapshotWaitTimeout = 1 * time.Hour
-	defaultInstanceImageWaitTimeout    = 1 * time.Hour
-	defaultInstanceServerWaitTimeout   = 10 * time.Minute
-	defaultUserDataWaitTimeout         = 0 * time.Second
+	defaultInstanceSnapshotWaitTimeout     = 1 * time.Hour
+	defaultInstanceImageWaitTimeout        = 1 * time.Hour
+	defaultInstanceServerWaitTimeout       = 10 * time.Minute
+	defaultUserDataWaitTimeout             = 0 * time.Second
+	defaultCleanupMachineRelatedDataStatus = "false"
 )
 
 type Config struct {
@@ -83,6 +84,10 @@ type Config struct {
 	BootType string `mapstructure:"boottype" required:"false"`
 
 	RemoveVolume bool `mapstructure:"remove_volume"`
+
+	// This value allows the user to remove information
+	// that is particular to the instance used to build the image
+	CleanupMachineRelatedData string `mapstructure:"cleanup_machine_related_data" required:"false"`
 
 	// The time to wait for snapshot creation. Defaults to "1h"
 	SnapshotCreationTimeout time.Duration `mapstructure:"snapshot_creation_timeout" required:"false"`
@@ -297,6 +302,10 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 
 	if c.UserDataTimeout == 0 {
 		c.UserDataTimeout = defaultUserDataWaitTimeout
+	}
+
+	if c.CleanupMachineRelatedData == "" {
+		c.CleanupMachineRelatedData = defaultCleanupMachineRelatedDataStatus
 	}
 
 	if errs != nil && len(errs.Errors) > 0 {
