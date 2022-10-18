@@ -8,7 +8,7 @@ require (
 	github.com/hashicorp/packer-plugin-sdk v0.3.2
 	github.com/mitchellh/mapstructure v1.4.1
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.9.0.20220713095144-987a16e8bbc0
-	github.com/zclconf/go-cty v1.10.0
+	github.com/zclconf/go-cty v1.11.1
 	golang.org/x/crypto v0.0.0-20220517005047-85d78b3ac167
 )
 
