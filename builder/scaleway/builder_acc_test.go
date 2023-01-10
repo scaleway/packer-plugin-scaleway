@@ -44,6 +44,7 @@ source "scaleway" "basic" {
   image_name 		   = "Acceptance test"
   ssh_username         = "root"
   zone                 = "fr-par-1"
+  remove_volume        = true
 }
 
 build {
