@@ -126,8 +126,6 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 }
 
 func (s *stepCreateServer) Cleanup(state multistep.StateBag) {
-	volumeID := state.Get("root_volume_id").(string)
-
 	if s.serverID == "" {
 		return
 	}
@@ -149,16 +147,5 @@ func (s *stepCreateServer) Cleanup(state multistep.StateBag) {
 			ui.Error(fmt.Sprintf(
 				"Error destroying server. Please destroy it manually: %s", err))
 		}
-	}
-
-	ui.Say("Removing volume ...")
-
-	err = instanceAPI.DeleteVolume(&instance.DeleteVolumeRequest{
-		VolumeID: volumeID,
-	})
-	if err != nil {
-		err := fmt.Errorf("error removing volume: %s", err)
-		state.Put("error", err)
-		ui.Error(fmt.Sprintf("Error removing volume: %s. Please destroy it manually", err))
 	}
 }
