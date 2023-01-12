@@ -16,11 +16,12 @@ import (
 type stepImage struct{}
 
 func (s *stepImage) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+	var bootscriptID *string
+
 	instanceAPI := instance.NewAPI(state.Get("client").(*scw.Client))
 	ui := state.Get("ui").(packersdk.Ui)
 	c := state.Get("config").(*Config)
 	snapshotID := state.Get("snapshot_id").(string)
-	bootscriptID := ""
 
 	ui.Say(fmt.Sprintf("Creating image: %v", c.ImageName))
 
@@ -54,7 +55,7 @@ func (s *stepImage) Run(ctx context.Context, state multistep.StateBag) multistep
 	}
 
 	if imageResp.Image.DefaultBootscript != nil {
-		bootscriptID = imageResp.Image.DefaultBootscript.ID
+		bootscriptID = &imageResp.Image.DefaultBootscript.ID
 	}
 
 	createImageResp, err := instanceAPI.CreateImage(&instance.CreateImageRequest{
