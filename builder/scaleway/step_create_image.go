@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
-	"github.com/scaleway/scaleway-sdk-go/api/marketplace/v1"
+	"github.com/scaleway/scaleway-sdk-go/api/marketplace/v2"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
@@ -31,7 +31,7 @@ func (s *stepImage) Run(ctx context.Context, state multistep.StateBag) multistep
 	_, err := uuid.ParseUUID(c.Image)
 	if err != nil {
 		apiMarketplace := marketplace.NewAPI(state.Get("client").(*scw.Client))
-		imageID, err = apiMarketplace.GetLocalImageIDByLabel(&marketplace.GetLocalImageIDByLabelRequest{
+		image, err := apiMarketplace.GetLocalImageByLabel(&marketplace.GetLocalImageByLabelRequest{
 			ImageLabel:     c.Image,
 			Zone:           scw.Zone(c.Zone),
 			CommercialType: c.CommercialType,
@@ -42,6 +42,7 @@ func (s *stepImage) Run(ctx context.Context, state multistep.StateBag) multistep
 			ui.Error(err.Error())
 			return multistep.ActionHalt
 		}
+		imageID = image.ID
 	}
 
 	imageResp, err := instanceAPI.GetImage(&instance.GetImageRequest{
