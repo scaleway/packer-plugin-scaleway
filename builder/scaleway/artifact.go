@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	registryimage "github.com/hashicorp/packer-plugin-sdk/packer/registry/image"
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
@@ -51,6 +52,18 @@ func (a *Artifact) String() string {
 }
 
 func (a *Artifact) State(name string) interface{} {
+	if name == registryimage.ArtifactStateURI {
+		img, err := registryimage.FromArtifact(a,
+			registryimage.WithID(a.imageID),
+			registryimage.WithProvider("scaleway"),
+			registryimage.WithRegion(a.zoneName),
+		)
+		if err != nil {
+			log.Printf("error when creating hcp registry image %v", err)
+			return nil
+		}
+		return img
+	}
 	return a.StateData[name]
 }
 
