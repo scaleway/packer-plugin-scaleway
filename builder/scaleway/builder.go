@@ -50,6 +50,7 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		scw.WithDefaultProjectID(b.config.ProjectID),
 		scw.WithAuth(b.config.AccessKey, b.config.SecretKey),
 		scw.WithDefaultZone(scwZone),
+		scw.WithUserAgent(b.config.UserAgent),
 	}
 
 	if b.config.APIURL != "" {
