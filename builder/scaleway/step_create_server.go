@@ -135,17 +135,18 @@ func (s *stepCreateServer) Cleanup(state multistep.StateBag) {
 
 	ui.Say("Destroying server...")
 
-	err := instanceAPI.DeleteServer(&instance.DeleteServerRequest{
+	deleteErr := instanceAPI.DeleteServer(&instance.DeleteServerRequest{
 		ServerID: s.serverID,
 	})
-	if err != nil {
-		_, err = instanceAPI.ServerAction(&instance.ServerActionRequest{
+	if deleteErr != nil {
+		_, err := instanceAPI.ServerAction(&instance.ServerActionRequest{
 			Action:   instance.ServerActionTerminate,
 			ServerID: s.serverID,
 		})
 		if err != nil {
+			ui.Error(fmt.Sprintf("Error deleting server: %s", deleteErr))
 			ui.Error(fmt.Sprintf(
-				"Error destroying server. Please destroy it manually: %s", err))
+				"Error terminating server. Please destroy it manually: %s", err))
 		}
 	}
 }
