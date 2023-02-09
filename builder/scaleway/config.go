@@ -64,8 +64,12 @@ type Config struct {
 	// The Image size in GB. Will only work for images based on block volumes.
 	ImageSizeInGB int32 `mapstructure:"image_size_in_gb" required:"false"`
 	// The name of the server commercial type:
-	// C1, C2L, C2M, C2S, DEV1-S, DEV1-M, DEV1-L, DEV1-XL,
-	// GP1-XS, GP1-S, GP1-M, GP1-L, GP1-XL, RENDER-S
+	// DEV1-S, DEV1-M, DEV1-L, DEV1-XL,
+	// PLAY2-PICO, PLAY2-NANO, PLAY2-MICRO,
+	// PRO2-XXS, PRO2-XS, PRO2-S, PRO2-M, PRO2-L,
+	// GP1-XS, GP1-S, GP1-M, GP1-L, GP1-XL,
+	// ENT1-XXS, ENT1-XS, ENT1-S, ENT1-M, ENT1-L, ENT1-XL, ENT1-2XL,
+	// GPU-3070-S, RENDER-S, STARDUST1-S,
 	CommercialType string `mapstructure:"commercial_type" required:"true"`
 	// The name of the resulting snapshot that will
 	// appear in your account. Default packer-TIMESTAMP
