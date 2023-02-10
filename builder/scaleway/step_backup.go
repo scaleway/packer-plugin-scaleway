@@ -53,7 +53,7 @@ func (s *stepBackup) Run(ctx context.Context, state multistep.StateBag) multiste
 		ui.Error(err.Error())
 		return multistep.ActionHalt
 	}
-	
+
 	state.Put("snapshots", artifactSnapshotFromImage(image))
 	state.Put("image_id", image.ID)
 	state.Put("image_name", c.ImageName)
