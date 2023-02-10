@@ -45,6 +45,7 @@ func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) mult
 
 	state.Put("server_ip", instanceResp.PublicIP.Address.String())
 	state.Put("root_volume_id", instanceResp.Volumes["0"].ID)
+	state.Put("server", instanceResp)
 
 	return multistep.ActionContinue
 }
