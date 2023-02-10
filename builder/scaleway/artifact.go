@@ -16,8 +16,8 @@ type ArtifactSnapshot struct {
 	Name string
 }
 
-func (snap *ArtifactSnapshot) String() string {
-	return fmt.Sprintf("(%s : %s)", snap.Name, snap.ID)
+func (snap ArtifactSnapshot) String() string {
+	return fmt.Sprintf("(%s: %s)", snap.Name, snap.ID)
 }
 
 type Artifact struct {
