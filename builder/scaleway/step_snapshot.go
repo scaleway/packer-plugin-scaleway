@@ -77,8 +77,8 @@ func (s *stepSnapshot) Cleanup(state multistep.StateBag) {
 		SnapshotID: s.snapshotID,
 	})
 	if err != nil {
-		err := fmt.Sprintf("error removing snapshot: %w", err)
+		err := fmt.Errorf("error removing snapshot: %w", err)
 		state.Put("error", err)
-		ui.Error(err)
+		ui.Error(err.Error())
 	}
 }
