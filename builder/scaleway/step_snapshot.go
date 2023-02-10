@@ -11,7 +11,9 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
-type stepSnapshot struct{}
+type stepSnapshot struct {
+	snapshotID string
+}
 
 func (s *stepSnapshot) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	instanceAPI := instance.NewAPI(state.Get("client").(*scw.Client))
@@ -62,6 +64,21 @@ func (s *stepSnapshot) Run(ctx context.Context, state multistep.StateBag) multis
 	return multistep.ActionContinue
 }
 
-func (s *stepSnapshot) Cleanup(_ multistep.StateBag) {
-	// no cleanup
+func (s *stepSnapshot) Cleanup(state multistep.StateBag) {
+	if s.snapshotID == "" {
+		return
+	}
+
+	instanceAPI := instance.NewAPI(state.Get("client").(*scw.Client))
+	ui := state.Get("ui").(packersdk.Ui)
+
+	ui.Say("Removing snapshot...")
+	err := instanceAPI.DeleteSnapshot(&instance.DeleteSnapshotRequest{
+		SnapshotID: s.snapshotID,
+	})
+	if err != nil {
+		err := fmt.Sprintf("error removing snapshot: %w", err)
+		state.Put("error", err)
+		ui.Error(err)
+	}
 }

@@ -87,7 +87,10 @@ type Config struct {
 	// bootscript, Default bootscript
 	BootType string `mapstructure:"boottype" required:"false"`
 
+	// Remove created volumes
 	RemoveVolume bool `mapstructure:"remove_volume"`
+	// Remove created snapshots
+	RemoveSnapshot bool `mapstructure:"remove_snapshot"`
 
 	// This value allows the user to remove information
 	// that is particular to the instance used to build the image
