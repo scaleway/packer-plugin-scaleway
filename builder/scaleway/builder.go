@@ -94,8 +94,7 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		new(stepWaitUserData),
 		new(stepCleanupMachineData),
 		new(stepShutdown),
-		new(stepSnapshot),
-		new(stepImage),
+		new(stepBackup),
 	}
 
 	if *acceptanceTests {
@@ -118,18 +117,17 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		return nil, errors.New("Build was halted.")
 	}
 
-	if _, ok := state.GetOk("snapshot_name"); !ok {
+	if _, ok := state.GetOk("snapshots"); !ok {
 		return nil, errors.New("Cannot find snapshot_name in state.")
 	}
 
 	artifact := &Artifact{
-		imageName:    state.Get("image_name").(string),
-		imageID:      state.Get("image_id").(string),
-		snapshotName: state.Get("snapshot_name").(string),
-		snapshotID:   state.Get("snapshot_id").(string),
-		zoneName:     b.config.Zone,
-		client:       client,
-		StateData:    map[string]interface{}{"generated_data": state.Get("generated_data")},
+		imageName: state.Get("image_name").(string),
+		imageID:   state.Get("image_id").(string),
+		snapshots: state.Get("snapshots").([]ArtifactSnapshot),
+		zoneName:  b.config.Zone,
+		client:    client,
+		StateData: map[string]interface{}{"generated_data": state.Get("generated_data")},
 	}
 
 	return artifact, nil

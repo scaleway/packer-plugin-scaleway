@@ -9,6 +9,17 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
+type ArtifactSnapshot struct {
+	// The ID of the snapshot
+	ID string
+	// The name of the snapshot
+	Name string
+}
+
+func (snap ArtifactSnapshot) String() string {
+	return fmt.Sprintf("(%s: %s)", snap.Name, snap.ID)
+}
+
 type Artifact struct {
 	// The name of the image
 	imageName string
@@ -16,11 +27,8 @@ type Artifact struct {
 	// The ID of the image
 	imageID string
 
-	// The name of the snapshot
-	snapshotName string
-
-	// The ID of the snapshot
-	snapshotID string
+	// Snapshots used by the generated image
+	snapshots []ArtifactSnapshot
 
 	// The name of the zone
 	zoneName string
@@ -47,8 +55,8 @@ func (a *Artifact) Id() string {
 }
 
 func (a *Artifact) String() string {
-	return fmt.Sprintf("An image was created: '%v' (ID: %v) in zone '%v' based on snapshot '%v' (ID: %v)",
-		a.imageName, a.imageID, a.zoneName, a.snapshotName, a.snapshotID)
+	return fmt.Sprintf("An image was created: '%v' (ID: %v) in zone '%v' based on snapshots %v",
+		a.imageName, a.imageID, a.zoneName, a.snapshots)
 }
 
 func (a *Artifact) State(name string) interface{} {
@@ -78,12 +86,14 @@ func (a *Artifact) Destroy() error {
 		return err
 	}
 
-	log.Printf("Destroying snapshot: %s (%s)", a.snapshotID, a.snapshotName)
-	err = instanceAPI.DeleteSnapshot(&instance.DeleteSnapshotRequest{
-		SnapshotID: a.snapshotID,
-	})
-	if err != nil {
-		return err
+	log.Printf("Destroying snapshots: %v", a.snapshots)
+	for _, snapshot := range a.snapshots {
+		err = instanceAPI.DeleteSnapshot(&instance.DeleteSnapshotRequest{
+			SnapshotID: snapshot.ID,
+		})
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

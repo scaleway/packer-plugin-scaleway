@@ -16,7 +16,16 @@ func TestArtifact_Impl(t *testing.T) {
 
 func TestArtifactId(t *testing.T) {
 	generatedData := make(map[string]interface{})
-	a := &Artifact{"packer-foobar-image", "cc586e45-5156-4f71-b223-cf406b10dd1d", "packer-foobar-snapshot", "cc586e45-5156-4f71-b223-cf406b10dd1c", "ams1", nil, generatedData}
+	a := &Artifact{
+		"packer-foobar-image",
+		"cc586e45-5156-4f71-b223-cf406b10dd1d",
+		[]ArtifactSnapshot{{
+			"packer-foobar-snapshot",
+			"cc586e45-5156-4f71-b223-cf406b10dd1c",
+		}},
+		"ams1",
+		nil,
+		generatedData}
 	expected := "ams1:cc586e45-5156-4f71-b223-cf406b10dd1d"
 
 	if a.Id() != expected {
@@ -26,11 +35,26 @@ func TestArtifactId(t *testing.T) {
 
 func TestArtifactString(t *testing.T) {
 	generatedData := make(map[string]interface{})
-	a := &Artifact{"packer-foobar-image", "cc586e45-5156-4f71-b223-cf406b10dd1d", "packer-foobar-snapshot", "cc586e45-5156-4f71-b223-cf406b10dd1c", "ams1", nil, generatedData}
-	expected := "An image was created: 'packer-foobar-image' (ID: cc586e45-5156-4f71-b223-cf406b10dd1d) in zone 'ams1' based on snapshot 'packer-foobar-snapshot' (ID: cc586e45-5156-4f71-b223-cf406b10dd1c)"
+	a := &Artifact{
+		"packer-foobar-image",
+		"cc586e45-5156-4f71-b223-cf406b10dd1d",
+		[]ArtifactSnapshot{
+			{
+				"cc586e45-5156-4f71-b223-cf406b10dd1c",
+				"packer-foobar-snapshot",
+			},
+			{
+				"cc586e45-5156-4f71-b223-cf406b10dd1e",
+				"packer-foobar-snapshot2",
+			},
+		},
+		"ams1",
+		nil,
+		generatedData}
+	expected := "An image was created: 'packer-foobar-image' (ID: cc586e45-5156-4f71-b223-cf406b10dd1d) in zone 'ams1' based on snapshots [(packer-foobar-snapshot: cc586e45-5156-4f71-b223-cf406b10dd1c) (packer-foobar-snapshot2: cc586e45-5156-4f71-b223-cf406b10dd1e)]"
 
 	if a.String() != expected {
-		t.Fatalf("artifact string should match: %v", expected)
+		t.Fatalf("artifact string (%v) should match: %v", a.String(), expected)
 	}
 }
 
