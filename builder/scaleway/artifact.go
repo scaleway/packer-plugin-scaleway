@@ -57,8 +57,6 @@ func (a *Artifact) Id() string {
 func (a *Artifact) String() string {
 	return fmt.Sprintf("An image was created: '%v' (ID: %v) in zone '%v' based on snapshots %v",
 		a.imageName, a.imageID, a.zoneName, a.snapshots)
-	//return fmt.Sprintf("An image was created: '%v' (ID: %v) in zone '%v' based on snapshot '%v' (ID: %v)",
-	//	a.imageName, a.imageID, a.zoneName, a.snapshotName, a.snapshotID)
 }
 
 func (a *Artifact) State(name string) interface{} {
@@ -88,7 +86,7 @@ func (a *Artifact) Destroy() error {
 		return err
 	}
 
-	log.Printf("Destroying snapshots: %sv", a.snapshots)
+	log.Printf("Destroying snapshots: %v", a.snapshots)
 	for _, snapshot := range a.snapshots {
 		err = instanceAPI.DeleteSnapshot(&instance.DeleteSnapshotRequest{
 			SnapshotID: snapshot.ID,
