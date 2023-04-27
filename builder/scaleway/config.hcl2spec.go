@@ -81,6 +81,7 @@ type FlatConfig struct {
 	Bootscript                *string           `mapstructure:"bootscript" required:"false" cty:"bootscript" hcl:"bootscript"`
 	BootType                  *string           `mapstructure:"boottype" required:"false" cty:"boottype" hcl:"boottype"`
 	RemoveVolume              *bool             `mapstructure:"remove_volume" cty:"remove_volume" hcl:"remove_volume"`
+	BlockVolumes              []FlatConfigBlockVolume `mapstructure:"block_volume" cty:"block_volume" hcl:"block_volume"`
 	CleanupMachineRelatedData *string           `mapstructure:"cleanup_machine_related_data" required:"false" cty:"cleanup_machine_related_data" hcl:"cleanup_machine_related_data"`
 	SnapshotCreationTimeout   *string           `mapstructure:"snapshot_creation_timeout" required:"false" cty:"snapshot_creation_timeout" hcl:"snapshot_creation_timeout"`
 	ImageCreationTimeout      *string           `mapstructure:"image_creation_timeout" required:"false" cty:"image_creation_timeout" hcl:"image_creation_timeout"`
@@ -177,6 +178,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"bootscript":                   &hcldec.AttrSpec{Name: "bootscript", Type: cty.String, Required: false},
 		"boottype":                     &hcldec.AttrSpec{Name: "boottype", Type: cty.String, Required: false},
 		"remove_volume":                &hcldec.AttrSpec{Name: "remove_volume", Type: cty.Bool, Required: false},
+		"block_volume":                 &hcldec.BlockListSpec{TypeName: "block_volume", Nested: hcldec.ObjectSpec((*FlatConfigBlockVolume)(nil).HCL2Spec())},
 		"cleanup_machine_related_data": &hcldec.AttrSpec{Name: "cleanup_machine_related_data", Type: cty.String, Required: false},
 		"snapshot_creation_timeout":    &hcldec.AttrSpec{Name: "snapshot_creation_timeout", Type: cty.String, Required: false},
 		"image_creation_timeout":       &hcldec.AttrSpec{Name: "image_creation_timeout", Type: cty.String, Required: false},
@@ -188,6 +190,33 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"api_token":                    &hcldec.AttrSpec{Name: "api_token", Type: cty.String, Required: false},
 		"organization_id":              &hcldec.AttrSpec{Name: "organization_id", Type: cty.String, Required: false},
 		"region":                       &hcldec.AttrSpec{Name: "region", Type: cty.String, Required: false},
+	}
+	return s
+}
+
+// FlatConfigBlockVolume is an auto-generated flat version of ConfigBlockVolume.
+// Where the contents of a field with a `mapstructure:,squash` tag are bubbled up.
+type FlatConfigBlockVolume struct {
+	Name       *string `mapstructure:"name" cty:"name" hcl:"name"`
+	SnapshotID *string `mapstructure:"snapshot_id" cty:"snapshot_id" hcl:"snapshot_id"`
+	Size       *uint64 `mapstructure:"size" cty:"size" hcl:"size"`
+}
+
+// FlatMapstructure returns a new FlatConfigBlockVolume.
+// FlatConfigBlockVolume is an auto-generated flat version of ConfigBlockVolume.
+// Where the contents a fields with a `mapstructure:,squash` tag are bubbled up.
+func (*ConfigBlockVolume) FlatMapstructure() interface{ HCL2Spec() map[string]hcldec.Spec } {
+	return new(FlatConfigBlockVolume)
+}
+
+// HCL2Spec returns the hcl spec of a ConfigBlockVolume.
+// This spec is used by HCL to read the fields of ConfigBlockVolume.
+// The decoded values from this spec will then be applied to a FlatConfigBlockVolume.
+func (*FlatConfigBlockVolume) HCL2Spec() map[string]hcldec.Spec {
+	s := map[string]hcldec.Spec{
+		"name":        &hcldec.AttrSpec{Name: "name", Type: cty.String, Required: false},
+		"snapshot_id": &hcldec.AttrSpec{Name: "snapshot_id", Type: cty.String, Required: false},
+		"size":        &hcldec.AttrSpec{Name: "size", Type: cty.Number, Required: false},
 	}
 	return s
 }

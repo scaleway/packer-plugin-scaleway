@@ -27,21 +27,23 @@ func (s *stepRemoveVolume) Cleanup(state multistep.StateBag) {
 	instanceAPI := instance.NewAPI(state.Get("client").(*scw.Client))
 	ui := state.Get("ui").(packersdk.Ui)
 	c := state.Get("config").(*Config)
-	volumeID := state.Get("root_volume_id").(string)
 
 	if !c.RemoveVolume {
 		return
 	}
 
-	ui.Say("Removing Volume ...")
+	ui.Say("Removing Volumes ...")
 
-	err := instanceAPI.DeleteVolume(&instance.DeleteVolumeRequest{
-		VolumeID: volumeID,
-		Zone:     scw.Zone(c.Zone),
-	})
-	if err != nil {
-		err := fmt.Errorf("error removing volume: %s", err)
-		state.Put("error", err)
-		ui.Error(fmt.Sprintf("Error removing volume: %s. (Ignored)", err))
+	volumes := state.Get("volumes").([]*instance.VolumeServer)
+	for _, volume := range volumes {
+		err := instanceAPI.DeleteVolume(&instance.DeleteVolumeRequest{
+			VolumeID: volume.ID,
+			Zone:     scw.Zone(c.Zone),
+		})
+		if err != nil {
+			err := fmt.Errorf("error removing block volume %s: %s", volume.ID, err)
+			state.Put("error", err)
+			ui.Error(fmt.Sprintf("Error removing block volume %s: %s. (Ignored)", volume.ID, err))
+		}
 	}
 }

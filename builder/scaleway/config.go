@@ -1,5 +1,5 @@
 //go:generate packer-sdc struct-markdown
-//go:generate packer-sdc mapstructure-to-hcl2 -type Config
+//go:generate packer-sdc mapstructure-to-hcl2 -type Config,ConfigBlockVolume
 
 package scaleway
 
@@ -29,6 +29,15 @@ const (
 	defaultUserDataWaitTimeout             = 0 * time.Second
 	defaultCleanupMachineRelatedDataStatus = "false"
 )
+
+type ConfigBlockVolume struct {
+	// The name of the created volume
+	Name string `mapstructure:"name"`
+	// ID of the snapshot to create the volume from
+	SnapshotID string `mapstructure:"snapshot_id"`
+	// Size of the newly created volume
+	Size uint64 `mapstructure:"size"`
+}
 
 type Config struct {
 	common.PackerConfig `mapstructure:",squash"`
@@ -86,7 +95,11 @@ type Config struct {
 	// bootscript, Default bootscript
 	BootType string `mapstructure:"boottype" required:"false"`
 
+	// RemoveVolume remove the temporary volumes created before running the server
 	RemoveVolume bool `mapstructure:"remove_volume"`
+
+	// BlockVolumes define block volumes attached to the server alongside the default volume
+	BlockVolumes []ConfigBlockVolume `mapstructure:"block_volume"`
 
 	// This value allows the user to remove information
 	// that is particular to the instance used to build the image
@@ -312,6 +325,13 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) { //nolint:gocyc
 
 	if c.CleanupMachineRelatedData == "" {
 		c.CleanupMachineRelatedData = defaultCleanupMachineRelatedDataStatus
+	}
+
+	if len(c.BlockVolumes) > 0 {
+		blockErrors := prepareBlockVolumes(c.BlockVolumes)
+		if blockErrors != nil {
+			errs = packersdk.MultiErrorAppend(errs, blockErrors.Errors...)
+		}
 	}
 
 	if errs != nil && len(errs.Errors) > 0 {
