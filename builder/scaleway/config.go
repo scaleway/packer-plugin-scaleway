@@ -99,6 +99,7 @@ type Config struct {
 	RemoveVolume bool `mapstructure:"remove_volume"`
 
 	// BlockVolumes define block volumes attached to the server alongside the default volume
+	// See the [BlockVolumes](#block-volumes-configuration) documentation for fields.
 	BlockVolumes []ConfigBlockVolume `mapstructure:"block_volume"`
 
 	// This value allows the user to remove information
