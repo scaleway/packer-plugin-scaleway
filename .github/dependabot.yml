@@ -9,8 +9,6 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
-    allow:
-      - dependency-name: "github.com/hashicorp/packer-plugin-sdk"
+    ignore:
       - dependency-name: "github.com/hashicorp/hcl/v2"
       - dependency-name: "github.com/zclconf/go-cty"
-
