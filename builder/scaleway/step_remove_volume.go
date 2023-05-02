@@ -18,7 +18,7 @@ func (s *stepRemoveVolume) Run(ctx context.Context, state multistep.StateBag) mu
 }
 
 func (s *stepRemoveVolume) Cleanup(state multistep.StateBag) {
-	if _, ok := state.GetOk("snapshot_name"); !ok {
+	if _, ok := state.GetOk("snapshots"); !ok {
 		// volume will be detached from server only after snapshotting ... so we don't
 		// need to remove volume before snapshot step.
 		return
@@ -27,20 +27,22 @@ func (s *stepRemoveVolume) Cleanup(state multistep.StateBag) {
 	instanceAPI := instance.NewAPI(state.Get("client").(*scw.Client))
 	ui := state.Get("ui").(packersdk.Ui)
 	c := state.Get("config").(*Config)
-	volumeID := state.Get("root_volume_id").(string)
 
 	if !c.RemoveVolume {
 		return
 	}
 
-	ui.Say("Removing Volume ...")
+	ui.Say("Removing Volumes ...")
 
-	err := instanceAPI.DeleteVolume(&instance.DeleteVolumeRequest{
-		VolumeID: volumeID,
-	})
-	if err != nil {
-		err := fmt.Errorf("error removing volume: %s", err)
-		state.Put("error", err)
-		ui.Error(fmt.Sprintf("Error removing volume: %s. (Ignored)", err))
+	volumes := state.Get("volumes").([]*instance.VolumeServer)
+	for _, volume := range volumes {
+		err := instanceAPI.DeleteVolume(&instance.DeleteVolumeRequest{
+			VolumeID: volume.ID,
+		})
+		if err != nil {
+			err := fmt.Errorf("error removing block volume %s: %s", volume.ID, err)
+			state.Put("error", err)
+			ui.Error(fmt.Sprintf("Error removing block volume %s: %s. (Ignored)", volume.ID, err))
+		}
 	}
 }
