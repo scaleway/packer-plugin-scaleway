@@ -28,7 +28,7 @@ of new servers that are launched within Scaleway.
 The builder does _not_ manage snapshots. Once it creates an image, it is up to
 you to use it or delete it.
 
-### Installation
+## Installation
 
 To install this plugin using Packer v1.7.0 or later, copy and paste this code
 into your Packer configuration.
@@ -73,8 +73,7 @@ can also be supplied to override the typical auto-generated key:
 Here is a basic example. It is completely valid as soon as you enter your own
 access tokens:
 
-<Tabs>
-<Tab heading="HCL2">
+**HCL2**
 
 ```hcl
 source "scaleway" "example" {
@@ -93,9 +92,8 @@ build {
 }
 ```
 
-</Tab>
 
-<Tab heading="JSON">
+**JSON**
 
     ```json
     {
@@ -111,8 +109,6 @@ build {
     }
     ```
 
-</Tab>
-</Tabs>
 
 When you do not specify the `ssh_private_key_file`, a temporary SSH keypair
 is generated to connect the server. This key will only allow the `root` user to
