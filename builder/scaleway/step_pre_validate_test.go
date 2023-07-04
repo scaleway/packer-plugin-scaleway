@@ -16,12 +16,12 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
-// 1. Configure a httptest server to return the list of fakeImgNames or fakeSnapNames
-//    (depending on the endpoint).
-// 2. Instantiate a Scaleway API client and wire it to send requests to the httptest
-//    server.
-// 3. Return a state (containing the client) ready to be passed to the step.Run() method.
-// 4. Return a teardown function meant to be deferred from the test.
+//  1. Configure a httptest server to return the list of fakeImgNames or fakeSnapNames
+//     (depending on the endpoint).
+//  2. Instantiate a Scaleway API client and wire it to send requests to the httptest
+//     server.
+//  3. Return a state (containing the client) ready to be passed to the step.Run() method.
+//  4. Return a teardown function meant to be deferred from the test.
 func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multistep.BasicStateBag, func()) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")

@@ -21,7 +21,7 @@ func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) mult
 
 	instanceResp, err := instanceAPI.WaitForServer(&instance.WaitForServerRequest{
 		ServerID: serverID,
-	})
+	}, scw.WithContext(ctx))
 	if err != nil {
 		err := fmt.Errorf("error waiting for server to become booted: %s", err)
 		state.Put("error", err)
