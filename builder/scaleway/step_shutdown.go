@@ -37,7 +37,7 @@ func (s *stepShutdown) Run(ctx context.Context, state multistep.StateBag) multis
 		Timeout:  &c.ServerShutdownTimeout,
 	}
 
-	instanceResp, err := instanceAPI.WaitForServer(waitRequest)
+	instanceResp, err := instanceAPI.WaitForServer(waitRequest, scw.WithContext(ctx))
 	if err != nil {
 		err := fmt.Errorf("error shutting down server: %s", err)
 		state.Put("error", err)

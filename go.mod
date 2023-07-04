@@ -3,7 +3,7 @@ module github.com/scaleway/packer-plugin-scaleway
 go 1.18
 
 require (
-        // https://github.com/hashicorp/packer-plugin-sdk/issues/135#issuecomment-1502289433
+	// https://github.com/hashicorp/packer-plugin-sdk/issues/135#issuecomment-1502289433
 	github.com/hashicorp/hcl/v2 v2.13.0
 	github.com/hashicorp/packer-plugin-sdk v0.4.0
 	github.com/mitchellh/mapstructure v1.4.1

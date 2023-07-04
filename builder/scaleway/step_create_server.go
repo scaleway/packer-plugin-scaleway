@@ -83,12 +83,6 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		}
 	}
 
-	waitServerRequest := &instance.WaitForServerRequest{
-		ServerID: createServerResp.Server.ID,
-		Zone:     scw.Zone(c.Zone),
-		Timeout:  &c.ServerCreationTimeout,
-	}
-
 	_, err = instanceAPI.ServerAction(&instance.ServerActionRequest{
 		Action:   instance.ServerActionPoweron,
 		ServerID: createServerResp.Server.ID,
@@ -100,6 +94,11 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		return multistep.ActionHalt
 	}
 
+	waitServerRequest := &instance.WaitForServerRequest{
+		ServerID: createServerResp.Server.ID,
+		Zone:     scw.Zone(c.Zone),
+		Timeout:  &c.ServerCreationTimeout,
+	}
 	server, err := instanceAPI.WaitForServer(waitServerRequest)
 	if err != nil {
 		err := fmt.Errorf("server is not available: %s", err)
