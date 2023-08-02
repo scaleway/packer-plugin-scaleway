@@ -12,7 +12,7 @@ import (
 
 type stepRemoveVolume struct{}
 
-func (s *stepRemoveVolume) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *stepRemoveVolume) Run(_ context.Context, _ multistep.StateBag) multistep.StepAction {
 	// nothing to do ... only cleanup interests us
 	return multistep.ActionContinue
 }
