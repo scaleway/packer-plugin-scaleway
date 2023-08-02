@@ -10,7 +10,7 @@ import (
 
 type stepWaitUserData struct{}
 
-func (s *stepWaitUserData) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *stepWaitUserData) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packersdk.Ui)
 	c := state.Get("config").(*Config)
 

@@ -21,7 +21,7 @@ type stepCreateSSHKey struct {
 	DebugKeyPath string
 }
 
-func (s *stepCreateSSHKey) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packersdk.Ui)
 	config := state.Get("config").(*Config)
 
