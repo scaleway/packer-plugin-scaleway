@@ -157,10 +157,9 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 
 	configFile, err := scw.LoadConfig()
 	// If the config file do not exist, don't return an error as we may find config in ENV or flags.
-	if _, isNotFoundError := err.(*scw.ConfigFileNotFoundError); isNotFoundError {
+	var configFileNotFoundError *scw.ConfigFileNotFoundError
+	if errors.As(err, &configFileNotFoundError) {
 		configFile = &scw.Config{}
-	} else if err != nil {
-		return nil, err
 	}
 	activeProfile, err := configFile.GetActiveProfile()
 	if err != nil {
