@@ -79,7 +79,7 @@ require (
 	github.com/ugorji/go/codec v1.2.6 // indirect
 	github.com/ulikunitz/xz v0.5.10 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/net v0.10.0 // indirect
+	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/oauth2 v0.4.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/term v0.13.0 // indirect
