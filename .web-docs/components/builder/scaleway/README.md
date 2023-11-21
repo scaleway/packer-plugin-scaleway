@@ -10,25 +10,6 @@ of new servers that are launched within Scaleway.
 The builder does _not_ manage snapshots. Once it creates an image, it is up to
 you to use it or delete it.
 
-## Installation
-
-To install this plugin using Packer v1.7.0 or later, copy and paste this code
-into your Packer configuration.
-
-Then, run [`packer init`](https://www.packer.io/docs/commands/init).
-
-
-```hcl
-packer {
-  required_plugins {
-    scaleway = {
-      version = ">= 1.0.5"
-      source  = "github.com/scaleway/scaleway"
-    }
-  }
-}
-```
-
 ## Configuration Reference
 
 There are many configuration options available for the builder. They are
