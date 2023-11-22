@@ -3,7 +3,7 @@
 integration {
   name = "Scaleway"
   description = "TODO"
-  identifier = "packer/BrandonRomano/scaleway"
+  identifier = "packer/scaleway/scaleway"
   component {
     type = "builder"
     name = "Scaleway"
