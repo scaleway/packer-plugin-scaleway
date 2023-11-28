@@ -2,7 +2,7 @@
 # https://github.com/hashicorp/integration-template#metadata-configuration
 integration {
   name = "Scaleway"
-  description = "TODO"
+  description = "Create new images for use with Scaleway."
   identifier = "packer/scaleway/scaleway"
   component {
     type = "builder"
