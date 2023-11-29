@@ -30,7 +30,7 @@ version of the plugin will be installed.
 
 #### Builders
 
-- [scaleway](/packer/integrations/scaleway/latest/components/builder/scaleway) - The Scaleway Packer builder is able to create new images for use with Scaleway Compute Instance servers. 
+- [scaleway](/packer/integrations/scaleway/scaleway/latest/components/builder/scaleway) - The Scaleway Packer builder is able to create new images for use with Scaleway Compute Instance servers. 
 The builder takes a source image, runs any provisioning necessary on the image after launching it, then snapshots it into a reusable image. 
 This reusable image can then be used as the foundation of new servers that are launched within Scaleway.
 
