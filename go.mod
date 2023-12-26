@@ -8,7 +8,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.22
 	github.com/zclconf/go-cty v1.13.3
-	golang.org/x/crypto v0.16.0
+	golang.org/x/crypto v0.17.0
 )
 
 require (
