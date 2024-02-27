@@ -8,7 +8,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.24
 	github.com/zclconf/go-cty v1.13.3
-	golang.org/x/crypto v0.19.0
+	golang.org/x/crypto v0.20.0
 )
 
 require (
@@ -80,7 +80,7 @@ require (
 	github.com/ulikunitz/xz v0.5.10 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/exp v0.0.0-20230321023759-10a507213a29 // indirect
-	golang.org/x/net v0.17.0 // indirect
+	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/oauth2 v0.7.0 // indirect
 	golang.org/x/sys v0.17.0 // indirect
 	golang.org/x/term v0.17.0 // indirect
