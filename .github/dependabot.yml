@@ -12,3 +12,8 @@ updates:
     ignore:
       - dependency-name: "github.com/hashicorp/hcl/v2"
       - dependency-name: "github.com/zclconf/go-cty"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: monthly
