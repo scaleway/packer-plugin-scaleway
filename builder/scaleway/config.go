@@ -160,6 +160,8 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) {
 	var configFileNotFoundError *scw.ConfigFileNotFoundError
 	if errors.As(err, &configFileNotFoundError) {
 		configFile = &scw.Config{}
+	} else if err != nil {
+		return nil, err
 	}
 	activeProfile, err := configFile.GetActiveProfile()
 	if err != nil {
