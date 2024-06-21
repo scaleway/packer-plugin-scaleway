@@ -1,6 +1,8 @@
 module github.com/scaleway/packer-plugin-scaleway
 
-go 1.18
+go 1.21.0
+
+toolchain go1.22.4
 
 require (
 	github.com/hashicorp/hcl/v2 v2.19.1
