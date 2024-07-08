@@ -17,6 +17,10 @@ func TestAccScalewayBuilder(t *testing.T) {
 	acctest.TestPlugin(t, &acctest.PluginTestCase{
 		Name:     "test-scaleway-builder-basic",
 		Template: testBuilderAccBasic,
+		Setup: func() error {
+			os.Setenv("PACKER_PLUGIN_PATH", "/Users/yacinefodil/Documents/Scaleway/Packer/packer-plugin-scaleway")
+			return nil
+		},
 		Check: func(buildCommand *exec.Cmd, logfile string) error {
 			if buildCommand.ProcessState != nil {
 				if buildCommand.ProcessState.ExitCode() != 0 {
@@ -39,7 +43,7 @@ func testAccPreCheck(t *testing.T) bool {
 
 const testBuilderAccBasic = `
 source "scaleway" "basic" {
-  commercial_type      = "DEV1-S"
+  commercial_type      = "PRO2-XXS"
   image                = "ubuntu_focal"
   image_name 		   = "Acceptance test"
   ssh_username         = "root"
