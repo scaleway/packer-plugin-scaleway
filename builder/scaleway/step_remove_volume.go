@@ -37,6 +37,7 @@ func (s *stepRemoveVolume) Cleanup(state multistep.StateBag) {
 
 	err := instanceAPI.DeleteVolume(&instance.DeleteVolumeRequest{
 		VolumeID: volumeID,
+		Zone:     scw.Zone(c.Zone),
 	})
 	if err != nil {
 		err := fmt.Errorf("error removing volume: %s", err)

@@ -43,6 +43,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		Name:           c.ServerName,
 		Image:          c.Image,
 		Tags:           tags,
+		Zone:           scw.Zone(c.Zone),
 	}
 
 	if c.ImageSizeInGB != 0 {

@@ -14,6 +14,7 @@ type stepServerInfo struct{}
 
 func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	instanceAPI := instance.NewAPI(state.Get("client").(*scw.Client))
+	c := state.Get("config").(*Config)
 	ui := state.Get("ui").(packersdk.Ui)
 	serverID := state.Get("server_id").(string)
 
@@ -21,6 +22,7 @@ func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) mult
 
 	instanceResp, err := instanceAPI.WaitForServer(&instance.WaitForServerRequest{
 		ServerID: serverID,
+		Zone:     scw.Zone(c.Zone),
 	}, scw.WithContext(ctx))
 	if err != nil {
 		err := fmt.Errorf("error waiting for server to become booted: %s", err)

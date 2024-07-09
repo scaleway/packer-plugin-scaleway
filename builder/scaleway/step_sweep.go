@@ -20,6 +20,7 @@ func (s *stepSweep) Run(_ context.Context, _ multistep.StateBag) multistep.StepA
 func (s *stepSweep) Cleanup(state multistep.StateBag) {
 	instanceAPI := instance.NewAPI(state.Get("client").(*scw.Client))
 	ui := state.Get("ui").(packersdk.Ui)
+	c := state.Get("config").(*Config)
 	snapshots := state.Get("snapshots").([]ArtifactSnapshot)
 	imageID := state.Get("image_id").(string)
 
@@ -27,6 +28,7 @@ func (s *stepSweep) Cleanup(state multistep.StateBag) {
 
 	err := instanceAPI.DeleteImage(&instance.DeleteImageRequest{
 		ImageID: imageID,
+		Zone:    scw.Zone(c.Zone),
 	})
 	if err != nil {
 		err := fmt.Errorf("error deleting image: %s", err)
@@ -39,6 +41,7 @@ func (s *stepSweep) Cleanup(state multistep.StateBag) {
 	for _, snapshot := range snapshots {
 		err = instanceAPI.DeleteSnapshot(&instance.DeleteSnapshotRequest{
 			SnapshotID: snapshot.ID,
+			Zone:       scw.Zone(c.Zone),
 		})
 		if err != nil {
 			err := fmt.Errorf("error deleting snapshot: %s", err)
