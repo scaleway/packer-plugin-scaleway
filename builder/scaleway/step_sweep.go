@@ -20,13 +20,15 @@ func (s *stepSweep) Run(_ context.Context, _ multistep.StateBag) multistep.StepA
 func (s *stepSweep) Cleanup(state multistep.StateBag) {
 	instanceAPI := instance.NewAPI(state.Get("client").(*scw.Client))
 	ui := state.Get("ui").(packersdk.Ui)
-	snapshotID := state.Get("snapshot_id").(string)
+	c := state.Get("config").(*Config)
+	snapshots := state.Get("snapshots").([]ArtifactSnapshot)
 	imageID := state.Get("image_id").(string)
 
 	ui.Say("Deleting Image...")
 
 	err := instanceAPI.DeleteImage(&instance.DeleteImageRequest{
 		ImageID: imageID,
+		Zone:    scw.Zone(c.Zone),
 	})
 	if err != nil {
 		err := fmt.Errorf("error deleting image: %s", err)
@@ -36,13 +38,15 @@ func (s *stepSweep) Cleanup(state multistep.StateBag) {
 
 	ui.Say("Deleting Snapshot...")
 
-	err = instanceAPI.DeleteSnapshot(&instance.DeleteSnapshotRequest{
-		SnapshotID: snapshotID,
-	})
-	if err != nil {
-		err := fmt.Errorf("error deleting snapshot: %s", err)
-		state.Put("error", err)
-		ui.Error(fmt.Sprintf("Error deleting snapshot: %s. (Ignored)", err))
+	for _, snapshot := range snapshots {
+		err = instanceAPI.DeleteSnapshot(&instance.DeleteSnapshotRequest{
+			SnapshotID: snapshot.ID,
+			Zone:       scw.Zone(c.Zone),
+		})
+		if err != nil {
+			err := fmt.Errorf("error deleting snapshot: %s", err)
+			state.Put("error", err)
+			ui.Error(fmt.Sprintf("Error deleting snapshot: %s. (Ignored)", err))
+		}
 	}
-
 }

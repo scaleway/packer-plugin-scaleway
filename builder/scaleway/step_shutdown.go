@@ -23,6 +23,7 @@ func (s *stepShutdown) Run(ctx context.Context, state multistep.StateBag) multis
 	_, err := instanceAPI.ServerAction(&instance.ServerActionRequest{
 		Action:   instance.ServerActionPoweroff,
 		ServerID: serverID,
+		Zone:     scw.Zone(c.Zone),
 	}, scw.WithContext(ctx))
 	if err != nil {
 		err := fmt.Errorf("error stopping server: %s", err)

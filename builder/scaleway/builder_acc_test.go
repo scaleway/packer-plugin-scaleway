@@ -39,7 +39,7 @@ func testAccPreCheck(t *testing.T) bool {
 
 const testBuilderAccBasic = `
 source "scaleway" "basic" {
-  commercial_type      = "DEV1-S"
+  commercial_type      = "PRO2-XXS"
   image                = "ubuntu_focal"
   image_name 		   = "Acceptance test"
   ssh_username         = "root"
