@@ -45,6 +45,7 @@ source "scaleway" "basic" {
   ssh_username         = "root"
   zone                 = "fr-par-1"
   remove_volume        = true
+  tags                 = ["devtools", "provider", "packer"]
 }
 
 build {
