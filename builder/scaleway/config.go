@@ -107,6 +107,9 @@ type Config struct {
 	// A custom timeout for user data to assure its completion. Defaults to "0s"
 	UserDataTimeout time.Duration `mapstructure:"user_data_timeout" required:"false"`
 
+	// A list of tags to apply on the created image, volumes, and snapshots
+	Tags []string `mapstructure:"tags" required:"false"`
+
 	UserAgent string `mapstructure-to-hcl2:",skip"`
 	ctx       interpolate.Context
 

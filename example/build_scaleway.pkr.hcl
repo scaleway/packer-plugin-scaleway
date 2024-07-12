@@ -16,6 +16,7 @@ source "scaleway" "basic" {
   image_name = "basic build"
   ssh_username = "root"
   zone = "fr-par-1"
+  tags = ["foo", "bar" ]
 }
 
 build {
