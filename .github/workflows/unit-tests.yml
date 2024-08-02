@@ -23,7 +23,7 @@ jobs:
           go-version: ${{ matrix.go-version }}
 
       - name: Install Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go-version }}
       - name: Build binaries
@@ -50,7 +50,7 @@ jobs:
           go-version: ${{ matrix.go-version }}
 
       - name: Install Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go-version }}
       - name: Generate
