@@ -1,14 +1,15 @@
-package scaleway
+package scaleway_test
 
 import (
 	"testing"
 
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
+	"github.com/scaleway/packer-plugin-scaleway/builder/scaleway"
 )
 
 func TestArtifact_Impl(t *testing.T) {
 	var raw interface{}
-	raw = &Artifact{}
+	raw = &scaleway.Artifact{}
 	if _, ok := raw.(packersdk.Artifact); !ok {
 		t.Fatalf("Artifact should be artifact")
 	}
@@ -16,16 +17,17 @@ func TestArtifact_Impl(t *testing.T) {
 
 func TestArtifactId(t *testing.T) {
 	generatedData := make(map[string]interface{})
-	a := &Artifact{
+	a := &scaleway.Artifact{
 		"packer-foobar-image",
 		"cc586e45-5156-4f71-b223-cf406b10dd1d",
-		[]ArtifactSnapshot{{
+		[]scaleway.ArtifactSnapshot{{
 			"packer-foobar-snapshot",
 			"cc586e45-5156-4f71-b223-cf406b10dd1c",
 		}},
 		"ams1",
 		nil,
-		generatedData}
+		generatedData,
+	}
 	expected := "ams1:cc586e45-5156-4f71-b223-cf406b10dd1d"
 
 	if a.Id() != expected {
@@ -35,10 +37,10 @@ func TestArtifactId(t *testing.T) {
 
 func TestArtifactString(t *testing.T) {
 	generatedData := make(map[string]interface{})
-	a := &Artifact{
+	a := &scaleway.Artifact{
 		"packer-foobar-image",
 		"cc586e45-5156-4f71-b223-cf406b10dd1d",
-		[]ArtifactSnapshot{
+		[]scaleway.ArtifactSnapshot{
 			{
 				"cc586e45-5156-4f71-b223-cf406b10dd1c",
 				"packer-foobar-snapshot",
@@ -50,7 +52,8 @@ func TestArtifactString(t *testing.T) {
 		},
 		"ams1",
 		nil,
-		generatedData}
+		generatedData,
+	}
 	expected := "An image was created: 'packer-foobar-image' (ID: cc586e45-5156-4f71-b223-cf406b10dd1d) in zone 'ams1' based on snapshots [(packer-foobar-snapshot: cc586e45-5156-4f71-b223-cf406b10dd1c) (packer-foobar-snapshot2: cc586e45-5156-4f71-b223-cf406b10dd1e)]"
 
 	if a.String() != expected {
@@ -60,7 +63,7 @@ func TestArtifactString(t *testing.T) {
 
 func TestArtifactState_StateData(t *testing.T) {
 	expectedData := "this is the data"
-	artifact := &Artifact{
+	artifact := &scaleway.Artifact{
 		StateData: map[string]interface{}{"state_data": expectedData},
 	}
 
@@ -77,7 +80,7 @@ func TestArtifactState_StateData(t *testing.T) {
 	}
 
 	// Nil StateData should not fail and should return nil
-	artifact = &Artifact{}
+	artifact = &scaleway.Artifact{}
 	result = artifact.State("key")
 	if result != nil {
 		t.Fatalf("Bad: State should be nil for nil StateData")

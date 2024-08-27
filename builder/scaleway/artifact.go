@@ -22,27 +22,27 @@ func (snap ArtifactSnapshot) String() string {
 
 type Artifact struct {
 	// The name of the image
-	imageName string
+	ImageName string
 
 	// The ID of the image
-	imageID string
+	ImageID string
 
 	// Snapshots used by the generated image
-	snapshots []ArtifactSnapshot
+	Snapshots []ArtifactSnapshot
 
 	// The name of the zone
-	zoneName string
+	ZoneName string
 
-	// The client for making API calls
-	client *scw.Client
+	// The Client for making API calls
+	Client *scw.Client
 
 	// StateData should store data such as GeneratedData
 	// to be shared with post-processors
 	StateData map[string]interface{}
 }
 
-func (*Artifact) BuilderId() string {
-	return BuilderId
+func (*Artifact) BuilderId() string { //nolint:revive,stylecheck
+	return BuilderID
 }
 
 func (*Artifact) Files() []string {
@@ -50,21 +50,21 @@ func (*Artifact) Files() []string {
 	return nil
 }
 
-func (a *Artifact) Id() string {
-	return fmt.Sprintf("%s:%s", a.zoneName, a.imageID)
+func (a *Artifact) Id() string { //nolint:revive,stylecheck
+	return fmt.Sprintf("%s:%s", a.ZoneName, a.ImageID)
 }
 
 func (a *Artifact) String() string {
 	return fmt.Sprintf("An image was created: '%v' (ID: %v) in zone '%v' based on snapshots %v",
-		a.imageName, a.imageID, a.zoneName, a.snapshots)
+		a.ImageName, a.ImageID, a.ZoneName, a.Snapshots)
 }
 
 func (a *Artifact) State(name string) interface{} {
 	if name == registryimage.ArtifactStateURI {
 		img, err := registryimage.FromArtifact(a,
-			registryimage.WithID(a.imageID),
+			registryimage.WithID(a.ImageID),
 			registryimage.WithProvider("scaleway"),
-			registryimage.WithRegion(a.zoneName),
+			registryimage.WithRegion(a.ZoneName),
 		)
 		if err != nil {
 			log.Printf("error when creating hcp registry image %v", err)
@@ -76,18 +76,18 @@ func (a *Artifact) State(name string) interface{} {
 }
 
 func (a *Artifact) Destroy() error {
-	instanceAPI := instance.NewAPI(a.client)
+	instanceAPI := instance.NewAPI(a.Client)
 
-	log.Printf("Destroying image: %s (%s)", a.imageID, a.imageName)
+	log.Printf("Destroying image: %s (%s)", a.ImageID, a.ImageName)
 	err := instanceAPI.DeleteImage(&instance.DeleteImageRequest{
-		ImageID: a.imageID,
+		ImageID: a.ImageID,
 	})
 	if err != nil {
 		return err
 	}
 
-	log.Printf("Destroying snapshots: %v", a.snapshots)
-	for _, snapshot := range a.snapshots {
+	log.Printf("Destroying snapshots: %v", a.Snapshots)
+	for _, snapshot := range a.Snapshots {
 		err = instanceAPI.DeleteSnapshot(&instance.DeleteSnapshotRequest{
 			SnapshotID: snapshot.ID,
 		})

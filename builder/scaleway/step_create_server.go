@@ -3,6 +3,7 @@ package scaleway
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"strings"
@@ -31,7 +32,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	}
 
 	if c.Comm.SSHPublicKey != nil {
-		tags = []string{fmt.Sprintf("AUTHORIZED_KEY=%s", strings.Replace(strings.TrimSpace(string(c.Comm.SSHPublicKey)), " ", "_", -1))}
+		tags = []string{"AUTHORIZED_KEY=" + strings.ReplaceAll(strings.TrimSpace(string(c.Comm.SSHPublicKey)), " ", "_")}
 	}
 
 	bootType := instance.BootType(c.BootType)
@@ -110,7 +111,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	}
 
 	if server.State != instance.ServerStateRunning {
-		err := fmt.Errorf("servert is in error state")
+		err := errors.New("servert is in error state")
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt

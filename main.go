@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/hashicorp/packer-plugin-sdk/plugin"
-
 	"github.com/scaleway/packer-plugin-scaleway/builder/scaleway"
 	"github.com/scaleway/packer-plugin-scaleway/version"
 )

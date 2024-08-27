@@ -1,4 +1,4 @@
-package scaleway
+package scaleway_test
 
 import (
 	"bytes"
@@ -12,6 +12,7 @@ import (
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
+	"github.com/scaleway/packer-plugin-scaleway/builder/scaleway"
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
@@ -23,6 +24,7 @@ import (
 //  3. Return a state (containing the client) ready to be passed to the step.Run() method.
 //  4. Return a teardown function meant to be deferred from the test.
 func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multistep.BasicStateBag, func()) {
+	t.Helper()
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		enc := json.NewEncoder(w)
@@ -31,7 +33,7 @@ func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multis
 			var imgs instance.ListImagesResponse
 			for _, name := range fakeImgNames {
 				imgs.Images = append(imgs.Images, &instance.Image{
-					ID:   strconv.Itoa(rand.Int()),
+					ID:   strconv.Itoa(rand.Int()), //nolint:gosec
 					Name: name,
 					Zone: "fr-par-1",
 				})
@@ -44,7 +46,7 @@ func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multis
 			var snaps instance.ListSnapshotsResponse
 			for _, name := range fakeSnapNames {
 				snaps.Snapshots = append(snaps.Snapshots, &instance.Snapshot{
-					ID:   strconv.Itoa(rand.Int()),
+					ID:   strconv.Itoa(rand.Int()), //nolint:gosec
 					Name: name,
 					Zone: "fr-par-1",
 				})
@@ -87,53 +89,58 @@ func TestStepPreValidate(t *testing.T) {
 		name          string
 		fakeImgNames  []string
 		fakeSnapNames []string
-		step          stepPreValidate
+		step          scaleway.StepPreValidate
 		wantAction    multistep.StepAction
 	}{
-		{"happy path: both image name and snapshot name are new",
+		{
+			"happy path: both image name and snapshot name are new",
 			[]string{"image-old"},
 			[]string{"snapshot-old"},
-			stepPreValidate{
+			scaleway.StepPreValidate{
 				Force:        false,
 				ImageName:    "image-new",
 				SnapshotName: "snapshot-new",
 			},
 			multistep.ActionContinue,
 		},
-		{"want failure: old image name",
+		{
+			"want failure: old image name",
 			[]string{"image-old"},
 			[]string{"snapshot-old"},
-			stepPreValidate{
+			scaleway.StepPreValidate{
 				Force:        false,
 				ImageName:    "image-old",
 				SnapshotName: "snapshot-new",
 			},
 			multistep.ActionHalt,
 		},
-		{"want failure: old snapshot name",
+		{
+			"want failure: old snapshot name",
 			[]string{"image-old"},
 			[]string{"snapshot-old"},
-			stepPreValidate{
+			scaleway.StepPreValidate{
 				Force:        false,
 				ImageName:    "image-new",
 				SnapshotName: "snapshot-old",
 			},
 			multistep.ActionHalt,
 		},
-		{"old image name but force flag",
+		{
+			"old image name but force flag",
 			[]string{"image-old"},
 			[]string{"snapshot-old"},
-			stepPreValidate{
+			scaleway.StepPreValidate{
 				Force:        true,
 				ImageName:    "image-old",
 				SnapshotName: "snapshot-new",
 			},
 			multistep.ActionContinue,
 		},
-		{"old snapshot name but force flag",
+		{
+			"old snapshot name but force flag",
 			[]string{"image-old"},
 			[]string{"snapshot-old"},
-			stepPreValidate{
+			scaleway.StepPreValidate{
 				Force:        true,
 				ImageName:    "image-new",
 				SnapshotName: "snapshot-old",
