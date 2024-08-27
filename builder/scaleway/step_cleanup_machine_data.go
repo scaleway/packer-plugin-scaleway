@@ -39,14 +39,14 @@ func (s *stepCleanupMachineData) Run(ctx context.Context, state multistep.StateB
 	ui.Say("Trying to remove machine-related data...")
 
 	// Remove the machine-id file under /etc
-	cmd.Command = fmt.Sprintf("sudo truncate -s 0 %s", sysdID)
+	cmd.Command = "sudo truncate -s 0 " + sysdID
 	if err := cmd.RunWithUi(ctx, comm, ui); err != nil {
 		log.Printf("Error cleaning up %s: %s", sysdID, err)
 	}
 
 	// Remove the machine-id file under /var/lib/dbus
 	cmd = new(packersdk.RemoteCmd)
-	cmd.Command = fmt.Sprintf("sudo truncate -s 0 %s", dbusID)
+	cmd.Command = "sudo truncate -s 0 " + dbusID
 	if err := cmd.RunWithUi(ctx, comm, ui); err != nil {
 		log.Printf("Error cleaning up %s: %s", dbusID, err)
 	}

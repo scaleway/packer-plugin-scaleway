@@ -2,6 +2,7 @@ package scaleway
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
@@ -39,7 +40,7 @@ func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) mult
 	}
 
 	if instanceResp.PublicIP == nil {
-		err := fmt.Errorf("server does not have a public IP")
+		err := errors.New("server does not have a public IP")
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt

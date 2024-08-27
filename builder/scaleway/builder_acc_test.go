@@ -1,4 +1,4 @@
-package scaleway
+package scaleway_test
 
 import (
 	"fmt"
@@ -29,6 +29,7 @@ func TestAccScalewayBuilder(t *testing.T) {
 }
 
 func testAccPreCheck(t *testing.T) bool {
+	t.Helper()
 	if os.Getenv(acctest.TestEnvVar) == "" {
 		t.Skipf("Acceptance tests skipped unless env '%s' set",
 			acctest.TestEnvVar)

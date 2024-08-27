@@ -12,13 +12,13 @@ import (
 
 // StepPreValidate provides an opportunity to pre-validate any configuration for
 // the build before actually doing any time-consuming work
-type stepPreValidate struct {
+type StepPreValidate struct {
 	Force        bool
 	ImageName    string
 	SnapshotName string
 }
 
-func (s *stepPreValidate) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
+func (s *StepPreValidate) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
 	ui := state.Get("ui").(packersdk.Ui)
 
 	if s.Force {
@@ -26,7 +26,7 @@ func (s *stepPreValidate) Run(ctx context.Context, state multistep.StateBag) mul
 		return multistep.ActionContinue
 	}
 
-	ui.Say(fmt.Sprintf("Prevalidating image name: %s", s.ImageName))
+	ui.Say("Pre-validating image name: " + s.ImageName)
 
 	instanceAPI := instance.NewAPI(state.Get("client").(*scw.Client))
 	images, err := instanceAPI.ListImages(
@@ -49,7 +49,7 @@ func (s *stepPreValidate) Run(ctx context.Context, state multistep.StateBag) mul
 		}
 	}
 
-	ui.Say(fmt.Sprintf("Prevalidating snapshot name: %s", s.SnapshotName))
+	ui.Say("Pre-validating snapshot name: " + s.SnapshotName)
 
 	snapshots, err := instanceAPI.ListSnapshots(
 		&instance.ListSnapshotsRequest{Name: &s.SnapshotName},
@@ -69,12 +69,11 @@ func (s *stepPreValidate) Run(ctx context.Context, state multistep.StateBag) mul
 			ui.Error(err.Error())
 			return multistep.ActionHalt
 		}
-
 	}
 
 	return multistep.ActionContinue
 }
 
-func (s *stepPreValidate) Cleanup(_ multistep.StateBag) {
+func (s *StepPreValidate) Cleanup(_ multistep.StateBag) {
 	// no cleanup
 }

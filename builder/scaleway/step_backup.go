@@ -58,7 +58,7 @@ func (s *stepBackup) Run(ctx context.Context, state multistep.StateBag) multiste
 
 	// Apply tags to image, volumes and snapshots
 	if len(c.Tags) != 0 {
-		err = applyTags(instanceAPI, scw.Zone(c.Zone), imageID, server.Volumes, snapshots, c.Tags, ctx)
+		err = applyTags(ctx, instanceAPI, scw.Zone(c.Zone), imageID, server.Volumes, snapshots, c.Tags)
 		if err != nil {
 			state.Put("error", err)
 			ui.Error(err.Error())
@@ -117,7 +117,7 @@ func imageIDFromBackupResult(hrefResult string) (string, error) {
 	return imageID, nil
 }
 
-func applyTags(instanceAPI *instance.API, zone scw.Zone, imageID string, volumes map[string]*instance.VolumeServer, snapshots []ArtifactSnapshot, tags []string, ctx context.Context) error {
+func applyTags(ctx context.Context, instanceAPI *instance.API, zone scw.Zone, imageID string, volumes map[string]*instance.VolumeServer, snapshots []ArtifactSnapshot, tags []string) error {
 	if _, err := instanceAPI.UpdateImage(&instance.UpdateImageRequest{
 		ImageID: imageID,
 		Zone:    zone,

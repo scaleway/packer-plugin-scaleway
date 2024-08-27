@@ -18,20 +18,20 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
-// BuilderId is the unique id for the builder
-const BuilderId = "hashicorp.scaleway"
+// BuilderID is the unique id for the builder
+const BuilderID = "hashicorp.scaleway"
 
 var acceptanceTests = flag.Bool("run-acceptance-tests", os.Getenv("PACKER_ACC") == "1", "Run acceptance tests")
 
 type Builder struct {
-	config Config
+	Config Config
 	runner multistep.Runner
 }
 
-func (b *Builder) ConfigSpec() hcldec.ObjectSpec { return b.config.FlatMapstructure().HCL2Spec() }
+func (b *Builder) ConfigSpec() hcldec.ObjectSpec { return b.Config.FlatMapstructure().HCL2Spec() }
 
 func (b *Builder) Prepare(raws ...interface{}) ([]string, []string, error) {
-	warnings, errs := b.config.Prepare(raws...)
+	warnings, errs := b.Config.Prepare(raws...)
 	if errs != nil {
 		return nil, warnings, errs
 	}
@@ -39,22 +39,22 @@ func (b *Builder) Prepare(raws ...interface{}) ([]string, []string, error) {
 	return nil, warnings, nil
 }
 
-func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook) (packersdk.Artifact, error) {
-	scwZone, err := scw.ParseZone(b.config.Zone)
+func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook) (packersdk.Artifact, error) { //nolint:ireturn
+	scwZone, err := scw.ParseZone(b.Config.Zone)
 	if err != nil {
 		ui.Error(err.Error())
 		return nil, err
 	}
 
 	clientOpts := []scw.ClientOption{
-		scw.WithDefaultProjectID(b.config.ProjectID),
-		scw.WithAuth(b.config.AccessKey, b.config.SecretKey),
+		scw.WithDefaultProjectID(b.Config.ProjectID),
+		scw.WithAuth(b.Config.AccessKey, b.Config.SecretKey),
 		scw.WithDefaultZone(scwZone),
-		scw.WithUserAgent(b.config.UserAgent),
+		scw.WithUserAgent(b.Config.UserAgent),
 	}
 
-	if b.config.APIURL != "" {
-		clientOpts = append(clientOpts, scw.WithAPIURL(b.config.APIURL))
+	if b.Config.APIURL != "" {
+		clientOpts = append(clientOpts, scw.WithAPIURL(b.Config.APIURL))
 	}
 
 	client, err := scw.NewClient(clientOpts...)
@@ -64,32 +64,32 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 	}
 
 	state := new(multistep.BasicStateBag)
-	state.Put("config", &b.config)
+	state.Put("config", &b.Config)
 	state.Put("client", client)
 	state.Put("hook", hook)
 	state.Put("ui", ui)
 
 	steps := []multistep.Step{
-		&stepPreValidate{
-			Force:        b.config.PackerForce,
-			ImageName:    b.config.ImageName,
-			SnapshotName: b.config.SnapshotName,
+		&StepPreValidate{
+			Force:        b.Config.PackerForce,
+			ImageName:    b.Config.ImageName,
+			SnapshotName: b.Config.SnapshotName,
 		},
 		&stepCreateSSHKey{
-			Debug:        b.config.PackerDebug,
-			DebugKeyPath: fmt.Sprintf("scw_%s.pem", b.config.PackerBuildName),
+			Debug:        b.Config.PackerDebug,
+			DebugKeyPath: fmt.Sprintf("scw_%s.pem", b.Config.PackerBuildName),
 		},
 		new(stepRemoveVolume),
 		new(stepCreateServer),
 		new(stepServerInfo),
 		&communicator.StepConnect{
-			Config:    &b.config.Comm,
-			Host:      communicator.CommHost(b.config.Comm.Host(), "server_ip"),
-			SSHConfig: b.config.Comm.SSHConfigFunc(),
+			Config:    &b.Config.Comm,
+			Host:      communicator.CommHost(b.Config.Comm.Host(), "server_ip"),
+			SSHConfig: b.Config.Comm.SSHConfigFunc(),
 		},
 		new(commonsteps.StepProvision),
 		&commonsteps.StepCleanupTempKeys{
-			Comm: &b.config.Comm,
+			Comm: &b.Config.Comm,
 		},
 		new(stepWaitUserData),
 		new(stepCleanupMachineData),
@@ -101,7 +101,7 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		steps = append(steps, new(stepSweep))
 	}
 
-	b.runner = commonsteps.NewRunnerWithPauseFn(steps, b.config.PackerConfig, ui, state)
+	b.runner = commonsteps.NewRunnerWithPauseFn(steps, b.Config.PackerConfig, ui, state)
 	b.runner.Run(ctx, state)
 
 	if rawErr, ok := state.GetOk("error"); ok {
@@ -110,23 +110,23 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 
 	// If we were interrupted or cancelled, then just exit.
 	if _, ok := state.GetOk(multistep.StateCancelled); ok {
-		return nil, errors.New("Build was cancelled.")
+		return nil, errors.New("build was cancelled")
 	}
 
 	if _, ok := state.GetOk(multistep.StateHalted); ok {
-		return nil, errors.New("Build was halted.")
+		return nil, errors.New("build was halted")
 	}
 
 	if _, ok := state.GetOk("snapshots"); !ok {
-		return nil, errors.New("Cannot find snapshot_name in state.")
+		return nil, errors.New("cannot find snapshot_name in state")
 	}
 
 	artifact := &Artifact{
-		imageName: state.Get("image_name").(string),
-		imageID:   state.Get("image_id").(string),
-		snapshots: state.Get("snapshots").([]ArtifactSnapshot),
-		zoneName:  b.config.Zone,
-		client:    client,
+		ImageName: state.Get("image_name").(string),
+		ImageID:   state.Get("image_id").(string),
+		Snapshots: state.Get("snapshots").([]ArtifactSnapshot),
+		ZoneName:  b.Config.Zone,
+		Client:    client,
 		StateData: map[string]interface{}{"generated_data": state.Get("generated_data")},
 	}
 
