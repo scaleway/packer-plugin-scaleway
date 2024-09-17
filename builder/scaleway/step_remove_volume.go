@@ -18,7 +18,7 @@ func (s *stepRemoveVolume) Run(_ context.Context, _ multistep.StateBag) multiste
 }
 
 func (s *stepRemoveVolume) Cleanup(state multistep.StateBag) {
-	if _, ok := state.GetOk("snapshot_name"); !ok {
+	if _, ok := state.GetOk("snapshots"); !ok {
 		// volume will be detached from server only after snapshotting ... so we don't
 		// need to remove volume before snapshot step.
 		return
