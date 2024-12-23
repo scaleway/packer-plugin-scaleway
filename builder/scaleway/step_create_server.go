@@ -62,9 +62,10 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		if createServerReq.Volumes == nil {
 			createServerReq.Volumes = make(map[string]*instance.VolumeServerTemplate)
 		}
-		for i, blockVolume := range c.BlockVolumes {
+		createdVolumes := state.Get(StateKeyCreatedVolumes).([]*instance.VolumeServerTemplate)
+		for i, blockVolume := range createdVolumes {
 			volumeIndex := strconv.FormatInt(int64(i+1), 10)
-			createServerReq.Volumes[volumeIndex] = blockVolume.VolumeTemplate()
+			createServerReq.Volumes[volumeIndex] = blockVolume
 		}
 	}
 

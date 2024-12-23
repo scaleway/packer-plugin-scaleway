@@ -12,7 +12,9 @@ import (
 func prepareBlockVolumes(volumes []ConfigBlockVolume) *packersdk.MultiError {
 	var errs *packersdk.MultiError
 
-	for i, volume := range volumes {
+	for i := range volumes {
+		volume := &volumes[i]
+
 		if volume.Name == "" {
 			volume.Name = fmt.Sprintf("packer-%s", uuid.TimeOrderedUUID())
 		}
