@@ -37,6 +37,8 @@ type ConfigBlockVolume struct {
 	SnapshotID string `mapstructure:"snapshot_id"`
 	// Size of the newly created volume
 	Size uint64 `mapstructure:"size"`
+	// IOPS is the number of requested iops for the server's volume. This will not impact created snapshot.
+	IOPS *uint32 `mapstructure:"iops"`
 }
 
 type Config struct {

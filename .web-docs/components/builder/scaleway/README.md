@@ -142,6 +142,8 @@ can also be supplied to override the typical auto-generated key:
 
 - `size` (uint64) - Size of the newly created volume
 
+- `iops` (\*uint32) - IOPS is the number of requested iops for the server's volume. This will not impact created snapshot.
+
 <!-- End of code generated from the comments of the ConfigBlockVolume struct in builder/scaleway/config.go; -->
 
 

@@ -24,17 +24,20 @@ func (s *stepCreateVolume) Run(ctx context.Context, state multistep.StateBag) mu
 
 	volumeTemplates := []*instance.VolumeServerTemplate(nil)
 	for _, requestedVolume := range c.BlockVolumes {
-		volume, err := blockAPI.CreateVolume(&block.CreateVolumeRequest{
+		req := &block.CreateVolumeRequest{
 			Zone:      scw.Zone(c.Zone),
 			Name:      requestedVolume.Name,
-			PerfIops:  scw.Uint32Ptr(5000), // TODO: configuration
+			PerfIops:  requestedVolume.IOPS,
 			ProjectID: c.ProjectID,
-			FromEmpty: &block.CreateVolumeRequestFromEmpty{
+		}
+		if requestedVolume.SnapshotID != "" {
+			req.FromSnapshot = &block.CreateVolumeRequestFromSnapshot{}
+		} else {
+			req.FromEmpty = &block.CreateVolumeRequestFromEmpty{
 				Size: scw.Size(requestedVolume.Size),
-			},
-			FromSnapshot: nil, // TODO
-			Tags:         nil, // TODO
-		}, scw.WithContext(ctx))
+			}
+		}
+		volume, err := blockAPI.CreateVolume(req, scw.WithContext(ctx))
 		if err != nil {
 			state.Put("error", err)
 			ui.Error(err.Error())
