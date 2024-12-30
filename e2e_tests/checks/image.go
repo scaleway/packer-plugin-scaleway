@@ -23,7 +23,7 @@ type ImageCheck struct {
 	imageName string
 
 	rootVolumeType *string
-	sizeInGB       *uint64
+	size           *scw.Size
 }
 
 func (c *ImageCheck) RootVolumeType(rootVolumeType string) *ImageCheck {
@@ -33,7 +33,7 @@ func (c *ImageCheck) RootVolumeType(rootVolumeType string) *ImageCheck {
 }
 
 func (c *ImageCheck) SizeInGb(size uint64) *ImageCheck {
-	c.sizeInGB = &size
+	c.size = scw.SizePtr(scw.Size(size) * scw.GB)
 
 	return c
 }
@@ -43,8 +43,9 @@ func (c *ImageCheck) Check(ctx context.Context) error {
 	api := instance.NewAPI(testCtx.ScwClient)
 
 	resp, err := api.ListImages(&instance.ListImagesRequest{
-		Name: &c.imageName,
-		Zone: c.zone,
+		Name:    &c.imageName,
+		Zone:    c.zone,
+		Project: &testCtx.ProjectID,
 	}, scw.WithAllPages(), scw.WithContext(ctx))
 	if err != nil {
 		return fmt.Errorf("failed to list images: %w", err)
@@ -64,16 +65,12 @@ func (c *ImageCheck) Check(ctx context.Context) error {
 		return fmt.Errorf("image name %s does not match expected %s", image.Name, c.imageName)
 	}
 
-	if c.rootVolumeType != nil {
-		if string(image.RootVolume.VolumeType) != *c.rootVolumeType {
-			return fmt.Errorf("image root volume type %s does not match expected %s", image.RootVolume.VolumeType, *c.rootVolumeType)
-		}
+	if c.rootVolumeType != nil && string(image.RootVolume.VolumeType) != *c.rootVolumeType {
+		return fmt.Errorf("image root volume type %s does not match expected %s", image.RootVolume.VolumeType, *c.rootVolumeType)
 	}
 
-	if c.sizeInGB != nil {
-		if image.RootVolume.Size != scw.GB*scw.Size(*c.sizeInGB) {
-			return fmt.Errorf("image size %d does not match expected %dGB", uint64(image.RootVolume.Size), *c.sizeInGB)
-		}
+	if c.size != nil && image.RootVolume.Size != *c.size {
+		return fmt.Errorf("image size %d does not match expected %d", image.RootVolume.Size, *c.size)
 	}
 
 	return nil

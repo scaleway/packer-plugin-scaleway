@@ -9,8 +9,8 @@ source "scaleway" "basic" {
   image = "ubuntu_jammy"
   image_name = "packer-e2e-complete"
   ssh_username = "root"
-  remove_volume = true
 
+  remove_volume = false
   image_size_in_gb = 42
   snapshot_name = "packer-e2e-complete-snapshot"
 }
