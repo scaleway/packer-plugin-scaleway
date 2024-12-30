@@ -2,6 +2,7 @@ package tester
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -13,6 +14,7 @@ const PackerCtxKey = "PACKER_CTX_KEY"
 
 type PackerCtx struct {
 	ScwClient *scw.Client
+	ProjectID string
 }
 
 func NewContext(ctx context.Context) (context.Context, error) {
@@ -30,8 +32,14 @@ func NewContext(ctx context.Context) (context.Context, error) {
 	if err != nil {
 		return nil, err
 	}
+	projectID, exists := client.GetDefaultProjectID()
+	if !exists {
+		return nil, errors.New("error getting default project ID")
+	}
+
 	return context.WithValue(ctx, PackerCtxKey, &PackerCtx{
-		client,
+		ScwClient: client,
+		ProjectID: projectID,
 	}), nil
 }
 

@@ -52,3 +52,57 @@ func NoVolume(zone scw.Zone) *NoVolumesCheck {
 		zone: zone,
 	}
 }
+
+type VolumeCheck struct {
+	zone       scw.Zone
+	volumeName string
+
+	size *scw.Size
+}
+
+func (c *VolumeCheck) SizeInGB(size uint64) *VolumeCheck {
+	c.size = scw.SizePtr(scw.Size(size) * scw.GB)
+
+	return c
+}
+
+func (c *VolumeCheck) Check(ctx context.Context) error {
+	testCtx := tester.ExtractCtx(ctx)
+	api := instance.NewAPI(testCtx.ScwClient)
+
+	resp, err := api.ListVolumes(&instance.ListVolumesRequest{
+		Zone:    c.zone,
+		Name:    &c.volumeName,
+		Project: &testCtx.ProjectID,
+	})
+	if err != nil {
+		return fmt.Errorf("failed to list instance volumes: %w", err)
+	}
+
+	if len(resp.Volumes) == 0 {
+		return fmt.Errorf("volume %s not found, no volumes found", c.volumeName)
+	}
+
+	if len(resp.Volumes) > 1 {
+		return fmt.Errorf("multiple volumes found with name %s", c.volumeName)
+	}
+
+	volume := resp.Volumes[0]
+
+	if volume.Name != c.volumeName {
+		return fmt.Errorf("volume name %s does not match expected volume name %s", volume.Name, c.volumeName)
+	}
+
+	if c.size != nil && volume.Size != *c.size {
+		return fmt.Errorf("volume size %d does not match expected size %d", volume.Size, *c.size)
+	}
+
+	return nil
+}
+
+func Volume(zone scw.Zone, name string) *VolumeCheck {
+	return &VolumeCheck{
+		zone:       zone,
+		volumeName: name,
+	}
+}

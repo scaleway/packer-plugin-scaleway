@@ -15,6 +15,9 @@ func main() {
 		checks.Image(zone, "packer-e2e-complete").
 			RootVolumeType("unified").
 			SizeInGb(42),
-		checks.NoVolume(zone),
+		checks.Snapshot(zone, "packer-e2e-complete-snapshot").
+			SizeInGB(42),
+		checks.Volume(zone, "Ubuntu 22.04 Jammy Jellyfish").
+			SizeInGB(42),
 	)
 }
