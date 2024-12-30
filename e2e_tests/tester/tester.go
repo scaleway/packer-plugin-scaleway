@@ -30,7 +30,9 @@ func NewContext(ctx context.Context) (context.Context, error) {
 	if err != nil {
 		return nil, err
 	}
-	return context.WithValue(ctx, PackerCtxKey, &PackerCtx{client}), nil
+	return context.WithValue(ctx, PackerCtxKey, &PackerCtx{
+		client,
+	}), nil
 }
 
 func ExtractCtx(ctx context.Context) *PackerCtx {

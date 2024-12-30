@@ -23,10 +23,17 @@ type ImageCheck struct {
 	imageName string
 
 	rootVolumeType *string
+	sizeInGB       *uint64
 }
 
 func (c *ImageCheck) RootVolumeType(rootVolumeType string) *ImageCheck {
 	c.rootVolumeType = &rootVolumeType
+
+	return c
+}
+
+func (c *ImageCheck) SizeInGb(size uint64) *ImageCheck {
+	c.sizeInGB = &size
 
 	return c
 }
@@ -44,7 +51,7 @@ func (c *ImageCheck) Check(ctx context.Context) error {
 	}
 
 	if len(resp.Images) == 0 {
-		return fmt.Errorf("image %s not found", c.imageName)
+		return fmt.Errorf("image %s not found, no images found", c.imageName)
 	}
 
 	if len(resp.Images) > 1 {
@@ -60,6 +67,12 @@ func (c *ImageCheck) Check(ctx context.Context) error {
 	if c.rootVolumeType != nil {
 		if string(image.RootVolume.VolumeType) != *c.rootVolumeType {
 			return fmt.Errorf("image root volume type %s does not match expected %s", image.RootVolume.VolumeType, *c.rootVolumeType)
+		}
+	}
+
+	if c.sizeInGB != nil {
+		if image.RootVolume.Size != scw.GB*scw.Size(*c.sizeInGB) {
+			return fmt.Errorf("image size %d does not match expected %dGB", uint64(image.RootVolume.Size), *c.sizeInGB)
 		}
 	}
 
