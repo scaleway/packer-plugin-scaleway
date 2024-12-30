@@ -9,3 +9,4 @@ test-simple: build-binary link-binary
 	go run ./simple/test.go
 
 test:
+	./test.sh
