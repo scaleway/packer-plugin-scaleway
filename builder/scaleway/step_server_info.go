@@ -47,8 +47,14 @@ func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) mult
 	}
 
 	state.Put("server_ip", instanceResp.PublicIP.Address.String())
-	state.Put("root_volume_id", instanceResp.Volumes["0"].ID)
 	state.Put("server", instanceResp)
+
+	volumes := []*instance.VolumeServer(nil)
+	for _, volume := range instanceResp.Volumes {
+		volumes = append(volumes, volume)
+	}
+
+	state.Put("volumes", volumes)
 
 	return multistep.ActionContinue
 }

@@ -88,7 +88,10 @@ can also be supplied to override the typical auto-generated key:
 - `boottype` (string) - The type of boot, can be either local or
   bootscript, Default bootscript
 
-- `remove_volume` (bool) - Remove Volume
+- `remove_volume` (bool) - RemoveVolume remove the temporary volumes created before running the server
+
+- `block_volume` ([]ConfigBlockVolume) - BlockVolumes define block volumes attached to the server alongside the default volume
+  See the [BlockVolumes](#block-volumes-configuration) documentation for fields.
 
 - `cleanup_machine_related_data` (string) - This value allows the user to remove information
   that is particular to the instance used to build the image
@@ -127,6 +130,21 @@ can also be supplied to override the typical auto-generated key:
   Deprecated: use Zone instead
 
 <!-- End of code generated from the comments of the Config struct in builder/scaleway/config.go; -->
+
+
+### Block volumes configuration
+
+<!-- Code generated from the comments of the ConfigBlockVolume struct in builder/scaleway/config.go; DO NOT EDIT MANUALLY -->
+
+- `name` (string) - The name of the created volume
+
+- `snapshot_id` (string) - ID of the snapshot to create the volume from
+
+- `size` (uint64) - Size of the newly created volume
+
+- `iops` (\*uint32) - IOPS is the number of requested iops for the server's volume. This will not impact created snapshot.
+
+<!-- End of code generated from the comments of the ConfigBlockVolume struct in builder/scaleway/config.go; -->
 
 
 ## Basic Example
