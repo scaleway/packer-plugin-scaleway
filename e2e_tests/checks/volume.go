@@ -33,7 +33,8 @@ func (c *NoVolumesCheck) Check(ctx context.Context) error {
 	}
 
 	blockResp, err := blockAPI.ListVolumes(&block.ListVolumesRequest{
-		Zone: c.zone,
+		Zone:      c.zone,
+		ProjectID: &testCtx.ProjectID,
 	}, scw.WithContext(ctx))
 	if err != nil {
 		return fmt.Errorf("failed to list block volumes: %w", err)

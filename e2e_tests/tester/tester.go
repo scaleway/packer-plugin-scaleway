@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"testing"
 
 	"github.com/scaleway/scaleway-sdk-go/scw"
+	"github.com/stretchr/testify/require"
 )
 
 const PackerCtxKey = "PACKER_CTX_KEY"
@@ -63,4 +65,23 @@ func Run(ctx context.Context, packerChecks ...PackerCheck) {
 	}
 
 	os.Exit(0)
+}
+
+type TestConfig struct {
+	Checks []PackerCheck
+}
+
+func Test(t *testing.T, config *TestConfig) {
+	ctx := context.Background()
+	ctx, err := NewContext(ctx)
+	require.Nil(t, err)
+
+	for i, check := range config.Checks {
+		t.Logf("Running check %d/%d", i+1, len(config.Checks))
+		err := check.Check(ctx)
+		if err != nil {
+			t.Fail()
+			t.Errorf("Packer check %d failed: %s", i+1, err.Error())
+		}
+	}
 }
