@@ -3,8 +3,6 @@ package tester
 import (
 	"context"
 	"errors"
-	"fmt"
-	"log"
 	"os"
 	"testing"
 
@@ -49,25 +47,8 @@ func ExtractCtx(ctx context.Context) *PackerCtx {
 	return ctx.Value(PackerCtxKey).(*PackerCtx)
 }
 
-func Run(ctx context.Context, packerChecks ...PackerCheck) {
-	log.Println("Running tests...")
-	ctx, err := NewContext(ctx)
-	if err != nil {
-		panic(err)
-	}
-
-	for i, check := range packerChecks {
-		log.Println("Running test", i)
-		err := check.Check(ctx)
-		if err != nil {
-			log.Fatalln(fmt.Sprintf("Packer check %d failed:", i), err)
-		}
-	}
-
-	os.Exit(0)
-}
-
 type TestConfig struct {
+	Config string
 	Checks []PackerCheck
 }
 
@@ -76,6 +57,14 @@ func Test(t *testing.T, config *TestConfig) {
 	ctx, err := NewContext(ctx)
 	require.Nil(t, err)
 
+	// Create TMP Dir
+	tmpDir, err := os.MkdirTemp(os.TempDir(), "packer_e2e_test")
+	require.Nil(t, err)
+	t.Logf("Created tmp dir: %s", tmpDir)
+
+	err = packerExec(tmpDir, config.Config)
+	require.Nil(t, err, "error executing packer command")
+	
 	for i, check := range config.Checks {
 		t.Logf("Running check %d/%d", i+1, len(config.Checks))
 		err := check.Check(ctx)
@@ -84,4 +73,7 @@ func Test(t *testing.T, config *TestConfig) {
 			t.Errorf("Packer check %d failed: %s", i+1, err.Error())
 		}
 	}
+
+	t.Logf("Deleting tmp dir: %s", tmpDir)
+	require.Nil(t, os.RemoveAll(tmpDir), "failed to remote tmp dir %s", tmpDir)
 }

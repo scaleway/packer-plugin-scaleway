@@ -17,13 +17,10 @@ TESTS=(
 
 TEST_RESULT=0
 
-for TEST in "${TESTS[@]}"; do
-  packer build ./$TEST/build_scaleway.pkr.hcl
-  go test ./$TEST/
-  test_status=$?
-  if [ $test_status -ge 1 ]; then
-    TEST_RESULT=1
-  fi
-done
+go test -c ./tests
+./tests.test
+TEST_RESULT=$?
+
+./clean.sh $SCW_DEFAULT_PROJECT_ID
 
 exit $TEST_RESULT
