@@ -3,6 +3,7 @@ package tester
 import (
 	"context"
 	"errors"
+	"net/http"
 	"os"
 	"testing"
 
@@ -12,12 +13,14 @@ import (
 
 const PackerCtxKey = "PACKER_CTX_KEY"
 
+var UpdateCassettes = os.Getenv("PACKER_UPDATE_CASSETTES") == "true"
+
 type PackerCtx struct {
 	ScwClient *scw.Client
 	ProjectID string
 }
 
-func NewContext(ctx context.Context) (context.Context, error) {
+func NewTestContext(ctx context.Context, httpClient *http.Client) (context.Context, error) {
 	cfg, err := scw.LoadConfig()
 	if err != nil {
 		return nil, err
@@ -28,7 +31,7 @@ func NewContext(ctx context.Context) (context.Context, error) {
 	}
 
 	profile := scw.MergeProfiles(activeProfile, scw.LoadEnvProfile())
-	client, err := scw.NewClient(scw.WithProfile(profile))
+	client, err := scw.NewClient(scw.WithProfile(profile), scw.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, err
 	}
@@ -53,18 +56,22 @@ type TestConfig struct {
 }
 
 func Test(t *testing.T, config *TestConfig) {
+	httpClient, cleanup, err := getHTTPRecoder(t, ".", UpdateCassettes)
+	require.NoError(t, err)
+	defer cleanup()
+
 	ctx := context.Background()
-	ctx, err := NewContext(ctx)
+	ctx, err = NewTestContext(ctx, httpClient)
 	require.Nil(t, err)
 
 	// Create TMP Dir
 	tmpDir, err := os.MkdirTemp(os.TempDir(), "packer_e2e_test")
-	require.Nil(t, err)
+	require.NoError(t, err)
 	t.Logf("Created tmp dir: %s", tmpDir)
 
 	err = packerExec(tmpDir, config.Config)
-	require.Nil(t, err, "error executing packer command")
-	
+	require.NoError(t, err, "error executing packer command")
+
 	for i, check := range config.Checks {
 		t.Logf("Running check %d/%d", i+1, len(config.Checks))
 		err := check.Check(ctx)
@@ -75,5 +82,5 @@ func Test(t *testing.T, config *TestConfig) {
 	}
 
 	t.Logf("Deleting tmp dir: %s", tmpDir)
-	require.Nil(t, os.RemoveAll(tmpDir), "failed to remote tmp dir %s", tmpDir)
+	require.NoError(t, os.RemoveAll(tmpDir), "failed to remote tmp dir %s", tmpDir)
 }

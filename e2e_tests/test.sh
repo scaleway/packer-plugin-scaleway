@@ -18,7 +18,7 @@ TESTS=(
 TEST_RESULT=0
 
 go test -c ./tests
-./tests.test
+./tests.test -test.v
 TEST_RESULT=$?
 
 ./clean.sh $SCW_DEFAULT_PROJECT_ID
