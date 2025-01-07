@@ -2,9 +2,9 @@ package checks
 
 import (
 	"context"
-	"e2e_tests/tester"
 	"fmt"
 
+	"github.com/scaleway/packer-plugin-scaleway/e2e_tests/tester"
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )

@@ -7,13 +7,12 @@ import (
 	"os"
 	"testing"
 
+	"github.com/scaleway/packer-plugin-scaleway/internal/vcr"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 	"github.com/stretchr/testify/require"
 )
 
 const PackerCtxKey = "PACKER_CTX_KEY"
-
-var UpdateCassettes = os.Getenv("PACKER_UPDATE_CASSETTES") == "true"
 
 type PackerCtx struct {
 	ScwClient *scw.Client
@@ -56,7 +55,7 @@ type TestConfig struct {
 }
 
 func Test(t *testing.T, config *TestConfig) {
-	httpClient, cleanup, err := getHTTPRecoder(t, ".", UpdateCassettes)
+	httpClient, cleanup, err := vcr.GetHTTPRecorder(vcr.GetTestFilePath(t, "."), vcr.UpdateCassettes)
 	require.NoError(t, err)
 	defer cleanup()
 

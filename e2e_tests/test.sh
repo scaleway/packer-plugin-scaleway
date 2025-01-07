@@ -17,6 +17,7 @@ TESTS=(
 
 TEST_RESULT=0
 
+rm ./tests.test
 go test -c ./tests
 ./tests.test -test.v
 TEST_RESULT=$?

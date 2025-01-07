@@ -1,4 +1,4 @@
-package tester
+package vcr
 
 import (
 	"fmt"
@@ -11,7 +11,6 @@ import (
 	"testing"
 
 	"github.com/scaleway/scaleway-sdk-go/strcase"
-	"github.com/stretchr/testify/require"
 	"gopkg.in/dnaeon/go-vcr.v4/pkg/cassette"
 	"gopkg.in/dnaeon/go-vcr.v4/pkg/recorder"
 )
@@ -21,6 +20,10 @@ var QueryMatcherIgnore = []string{
 	"project_id",
 	"project",
 }
+
+const UpdateCassettesEnvVariable = "PACKER_UPDATE_CASSETTES"
+
+var UpdateCassettes = os.Getenv(UpdateCassettesEnvVariable) == "true"
 
 // getTestFilePath returns a valid filename path based on the go test name and suffix. (Take care of non fs friendly char)
 func getTestFilePath(t *testing.T, pkgFolder string, suffix string) string {
@@ -39,6 +42,10 @@ func getTestFilePath(t *testing.T, pkgFolder string, suffix string) string {
 	fileName = strings.TrimPrefix(fileName, "test-")
 
 	return filepath.Join(pkgFolder, "testdata", fileName)
+}
+
+func GetTestFilePath(t *testing.T, pkgFolder string) string {
+	return getTestFilePath(t, pkgFolder, ".cassette")
 }
 
 // recorderAuthHook is a hook that will clean authorization tokens from cassette during record.
@@ -67,22 +74,19 @@ func requestMatcher(actualRequest *http.Request, cassetteRequest cassette.Reques
 		actualURL.String() == cassetteURL.String()
 }
 
-// getHTTPRecoder creates a new httpClient that records all HTTP requests in a cassette.
+// GetHTTPRecorder creates a new httpClient that records all HTTP requests in a cassette.
 // This cassette is then replayed whenever tests are executed again. This means that once the
 // requests are recorded in the cassette, no more real HTTP requests must be made to run the tests.
 //
 // It is important to add a `defer cleanup()` so the given cassette files are correctly
 // closed and saved after the requests.
-func getHTTPRecoder(t *testing.T, pkgFolder string, update bool) (client *http.Client, cleanup func(), err error) {
-	t.Helper()
+func GetHTTPRecorder(cassetteFilePath string, update bool) (client *http.Client, cleanup func(), err error) {
 	recorderMode := recorder.ModeReplayOnly
 	if update {
 		recorderMode = recorder.ModeRecordOnly
 	}
 
-	cassetteFilePath := getTestFilePath(t, pkgFolder, ".cassette")
 	_, errorCassette := os.Stat(cassetteFilePath + ".yaml")
-	t.Logf("using %s.yaml", cassetteFilePath)
 
 	// If in record mode we check that the cassette exists
 	if recorderMode == recorder.ModeReplayOnly && errorCassette != nil {
@@ -90,7 +94,7 @@ func getHTTPRecoder(t *testing.T, pkgFolder string, update bool) (client *http.C
 	}
 
 	// Setup recorder and scw client
-	r, err := recorder.New(getTestFilePath(t, pkgFolder, ".cassette"),
+	r, err := recorder.New(cassetteFilePath,
 		recorder.WithMode(recorderMode),
 		recorder.WithSkipRequestLatency(true),
 		// Add a filter which removes Authorization headers from all requests:
@@ -104,6 +108,6 @@ func getHTTPRecoder(t *testing.T, pkgFolder string, update bool) (client *http.C
 	}(r)
 
 	return &http.Client{Transport: r}, func() {
-		require.NoError(t, r.Stop()) // Make sure recorder is stopped once done with it
+		r.Stop() // Make sure recorder is stopped once done with it
 	}, nil
 }

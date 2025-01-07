@@ -1,10 +1,10 @@
 package tests_test
 
 import (
-	"e2e_tests/checks"
-	"e2e_tests/tester"
 	"testing"
 
+	"github.com/scaleway/packer-plugin-scaleway/e2e_tests/checks"
+	"github.com/scaleway/packer-plugin-scaleway/e2e_tests/tester"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
@@ -14,6 +14,7 @@ func TestSimple(t *testing.T) {
 	tester.Test(t, &tester.TestConfig{
 		Config: `
 source "scaleway" "basic" {
+  communicator = "none"
   commercial_type = "PRO2-XXS"
   zone = "fr-par-1"
   image = "ubuntu_jammy"
