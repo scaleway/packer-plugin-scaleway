@@ -29,13 +29,14 @@ func preparePackerEnv(currentEnv []string) []string {
 
 	env := make([]string, 0, len(currentEnv))
 	for _, envVariable := range currentEnv {
-		if strings.HasPrefix(envVariable, scw.ScwDefaultProjectIDEnv) {
+		switch {
+		case strings.HasPrefix(envVariable, scw.ScwDefaultProjectIDEnv):
 			hasProject = true
-		} else if strings.HasPrefix(envVariable, scw.ScwAccessKeyEnv) {
+		case strings.HasPrefix(envVariable, scw.ScwAccessKeyEnv):
 			hasAccessKey = true
-		} else if strings.HasPrefix(envVariable, scw.ScwSecretKeyEnv) {
+		case strings.HasPrefix(envVariable, scw.ScwSecretKeyEnv):
 			hasSecretKey = true
-		} else if strings.HasPrefix(envVariable, vcr.UpdateCassettesEnvVariable) {
+		case strings.HasPrefix(envVariable, vcr.UpdateCassettesEnvVariable):
 			hasCassettesConfigured = true
 		}
 
@@ -61,7 +62,7 @@ func packerExec(folder, packerConfig string) error {
 	// Create Packer file
 	packerFile := filepath.Join(folder, "build_scaleway.pkr.hcl")
 	packerFileContent := PackerFileHeader + packerConfig
-	err := os.WriteFile(packerFile, []byte(packerFileContent), 0644)
+	err := os.WriteFile(packerFile, []byte(packerFileContent), 0o600)
 	if err != nil {
 		return fmt.Errorf("failed to create packer file: %w", err)
 	}

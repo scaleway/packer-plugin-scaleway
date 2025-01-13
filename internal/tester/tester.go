@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const PackerCtxKey = "PACKER_CTX_KEY"
+type PackerCtxKey struct{}
 
 type PackerCtx struct {
 	ScwClient *scw.Client
@@ -49,14 +49,14 @@ func NewTestContext(ctx context.Context, httpClient *http.Client) (context.Conte
 		}
 	}
 
-	return context.WithValue(ctx, PackerCtxKey, &PackerCtx{
+	return context.WithValue(ctx, PackerCtxKey{}, &PackerCtx{
 		ScwClient: client,
 		ProjectID: projectID,
 	}), nil
 }
 
 func ExtractCtx(ctx context.Context) *PackerCtx {
-	return ctx.Value(PackerCtxKey).(*PackerCtx)
+	return ctx.Value(PackerCtxKey{}).(*PackerCtx)
 }
 
 type TestConfig struct {

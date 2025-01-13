@@ -46,6 +46,7 @@ func getTestFilePath(t *testing.T, pkgFolder string, suffix string) string {
 }
 
 func GetTestFilePath(t *testing.T, pkgFolder string) string {
+	t.Helper()
 	return getTestFilePath(t, pkgFolder, ".cassette")
 }
 
@@ -70,7 +71,7 @@ func stripRandomNumbers(s string) string {
 	return strings.Join(elems, "-")
 }
 
-func cleanUrlValues(values url.Values, u *url.URL) url.Values {
+func cleanURLValues(values url.Values) url.Values {
 	for _, query := range QueryMatcherIgnore {
 		values.Del(query)
 	}
@@ -88,8 +89,8 @@ func requestMatcher(actualRequest *http.Request, cassetteRequest cassette.Reques
 	actualURL := actualRequest.URL
 	cassetteQueryValues := cassetteURL.Query()
 	actualQueryValues := actualURL.Query()
-	actualURL.RawQuery = cleanUrlValues(actualQueryValues, cassetteURL).Encode()
-	cassetteURL.RawQuery = cleanUrlValues(cassetteQueryValues, cassetteURL).Encode()
+	actualURL.RawQuery = cleanURLValues(actualQueryValues).Encode()
+	cassetteURL.RawQuery = cleanURLValues(cassetteQueryValues).Encode()
 
 	return actualRequest.Method == cassetteRequest.Method &&
 		actualURL.String() == cassetteURL.String()
@@ -129,6 +130,6 @@ func GetHTTPRecorder(cassetteFilePath string, update bool) (client *http.Client,
 	}(r)
 
 	return &http.Client{Transport: r}, func() {
-		r.Stop() // Make sure recorder is stopped once done with it
+		_ = r.Stop() // Make sure recorder is stopped once done with it
 	}, nil
 }
