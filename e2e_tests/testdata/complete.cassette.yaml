@@ -1,0 +1,162 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.4; darwin; arm64)
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/images?name=packer-e2e-complete&page=1&project=ac06b5eb-7546-4f57-9ffb-5425d6bb291b
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 649
+        uncompressed: false
+        body: '{"images": [{"id": "938c98c5-344e-4043-a1c4-ce9114e64a98", "name": "packer-e2e-complete", "organization": "ee7bd9e1-9cbd-4724-b2f4-19e50f3cf38b", "project": "ac06b5eb-7546-4f57-9ffb-5425d6bb291b", "root_volume": {"id": "e571b26e-c18a-4146-8086-cfc7b56ff229", "name": "packer-e2e-complete_snap_0", "volume_type": "unified", "size": 42000000000}, "extra_volumes": {}, "public": false, "arch": "x86_64", "creation_date": "2025-01-13T09:30:54.300081+00:00", "modification_date": "2025-01-13T09:30:54.300081+00:00", "default_bootscript": null, "from_server": "95cea6d7-d6b2-49af-9dff-a475a1c336c3", "state": "available", "tags": [], "zone": "fr-par-2"}]}'
+        headers:
+            Content-Length:
+                - "649"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Mon, 13 Jan 2025 09:31:00 GMT
+            Link:
+                - </images?page=1&per_page=50&name=packer-e2e-complete&project=ac06b5eb-7546-4f57-9ffb-5425d6bb291b>; rel="last"
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 3df0227e-47ff-4d88-8bd4-803c052482d6
+            X-Total-Count:
+                - "1"
+        status: 200 OK
+        code: 200
+        duration: 516.486709ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.4; darwin; arm64)
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/snapshots?name=packer-e2e-complete-snapshot&project=ac06b5eb-7546-4f57-9ffb-5425d6bb291b
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 17
+        uncompressed: false
+        body: '{"snapshots": []}'
+        headers:
+            Content-Length:
+                - "17"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Mon, 13 Jan 2025 09:31:01 GMT
+            Link:
+                - </snapshots?page=0&per_page=50&name=packer-e2e-complete-snapshot&project=ac06b5eb-7546-4f57-9ffb-5425d6bb291b>; rel="last"
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - a3d7f651-3344-43b2-9526-a7353a4f51ba
+            X-Total-Count:
+                - "0"
+        status: 200 OK
+        code: 200
+        duration: 487.224833ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: api.scaleway.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.4; darwin; arm64)
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/volumes?name=Ubuntu+22.04+Jammy+Jellyfish&project=ac06b5eb-7546-4f57-9ffb-5425d6bb291b
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 453
+        uncompressed: false
+        body: '{"volumes": [{"id": "e770b5d2-a812-47ca-8523-8897eb7834e6", "name": "Ubuntu 22.04 Jammy Jellyfish", "volume_type": "b_ssd", "export_uri": null, "organization": "ee7bd9e1-9cbd-4724-b2f4-19e50f3cf38b", "project": "ac06b5eb-7546-4f57-9ffb-5425d6bb291b", "server": null, "size": 42000000000, "state": "available", "creation_date": "2025-01-13T09:30:04.814833+00:00", "modification_date": "2025-01-13T09:30:59.869954+00:00", "tags": [], "zone": "fr-par-2"}]}'
+        headers:
+            Content-Length:
+                - "453"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Mon, 13 Jan 2025 09:31:01 GMT
+            Link:
+                - </volumes?page=1&per_page=100&name=Ubuntu+22.04+Jammy+Jellyfish&project=ac06b5eb-7546-4f57-9ffb-5425d6bb291b>; rel="last"
+            Server:
+                - Scaleway API Gateway (fr-par-1;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Request-Id:
+                - 0390a854-3083-4fe5-852c-e9fdfc985f82
+            X-Total-Count:
+                - "1"
+        status: 200 OK
+        code: 200
+        duration: 111.247334ms
