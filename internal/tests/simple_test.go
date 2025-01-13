@@ -3,8 +3,8 @@ package tests_test
 import (
 	"testing"
 
-	"github.com/scaleway/packer-plugin-scaleway/e2e_tests/checks"
-	"github.com/scaleway/packer-plugin-scaleway/e2e_tests/tester"
+	"github.com/scaleway/packer-plugin-scaleway/internal/checks"
+	"github.com/scaleway/packer-plugin-scaleway/internal/tester"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 

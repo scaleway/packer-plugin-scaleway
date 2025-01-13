@@ -3,6 +3,7 @@ package tester
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"testing"
@@ -19,24 +20,33 @@ type PackerCtx struct {
 	ProjectID string
 }
 
-func NewTestContext(ctx context.Context, httpClient *http.Client) (context.Context, error) {
+func getActiveProfile() *scw.Profile {
 	cfg, err := scw.LoadConfig()
 	if err != nil {
-		return nil, err
+		return &scw.Profile{}
 	}
 	activeProfile, err := cfg.GetActiveProfile()
 	if err != nil {
-		return nil, err
+		return &scw.Profile{}
 	}
 
+	return activeProfile
+}
+
+func NewTestContext(ctx context.Context, httpClient *http.Client) (context.Context, error) {
+	activeProfile := getActiveProfile()
 	profile := scw.MergeProfiles(activeProfile, scw.LoadEnvProfile())
 	client, err := scw.NewClient(scw.WithProfile(profile), scw.WithHTTPClient(httpClient))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error creating scw client: %w", err)
 	}
 	projectID, exists := client.GetDefaultProjectID()
 	if !exists {
-		return nil, errors.New("error getting default project ID")
+		if vcr.UpdateCassettes == false {
+			projectID = "11111111-1111-1111-1111-111111111111"
+		} else {
+			return nil, errors.New("error getting default project ID")
+		}
 	}
 
 	return context.WithValue(ctx, PackerCtxKey, &PackerCtx{
@@ -61,7 +71,7 @@ func Test(t *testing.T, config *TestConfig) {
 
 	ctx := context.Background()
 	ctx, err = NewTestContext(ctx, httpClient)
-	require.Nil(t, err)
+	require.NoError(t, err)
 
 	// Create TMP Dir
 	tmpDir, err := os.MkdirTemp(os.TempDir(), "packer_e2e_test")
@@ -69,7 +79,7 @@ func Test(t *testing.T, config *TestConfig) {
 	t.Logf("Created tmp dir: %s", tmpDir)
 
 	err = packerExec(tmpDir, config.Config)
-	require.NoError(t, err, "error executing packer command")
+	require.NoError(t, err, "error executing packer command: %s", err)
 
 	for i, check := range config.Checks {
 		t.Logf("Running check %d/%d", i+1, len(config.Checks))

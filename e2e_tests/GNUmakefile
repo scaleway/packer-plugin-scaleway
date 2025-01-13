@@ -1,8 +1,8 @@
 build-binary:
 	make -C .. build
 
-link-binary:
-	ln -fs ../packer-plugin-scaleway
+install-plugin:
+	packer plugins install -path ../packer-plugin-scaleway "github.com/scaleway/scaleway"
 
-test: build-binary link-binary
+test: build-binary install-plugin
 	./test.sh

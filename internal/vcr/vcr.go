@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -58,17 +59,37 @@ func recorderAuthHook(i *cassette.Interaction) error {
 	return nil
 }
 
+// stripRandomNumbers receive a string with format "%s-%d" and will strip the last number element when split by dash.
+func stripRandomNumbers(s string) string {
+	elems := strings.Split(s, "-")
+	if _, err := strconv.ParseInt(elems[len(elems)-1], 10, 64); err == nil {
+		// Last elem is an int
+		elems = elems[:len(elems)-1]
+	}
+
+	return strings.Join(elems, "-")
+}
+
+func cleanUrlValues(values url.Values, u *url.URL) url.Values {
+	for _, query := range QueryMatcherIgnore {
+		values.Del(query)
+	}
+	for key, query := range values {
+		if key == "name" && len(query) > 0 {
+			query[0] = stripRandomNumbers(query[0])
+		}
+	}
+
+	return values
+}
+
 func requestMatcher(actualRequest *http.Request, cassetteRequest cassette.Request) bool {
 	cassetteURL, _ := url.Parse(cassetteRequest.URL)
 	actualURL := actualRequest.URL
 	cassetteQueryValues := cassetteURL.Query()
 	actualQueryValues := actualURL.Query()
-	for _, query := range QueryMatcherIgnore {
-		actualQueryValues.Del(query)
-		cassetteQueryValues.Del(query)
-	}
-	actualURL.RawQuery = actualQueryValues.Encode()
-	cassetteURL.RawQuery = cassetteQueryValues.Encode()
+	actualURL.RawQuery = cleanUrlValues(actualQueryValues, cassetteURL).Encode()
+	cassetteURL.RawQuery = cleanUrlValues(cassetteQueryValues, cassetteURL).Encode()
 
 	return actualRequest.Method == cassetteRequest.Method &&
 		actualURL.String() == cassetteURL.String()
