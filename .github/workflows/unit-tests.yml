@@ -30,6 +30,11 @@ jobs:
         run: make build
       - name: Run unit tests
         run: make test
+      - name: Run e2e tests
+        working-directory: e2e_tests
+        run: make test
+        env:
+          PACKER_UPDATE_CASSETTES: false
 
   generate:
     strategy:
