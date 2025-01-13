@@ -1,14 +1,21 @@
 # End-to-end tests
 
-This folder contains packer projects with each one go binaries that will check the behavior of the packer plugin.
+This folder contains scripts and a makefile to help run end to end tests.
 
 ## Write a test
 
-Copy `simple/` to your new test folder. Edit the packer file to test your feature then change asserts in `test.go`
+Create a new test in `../internal/tests`.
+
+## Cassettes
+
+To run easily in a CI, tests can be run while recording http requests. This allows pipelines to test without token by using recorded requests.
+
+- To record cassettes, you must set `PACKER_UPDATE_CASSETTES=true`.
+- To use recorded cassettes, you must set `PACKER_UPDATE_CASSETTES=false`
 
 ## Running tests
 
-`make test`
+`PACKER_UPDATE_CASSETTES=true make test`
 
 Test script will create a new project for you then run all tests before cleaning up the project
 

@@ -59,6 +59,8 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		clientOpts = append(clientOpts, scw.WithAPIURL(b.Config.APIURL))
 	}
 
+	// Only use cassette if vcr.UpdateCassettesEnvVariable env variable is used.
+	// It must at least be set to false when wanting to use local cassettes.
 	if _, isSet := os.LookupEnv(vcr.UpdateCassettesEnvVariable); isSet {
 		client, cleanup, err := vcr.GetHTTPRecorder(filepath.Join("testdata", b.Config.ImageName+".cassette"), vcr.UpdateCassettes)
 		if err != nil {
