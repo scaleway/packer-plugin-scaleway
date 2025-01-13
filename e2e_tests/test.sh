@@ -18,17 +18,7 @@ else
   echo Using cassettes, no test project was created
 fi
 
-
-TESTS=(
-#  simple
-  complete
-)
-
-TEST_RESULT=0
-
-rm ./tests.test
-go test -c ../internal/tests
-./tests.test -test.v
+go test ../internal/tests -v
 TEST_RESULT=$?
 
 if [ "$PACKER_UPDATE_CASSETTES" == "true" ]
