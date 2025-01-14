@@ -9,12 +9,14 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/hashicorp/hcl/v2/hcldec"
 	"github.com/hashicorp/packer-plugin-sdk/communicator"
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	"github.com/hashicorp/packer-plugin-sdk/multistep/commonsteps"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
+	"github.com/scaleway/packer-plugin-scaleway/internal/vcr"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
@@ -55,6 +57,19 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 
 	if b.Config.APIURL != "" {
 		clientOpts = append(clientOpts, scw.WithAPIURL(b.Config.APIURL))
+	}
+
+	// Only use cassette if vcr.UpdateCassettesEnvVariable env variable is used.
+	// It must at least be set to false when wanting to use local cassettes.
+	if _, isSet := os.LookupEnv(vcr.UpdateCassettesEnvVariable); isSet {
+		client, cleanup, err := vcr.GetHTTPRecorder(filepath.Join("testdata", b.Config.ImageName+".cassette"), vcr.UpdateCassettes)
+		if err != nil {
+			ui.Error(err.Error())
+			return nil, err
+		}
+		defer cleanup()
+
+		clientOpts = append(clientOpts, scw.WithHTTPClient(client))
 	}
 
 	client, err := scw.NewClient(clientOpts...)

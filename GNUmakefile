@@ -3,7 +3,8 @@ BINARY=packer-plugin-${NAME}
 PLUGIN_FQN="$(shell grep -E '^module' <go.mod | sed -E 's/module *//')"
 
 COUNT?=1
-TEST?=$(shell go list ./...)
+E2E_TEST?=$(shell go list ./internal/tests)
+TEST?=$(filter-out $(E2E_TEST),$(shell go list ./...))
 HASHICORP_PACKER_PLUGIN_SDK_VERSION?=$(shell go list -m github.com/hashicorp/packer-plugin-sdk | cut -d " " -f2)
 
 .PHONY: dev
@@ -17,6 +18,9 @@ dev:
 
 test:
 	@go test -race -count $(COUNT) $(TEST) -timeout=3m
+
+e2e_test:
+	make -C e2e_tests test
 
 install-packer-sdc: ## Install packer sofware development command
 	go install github.com/hashicorp/packer-plugin-sdk/cmd/packer-sdc@${HASHICORP_PACKER_PLUGIN_SDK_VERSION}

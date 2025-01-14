@@ -30,6 +30,8 @@ jobs:
         run: make build
       - name: Run unit tests
         run: make test
+      - name: Run e2e tests
+        run: make e2e_test
 
   generate:
     strategy:
