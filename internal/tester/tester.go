@@ -78,7 +78,7 @@ func Test(t *testing.T, config *TestConfig) {
 	require.NoError(t, err)
 	t.Logf("Created tmp dir: %s", tmpDir)
 
-	err = packerExec(tmpDir, config.Config)
+	err = packerExec(tmpDir, config.Config, !vcr.UpdateCassettes)
 	require.NoError(t, err, "error executing packer command: %s", err)
 
 	for i, check := range config.Checks {
