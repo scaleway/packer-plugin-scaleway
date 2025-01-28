@@ -16,7 +16,7 @@ func prepareBlockVolumes(volumes []ConfigBlockVolume) *packersdk.MultiError {
 		volume := &volumes[i]
 
 		if volume.Name == "" {
-			volume.Name = fmt.Sprintf("packer-%s", uuid.TimeOrderedUUID())
+			volume.Name = "packer-" + uuid.TimeOrderedUUID()
 		}
 		if volume.SizeInGB != 0 && volume.SnapshotID != "" {
 			errs = packersdk.MultiErrorAppend(errs, fmt.Errorf("volume (index: %d) can't have a snapshot_id and a size", i))
