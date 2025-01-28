@@ -34,7 +34,7 @@ func (s *stepCreateVolume) Run(ctx context.Context, state multistep.StateBag) mu
 			req.FromSnapshot = &block.CreateVolumeRequestFromSnapshot{}
 		} else {
 			req.FromEmpty = &block.CreateVolumeRequestFromEmpty{
-				Size: scw.Size(requestedVolume.Size),
+				Size: scw.Size(requestedVolume.SizeInGB) * scw.GB,
 			}
 		}
 		volume, err := blockAPI.CreateVolume(req, scw.WithContext(ctx))

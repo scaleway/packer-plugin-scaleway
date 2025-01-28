@@ -199,7 +199,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 type FlatConfigBlockVolume struct {
 	Name       *string `mapstructure:"name" cty:"name" hcl:"name"`
 	SnapshotID *string `mapstructure:"snapshot_id" cty:"snapshot_id" hcl:"snapshot_id"`
-	Size       *uint64 `mapstructure:"size" cty:"size" hcl:"size"`
+	SizeInGB   *uint64 `mapstructure:"size_in_gb" cty:"size_in_gb" hcl:"size_in_gb"`
 	IOPS       *uint32 `mapstructure:"iops" cty:"iops" hcl:"iops"`
 }
 
@@ -217,7 +217,7 @@ func (*FlatConfigBlockVolume) HCL2Spec() map[string]hcldec.Spec {
 	s := map[string]hcldec.Spec{
 		"name":        &hcldec.AttrSpec{Name: "name", Type: cty.String, Required: false},
 		"snapshot_id": &hcldec.AttrSpec{Name: "snapshot_id", Type: cty.String, Required: false},
-		"size":        &hcldec.AttrSpec{Name: "size", Type: cty.Number, Required: false},
+		"size_in_gb":  &hcldec.AttrSpec{Name: "size_in_gb", Type: cty.Number, Required: false},
 		"iops":        &hcldec.AttrSpec{Name: "iops", Type: cty.Number, Required: false},
 	}
 	return s

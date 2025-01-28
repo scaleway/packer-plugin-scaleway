@@ -140,7 +140,7 @@ can also be supplied to override the typical auto-generated key:
 
 - `snapshot_id` (string) - ID of the snapshot to create the volume from
 
-- `size` (uint64) - Size of the newly created volume
+- `size_in_gb` (uint64) - Size of the newly created volume
 
 - `iops` (\*uint32) - IOPS is the number of requested iops for the server's volume. This will not impact created snapshot.
 

@@ -18,10 +18,10 @@ func prepareBlockVolumes(volumes []ConfigBlockVolume) *packersdk.MultiError {
 		if volume.Name == "" {
 			volume.Name = fmt.Sprintf("packer-%s", uuid.TimeOrderedUUID())
 		}
-		if volume.Size != 0 && volume.SnapshotID != "" {
+		if volume.SizeInGB != 0 && volume.SnapshotID != "" {
 			errs = packersdk.MultiErrorAppend(errs, fmt.Errorf("volume (index: %d) can't have a snapshot_id and a size", i))
 		}
-		if volume.Size == 0 && volume.SnapshotID == "" {
+		if volume.SizeInGB == 0 && volume.SnapshotID == "" {
 			errs = packersdk.MultiErrorAppend(errs, fmt.Errorf("volume (index: %d) must have a snapshot_id or a size", i))
 		}
 	}
@@ -32,7 +32,7 @@ func prepareBlockVolumes(volumes []ConfigBlockVolume) *packersdk.MultiError {
 func (blockVolume *ConfigBlockVolume) VolumeTemplate() *instance.VolumeServerTemplate {
 	return &instance.VolumeServerTemplate{
 		Name:         &blockVolume.Name,
-		Size:         scw.SizePtr(scw.Size(blockVolume.Size)),
+		Size:         scw.SizePtr(scw.Size(blockVolume.SizeInGB) * scw.GB),
 		BaseSnapshot: &blockVolume.SnapshotID,
 	}
 }
