@@ -22,12 +22,22 @@ type ImageCheck struct {
 	zone      scw.Zone
 	imageName string
 
-	rootVolumeType *string
-	size           *scw.Size
+	rootVolumeType   *string
+	size             *scw.Size
+	extraVolumesType map[string]string
 }
 
 func (c *ImageCheck) RootVolumeType(rootVolumeType string) *ImageCheck {
 	c.rootVolumeType = &rootVolumeType
+
+	return c
+}
+
+func (c *ImageCheck) ExtraVolumeType(key string, volumeType string) *ImageCheck {
+	if c.extraVolumesType == nil {
+		c.extraVolumesType = map[string]string{}
+	}
+	c.extraVolumesType[key] = volumeType
 
 	return c
 }
@@ -71,6 +81,18 @@ func (c *ImageCheck) Check(ctx context.Context) error {
 
 	if c.size != nil && image.RootVolume.Size != *c.size {
 		return fmt.Errorf("image size %d does not match expected %d", image.RootVolume.Size, *c.size)
+	}
+
+	if c.extraVolumesType != nil {
+		for k, v := range c.extraVolumesType {
+			vol, exists := image.ExtraVolumes[k]
+			if !exists {
+				return fmt.Errorf("extra volume %s does not exist", k)
+			}
+			if string(vol.VolumeType) != v {
+				return fmt.Errorf("extra volume %s type %s does not match expected %s", k, vol.VolumeType, v)
+			}
+		}
 	}
 
 	return nil
