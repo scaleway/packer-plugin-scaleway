@@ -99,9 +99,7 @@ func backupVolumesFromServer(server *instance.Server) map[string]*instance.Serve
 	backupVolumes := map[string]*instance.ServerActionRequestVolumeBackupTemplate{}
 
 	for _, volume := range server.Volumes {
-		backupVolumes[volume.ID] = &instance.ServerActionRequestVolumeBackupTemplate{
-			VolumeType: instance.SnapshotVolumeTypeUnified,
-		}
+		backupVolumes[volume.ID] = &instance.ServerActionRequestVolumeBackupTemplate{}
 	}
 	return backupVolumes
 }
