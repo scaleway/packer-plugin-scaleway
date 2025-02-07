@@ -1,7 +1,7 @@
 package scaleway
 
 import (
-	"fmt"
+	"errors"
 
 	block "github.com/scaleway/scaleway-sdk-go/api/block/v1alpha1"
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
@@ -35,7 +35,7 @@ func (c *ConfigRootVolume) PostServerCreationSetup(blockAPI *block.API, server *
 	if c.IOPS != nil {
 		rootVolume, exists := server.Volumes["0"]
 		if !exists {
-			return fmt.Errorf("root Volume not found")
+			return errors.New("root volume not found")
 		}
 		_, err := blockAPI.UpdateVolume(&block.UpdateVolumeRequest{
 			Zone:     rootVolume.Zone,
