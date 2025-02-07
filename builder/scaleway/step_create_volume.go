@@ -93,10 +93,7 @@ func (s *stepCreateVolume) Cleanup(state multistep.StateBag) {
 
 	volumes := state.Get("volumes").([]*instance.VolumeServer)
 	for _, volume := range volumes {
-		err := instanceAPI.DeleteVolume(&instance.DeleteVolumeRequest{
-			VolumeID: volume.ID,
-			Zone:     scw.Zone(c.Zone),
-		})
+		err := waitAndDeleteInstanceVolume(instanceAPI, scw.Zone(c.Zone), volume.ID)
 		if err != nil && !httperrors.Is404(err) {
 			err := fmt.Errorf("error removing block volume %s: %s", volume.ID, err)
 			state.Put("error", err)
@@ -105,15 +102,54 @@ func (s *stepCreateVolume) Cleanup(state multistep.StateBag) {
 		if err == nil {
 			continue
 		}
-
-		err = blockAPI.DeleteVolume(&block.DeleteVolumeRequest{
-			Zone:     scw.Zone(c.Zone),
-			VolumeID: volume.ID,
-		})
+		err = waitAndDeleteBlockVolume(blockAPI, scw.Zone(c.Zone), volume.ID)
 		if err != nil {
 			err := fmt.Errorf("error removing block volume %s: %s", volume.ID, err)
 			state.Put("error", err)
 			ui.Error(fmt.Sprintf("Error removing block volume %s: %s. (Ignored)", volume.ID, err))
 		}
 	}
+}
+
+func waitAndDeleteInstanceVolume(instanceAPI *instance.API, zone scw.Zone, volumeID string) error {
+	_, err := instanceAPI.WaitForVolume(&instance.WaitForVolumeRequest{
+		VolumeID: volumeID,
+		Zone:     zone,
+	})
+	if err != nil && !httperrors.Is404(err) {
+		return err
+
+	}
+
+	err = instanceAPI.DeleteVolume(&instance.DeleteVolumeRequest{
+		VolumeID: volumeID,
+		Zone:     scw.Zone(zone),
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func waitAndDeleteBlockVolume(blockAPI *block.API, zone scw.Zone, volumeID string) error {
+	volumeTerminalStatus := block.VolumeStatusAvailable
+	_, err := blockAPI.WaitForVolumeAndReferences(&block.WaitForVolumeAndReferencesRequest{
+		VolumeID:             volumeID,
+		Zone:                 zone,
+		VolumeTerminalStatus: &volumeTerminalStatus,
+	})
+	if err != nil {
+		return err
+	}
+
+	err = blockAPI.DeleteVolume(&block.DeleteVolumeRequest{
+		Zone:     zone,
+		VolumeID: volumeID,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
