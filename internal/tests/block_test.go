@@ -35,7 +35,7 @@ build {
 `,
 		Checks: []tester.PackerCheck{
 			checks.Image(zone, "packer-e2e-block").
-				RootVolumeType("b_ssd").
+				RootVolumeType("sbs_snapshot").
 				ExtraVolumeType("1", "sbs_snapshot"),
 			checks.NoVolume(zone),
 		},

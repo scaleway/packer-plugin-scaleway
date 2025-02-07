@@ -1,5 +1,5 @@
 //go:generate packer-sdc struct-markdown
-//go:generate packer-sdc mapstructure-to-hcl2 -type Config,ConfigBlockVolume
+//go:generate packer-sdc mapstructure-to-hcl2 -type Config,ConfigBlockVolume,ConfigRootVolume
 
 package scaleway
 
@@ -29,6 +29,15 @@ const (
 	defaultUserDataWaitTimeout             = 0 * time.Second
 	defaultCleanupMachineRelatedDataStatus = "false"
 )
+
+type ConfigRootVolume struct {
+	// The type of the root volume
+	Type string `mapstructure:"type"`
+	// IOPS of the root volume if using SBS, will only affect runtime. Image's volumes cannot have a configured IOPS.
+	IOPS *uint32 `mapstructure:"iops"`
+	// Size of the root volume
+	SizeInGB uint64 `mapstructure:"size_in_gb"`
+}
 
 type ConfigBlockVolume struct {
 	// The name of the created volume
@@ -99,6 +108,9 @@ type Config struct {
 
 	// RemoveVolume remove the temporary volumes created before running the server
 	RemoveVolume bool `mapstructure:"remove_volume"`
+
+	// RootVolumeType lets you configure the root volume
+	RootVolume ConfigRootVolume `mapstructure:"root_volume" required:"false"`
 
 	// BlockVolumes define block volumes attached to the server alongside the default volume
 	// See the [BlockVolumes](#block-volumes-configuration) documentation for fields.

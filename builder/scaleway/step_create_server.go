@@ -11,6 +11,7 @@ import (
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
+	block "github.com/scaleway/scaleway-sdk-go/api/block/v1alpha1"
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
@@ -58,6 +59,13 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		}
 	}
 
+	if c.RootVolume.IsConfigured() {
+		if createServerReq.Volumes == nil {
+			createServerReq.Volumes = make(map[string]*instance.VolumeServerTemplate)
+		}
+		createServerReq.Volumes["0"] = c.RootVolume.VolumeServerTemplate()
+	}
+
 	if len(c.BlockVolumes) > 0 {
 		if createServerReq.Volumes == nil {
 			createServerReq.Volumes = make(map[string]*instance.VolumeServerTemplate)
@@ -69,9 +77,17 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		}
 	}
 
-	createServerResp, err := instanceAPI.CreateServer(createServerReq, scw.WithContext(ctx))
+	createServerResp, err := createServer(instanceAPI, createServerReq, scw.WithContext(ctx))
 	if err != nil {
 		err := fmt.Errorf("error creating server: %s", err)
+		state.Put("error", err)
+		ui.Error(err.Error())
+		return multistep.ActionHalt
+	}
+
+	err = c.RootVolume.PostServerCreationSetup(block.NewAPI(state.Get("client").(*scw.Client)), createServerResp.Server)
+	if err != nil {
+		err := fmt.Errorf("error during post server creation setup server: %s", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
 		return multistep.ActionHalt
