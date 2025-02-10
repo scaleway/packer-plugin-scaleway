@@ -22,13 +22,20 @@ type ImageCheck struct {
 	zone      scw.Zone
 	imageName string
 
-	rootVolumeType   *string
-	size             *scw.Size
-	extraVolumesType map[string]string
+	rootVolumeType     *string
+	rootVolumeSnapshot *BlockSnapshotCheck
+	size               *scw.Size
+	extraVolumesType   map[string]string
 }
 
 func (c *ImageCheck) RootVolumeType(rootVolumeType string) *ImageCheck {
 	c.rootVolumeType = &rootVolumeType
+
+	return c
+}
+
+func (c *ImageCheck) RootVolumeBlockSnapshot(snapshotCheck *BlockSnapshotCheck) *ImageCheck {
+	c.rootVolumeSnapshot = snapshotCheck
 
 	return c
 }
@@ -51,6 +58,7 @@ func (c *ImageCheck) SizeInGb(size uint64) *ImageCheck {
 func (c *ImageCheck) Check(ctx context.Context) error {
 	testCtx := tester.ExtractCtx(ctx)
 	api := instance.NewAPI(testCtx.ScwClient)
+	images := []*instance.Image(nil)
 
 	resp, err := api.ListImages(&instance.ListImagesRequest{
 		Name:    &c.imageName,
@@ -61,15 +69,21 @@ func (c *ImageCheck) Check(ctx context.Context) error {
 		return fmt.Errorf("failed to list images: %w", err)
 	}
 
-	if len(resp.Images) == 0 {
+	for _, img := range resp.Images {
+		if img.Name == c.imageName {
+			images = append(images, img)
+		}
+	}
+
+	if len(images) == 0 {
 		return fmt.Errorf("image %s not found, no images found", c.imageName)
 	}
 
-	if len(resp.Images) > 1 {
+	if len(images) > 1 {
 		return fmt.Errorf("multiple images found with name %s", c.imageName)
 	}
 
-	image := resp.Images[0]
+	image := images[0]
 
 	if image.Name != c.imageName {
 		return fmt.Errorf("image name %s does not match expected %s", image.Name, c.imageName)
