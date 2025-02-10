@@ -22,6 +22,7 @@ func (c *BlockSnapshotCheck) SizeInGB(size uint64) *BlockSnapshotCheck {
 
 	return c
 }
+
 func (c *BlockSnapshotCheck) Check(ctx context.Context) error {
 	testCtx := tester.ExtractCtx(ctx)
 	api := block.NewAPI(testCtx.ScwClient)

@@ -118,12 +118,11 @@ func waitAndDeleteInstanceVolume(instanceAPI *instance.API, zone scw.Zone, volum
 	})
 	if err != nil && !httperrors.Is404(err) {
 		return err
-
 	}
 
 	err = instanceAPI.DeleteVolume(&instance.DeleteVolumeRequest{
 		VolumeID: volumeID,
-		Zone:     scw.Zone(zone),
+		Zone:     zone,
 	})
 	if err != nil {
 		return err
