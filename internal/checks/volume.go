@@ -22,7 +22,8 @@ func (c *NoVolumesCheck) Check(ctx context.Context) error {
 	blockAPI := block.NewAPI(testCtx.ScwClient)
 
 	resp, err := instanceAPI.ListVolumes(&instance.ListVolumesRequest{
-		Zone: c.zone,
+		Zone:    c.zone,
+		Project: &testCtx.ProjectID,
 	}, scw.WithContext(ctx))
 	if err != nil {
 		return fmt.Errorf("failed to list instance volumes: %w", err)

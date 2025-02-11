@@ -17,7 +17,7 @@ interactions:
         headers:
             User-Agent:
                 - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.5; darwin; arm64)
-        url: https://api.scaleway.com/instance/v1/zones/fr-par-1/images?name=packer-e2e-block&page=1&project=b577a333-d52a-4d86-9310-b413d5fe9bb1
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-1/images?name=packer-e2e-root-volume-sbs&page=1&project=b577a333-d52a-4d86-9310-b413d5fe9bb1
         method: GET
       response:
         proto: HTTP/2.0
@@ -25,22 +25,22 @@ interactions:
         proto_minor: 0
         transfer_encoding: []
         trailer: {}
-        content_length: 720
+        content_length: 625
         uncompressed: false
-        body: '{"images": [{"id": "37a6357e-f971-4fbf-a80d-1fc6b7cc328a", "name": "packer-e2e-block", "organization": "ee7bd9e1-9cbd-4724-b2f4-19e50f3cf38b", "project": "b577a333-d52a-4d86-9310-b413d5fe9bb1", "root_volume": {"volume_type": "sbs_snapshot", "id": "c9e1d66a-a330-4636-9419-b5f660df4d6e", "size": 0, "name": ""}, "extra_volumes": {"1": {"volume_type": "sbs_snapshot", "id": "1057e812-e695-43b1-be59-75d40c4433bd", "size": 0, "name": ""}}, "public": false, "arch": "x86_64", "creation_date": "2025-02-10T15:36:41.434137+00:00", "modification_date": "2025-02-10T15:36:41.434137+00:00", "default_bootscript": null, "from_server": "c12a0843-fb85-4985-9441-2dc15014ed13", "state": "available", "tags": [], "zone": "fr-par-1"}]}'
+        body: '{"images": [{"id": "a77ece2d-74ac-4c43-bd0d-cf23cac99746", "name": "packer-e2e-root-volume-sbs", "organization": "ee7bd9e1-9cbd-4724-b2f4-19e50f3cf38b", "project": "b577a333-d52a-4d86-9310-b413d5fe9bb1", "root_volume": {"volume_type": "sbs_snapshot", "id": "f3639014-608d-450b-844c-15e19a5a8f4c", "size": 0, "name": ""}, "extra_volumes": {}, "public": false, "arch": "x86_64", "creation_date": "2025-02-10T15:37:31.116776+00:00", "modification_date": "2025-02-10T15:37:31.116776+00:00", "default_bootscript": null, "from_server": "8122c68c-01b5-46b9-8201-aefe8c91fa98", "state": "available", "tags": [], "zone": "fr-par-1"}]}'
         headers:
             Content-Length:
-                - "720"
+                - "625"
             Content-Security-Policy:
                 - default-src 'none'; frame-ancestors 'none'
             Content-Type:
                 - application/json
             Date:
-                - Mon, 10 Feb 2025 15:36:44 GMT
+                - Mon, 10 Feb 2025 15:37:34 GMT
             Link:
-                - </images?page=1&per_page=50&name=packer-e2e-block&project=b577a333-d52a-4d86-9310-b413d5fe9bb1>; rel="last"
+                - </images?page=1&per_page=50&name=packer-e2e-root-volume-sbs&project=b577a333-d52a-4d86-9310-b413d5fe9bb1>; rel="last"
             Server:
-                - Scaleway API Gateway (fr-par-1;edge02)
+                - Scaleway API Gateway (fr-par-1;edge03)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
@@ -48,12 +48,12 @@ interactions:
             X-Frame-Options:
                 - DENY
             X-Request-Id:
-                - 3470787c-c644-4234-9b58-70dcaa8e776c
+                - 67ff0422-9931-4708-9f6b-a6426a8a3657
             X-Total-Count:
                 - "1"
         status: 200 OK
         code: 200
-        duration: 384.537ms
+        duration: 282.97025ms
     - id: 1
       request:
         proto: HTTP/1.1
@@ -89,11 +89,11 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Mon, 10 Feb 2025 15:36:44 GMT
+                - Mon, 10 Feb 2025 15:37:34 GMT
             Link:
                 - </volumes?page=0&per_page=100&project=b577a333-d52a-4d86-9310-b413d5fe9bb1>; rel="last"
             Server:
-                - Scaleway API Gateway (fr-par-1;edge02)
+                - Scaleway API Gateway (fr-par-1;edge03)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
@@ -101,12 +101,12 @@ interactions:
             X-Frame-Options:
                 - DENY
             X-Request-Id:
-                - d41b6018-2520-4663-94b5-005fd9eece59
+                - 6a22dd82-7b38-495e-b6e9-37a3c178802a
             X-Total-Count:
                 - "0"
         status: 200 OK
         code: 200
-        duration: 66.034792ms
+        duration: 69.976667ms
     - id: 2
       request:
         proto: HTTP/1.1
@@ -142,9 +142,9 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Mon, 10 Feb 2025 15:36:45 GMT
+                - Mon, 10 Feb 2025 15:37:34 GMT
             Server:
-                - Scaleway API Gateway (fr-par-1;edge02)
+                - Scaleway API Gateway (fr-par-1;edge03)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
@@ -152,7 +152,7 @@ interactions:
             X-Frame-Options:
                 - DENY
             X-Request-Id:
-                - cbf10e3f-5cb5-4de6-a599-c144fdee008d
+                - f8465e19-f2d8-40db-9005-2f0588bc0b85
         status: 200 OK
         code: 200
-        duration: 54.641125ms
+        duration: 38.162167ms

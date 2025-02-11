@@ -8,24 +8,23 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
-func TestBlock(t *testing.T) {
+func TestRootVolumeSBS(t *testing.T) {
 	zone := scw.ZoneFrPar1
 
 	tester.Test(t, &tester.TestConfig{
 		Config: `
 source "scaleway" "basic" {
   communicator = "none"
-  commercial_type = "PRO2-XXS"
+  commercial_type = "PLAY2-PICO"
   zone = "fr-par-1"
   image = "ubuntu_jammy"
-  image_name = "packer-e2e-block"
+  image_name = "packer-e2e-root-volume-sbs"
   ssh_username = "root"
   remove_volume = true
 
-  block_volume {
-    name = "packer-e2e-block-vol1"
-    size_in_gb = 20
-    iops = 5000
+  root_volume {
+    size_in_gb = 50
+    iops = 15000
   }
 }
 
@@ -34,9 +33,9 @@ build {
 }
 `,
 		Checks: []tester.PackerCheck{
-			checks.Image(zone, "packer-e2e-block").
+			checks.Image(zone, "packer-e2e-root-volume-sbs").
 				RootVolumeType("sbs_snapshot").
-				ExtraVolumeType("1", "sbs_snapshot"),
+				RootVolumeBlockSnapshot(checks.BlockSnapshot().SizeInGB(50)),
 			checks.NoVolume(zone),
 		},
 	})

@@ -90,6 +90,8 @@ can also be supplied to override the typical auto-generated key:
 
 - `remove_volume` (bool) - RemoveVolume remove the temporary volumes created before running the server
 
+- `root_volume` (ConfigRootVolume) - RootVolumeType lets you configure the root volume
+
 - `block_volume` ([]ConfigBlockVolume) - BlockVolumes define block volumes attached to the server alongside the default volume
   See the [BlockVolumes](#block-volumes-configuration) documentation for fields.
 

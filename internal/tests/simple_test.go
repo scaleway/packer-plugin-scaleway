@@ -29,7 +29,7 @@ build {
 `,
 		Checks: []tester.PackerCheck{
 			checks.Image(zone, "packer-e2e-simple").
-				RootVolumeType("unified"),
+				RootVolumeType("sbs_snapshot"),
 			checks.NoVolume(zone),
 		},
 	})
