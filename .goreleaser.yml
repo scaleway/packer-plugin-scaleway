@@ -7,7 +7,7 @@ before:
   hooks:
     # We strongly recommend running tests to catch any regression before release.
     # Even though, this an optional step.
-    - go test ./...
+    - make test
     # Check plugin compatibility with required version of the Packer SDK
     - make plugin-check
 builds:
