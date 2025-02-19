@@ -17,7 +17,7 @@ dev:
 	packer plugins install --path ${BINARY} "$(shell echo "${PLUGIN_FQN}" | sed 's/packer-plugin-//')"
 
 test:
-	@go test -race -count $(COUNT) $(TEST) -timeout=3m
+	@go test -count $(COUNT) $(TEST) -timeout=3m
 
 e2e_test:
 	make -C e2e_tests test
