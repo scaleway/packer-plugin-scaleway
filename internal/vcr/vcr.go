@@ -29,6 +29,7 @@ var UpdateCassettes = os.Getenv(UpdateCassettesEnvVariable) == "true"
 // getTestFilePath returns a valid filename path based on the go test name and suffix. (Take care of non fs friendly char)
 func getTestFilePath(t *testing.T, pkgFolder string, suffix string) string {
 	t.Helper()
+
 	specialChars := regexp.MustCompile(`[\\?%*:|"<>. ]`)
 
 	// Replace nested tests separators.
@@ -47,6 +48,7 @@ func getTestFilePath(t *testing.T, pkgFolder string, suffix string) string {
 
 func GetTestFilePath(t *testing.T, pkgFolder string) string {
 	t.Helper()
+
 	return getTestFilePath(t, pkgFolder, ".cassette")
 }
 
@@ -75,6 +77,7 @@ func cleanURLValues(values url.Values) url.Values {
 	for _, query := range QueryMatcherIgnore {
 		values.Del(query)
 	}
+
 	for key, query := range values {
 		if key == "name" && len(query) > 0 {
 			query[0] = stripRandomNumbers(query[0])

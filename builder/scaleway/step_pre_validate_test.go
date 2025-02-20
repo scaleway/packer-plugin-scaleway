@@ -25,9 +25,11 @@ import (
 //  4. Return a teardown function meant to be deferred from the test.
 func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multistep.BasicStateBag, func()) {
 	t.Helper()
+
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		enc := json.NewEncoder(w)
+
 		switch r.URL.Path {
 		case "/instance/v1/zones/fr-par-1/images":
 			var imgs instance.ListImagesResponse
@@ -38,6 +40,7 @@ func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multis
 					Zone: "fr-par-1",
 				})
 			}
+
 			imgs.TotalCount = uint32(len(fakeImgNames))
 			if err := enc.Encode(imgs); err != nil {
 				t.Fatalf("fake server: encoding reply: %s", err)
@@ -51,6 +54,7 @@ func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multis
 					Zone: "fr-par-1",
 				})
 			}
+
 			snaps.TotalCount = uint32(len(fakeSnapNames))
 			if err := enc.Encode(snaps); err != nil {
 				t.Fatalf("fake server: encoding reply: %s", err)
@@ -81,6 +85,7 @@ func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multis
 	teardown := func() {
 		ts.Close()
 	}
+
 	return &state, teardown
 }
 

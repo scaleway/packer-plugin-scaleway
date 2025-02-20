@@ -9,6 +9,7 @@ import (
 
 func TestArtifact_Impl(t *testing.T) {
 	var raw interface{}
+
 	raw = &scaleway.Artifact{}
 	if _, ok := raw.(packersdk.Artifact); !ok {
 		t.Fatalf("Artifact should be artifact")
@@ -81,6 +82,7 @@ func TestArtifactState_StateData(t *testing.T) {
 
 	// Nil StateData should not fail and should return nil
 	artifact = &scaleway.Artifact{}
+
 	result = artifact.State("key")
 	if result != nil {
 		t.Fatalf("Bad: State should be nil for nil StateData")

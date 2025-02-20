@@ -165,6 +165,7 @@ type Config struct {
 
 func (c *Config) Prepare(raws ...interface{}) ([]string, error) { //nolint:gocyclo
 	var md mapstructure.Metadata
+
 	err := config.Decode(c, &config.DecodeOpts{
 		Metadata:           &md,
 		PluginType:         BuilderID,
@@ -192,6 +193,7 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) { //nolint:gocyc
 	} else if err != nil {
 		return nil, err
 	}
+
 	activeProfile, err := configFile.GetActiveProfile()
 	if err != nil {
 		return nil, err
@@ -206,9 +208,11 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) { //nolint:gocyc
 			c.Organization = os.Getenv("SCALEWAY_ORGANIZATION")
 		} else {
 			log.Printf("Deprecation warning: Use SCALEWAY_ORGANIZATION environment variable and organization_id argument instead of api_access_key argument and SCALEWAY_API_ACCESS_KEY environment variable.")
+
 			c.Organization = os.Getenv("SCALEWAY_API_ACCESS_KEY")
 		}
 	}
+
 	if c.Organization != "" {
 		warnings = append(warnings, "organization_id is deprecated in favor of project_id")
 		c.ProjectID = c.Organization
@@ -217,6 +221,7 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) { //nolint:gocyc
 	if c.Token == "" {
 		c.Token = os.Getenv("SCALEWAY_API_TOKEN")
 	}
+
 	if c.Token != "" {
 		warnings = append(warnings, "token is deprecated in favor of secret_key")
 		c.SecretKey = c.Token
@@ -288,6 +293,7 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) { //nolint:gocyc
 	if es := c.Comm.Prepare(&c.ctx); len(es) > 0 {
 		errs = packersdk.MultiErrorAppend(errs, es...)
 	}
+
 	if c.ProjectID == "" {
 		errs = packersdk.MultiErrorAppend(
 			errs, errors.New("scaleway Project ID must be specified"))
@@ -355,5 +361,6 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) { //nolint:gocyc
 
 	packersdk.LogSecretFilter.Set(c.Token)
 	packersdk.LogSecretFilter.Set(c.SecretKey)
+
 	return warnings, nil
 }

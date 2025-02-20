@@ -22,6 +22,7 @@ func testConfig() map[string]interface{} {
 
 func TestBuilder_ImplementsBuilder(t *testing.T) {
 	var raw interface{}
+
 	raw = &scaleway.Builder{}
 	if _, ok := raw.(packersdk.Builder); !ok {
 		t.Fatalf("Builder should be a builder")
@@ -42,12 +43,14 @@ func TestBuilder_Prepare_BadType(t *testing.T) {
 
 func TestBuilderPrepare(t *testing.T) {
 	var b scaleway.Builder
+
 	config := testConfig()
 
 	_, warnings, err := b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
+
 	if err != nil {
 		t.Fatal("should not have errors")
 	}
@@ -55,13 +58,16 @@ func TestBuilderPrepare(t *testing.T) {
 
 func TestBuilderPrepare_InvalidKey(t *testing.T) {
 	var b scaleway.Builder
+
 	config := testConfig()
 
 	config["i_should_not_be_valid"] = true
+
 	_, warnings, err := b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
+
 	if err == nil {
 		t.Fatal("should have error")
 	}
@@ -69,13 +75,16 @@ func TestBuilderPrepare_InvalidKey(t *testing.T) {
 
 func TestBuilderPrepare_Zone(t *testing.T) {
 	var b scaleway.Builder
+
 	config := testConfig()
 
 	delete(config, "zone")
+
 	_, warnings, err := b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
+
 	if err == nil {
 		t.Fatalf("should error")
 	}
@@ -84,10 +93,12 @@ func TestBuilderPrepare_Zone(t *testing.T) {
 
 	config["zone"] = expected
 	b = scaleway.Builder{}
+
 	_, warnings, err = b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
+
 	if err != nil {
 		t.Fatalf("should not have error: %s", err)
 	}
@@ -99,13 +110,16 @@ func TestBuilderPrepare_Zone(t *testing.T) {
 
 func TestBuilderPrepare_CommercialType(t *testing.T) {
 	var b scaleway.Builder
+
 	config := testConfig()
 
 	delete(config, "commercial_type")
+
 	_, warnings, err := b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
+
 	if err == nil {
 		t.Fatalf("should error")
 	}
@@ -114,10 +128,12 @@ func TestBuilderPrepare_CommercialType(t *testing.T) {
 
 	config["commercial_type"] = expected
 	b = scaleway.Builder{}
+
 	_, warnings, err = b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
+
 	if err != nil {
 		t.Fatalf("should not have error: %s", err)
 	}
@@ -129,13 +145,16 @@ func TestBuilderPrepare_CommercialType(t *testing.T) {
 
 func TestBuilderPrepare_Image(t *testing.T) {
 	var b scaleway.Builder
+
 	config := testConfig()
 
 	delete(config, "image")
+
 	_, warnings, err := b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
+
 	if err == nil {
 		t.Fatal("should error")
 	}
@@ -144,10 +163,12 @@ func TestBuilderPrepare_Image(t *testing.T) {
 
 	config["image"] = expected
 	b = scaleway.Builder{}
+
 	_, warnings, err = b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
+
 	if err != nil {
 		t.Fatalf("should not have error: %s", err)
 	}
@@ -159,12 +180,14 @@ func TestBuilderPrepare_Image(t *testing.T) {
 
 func TestBuilderPrepare_SnapshotName(t *testing.T) {
 	var b scaleway.Builder
+
 	config := testConfig()
 
 	_, warnings, err := b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
+
 	if err != nil {
 		t.Fatalf("should not have error: %s", err)
 	}
@@ -175,20 +198,24 @@ func TestBuilderPrepare_SnapshotName(t *testing.T) {
 
 	config["snapshot_name"] = "foobarbaz"
 	b = scaleway.Builder{}
+
 	_, warnings, err = b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
+
 	if err != nil {
 		t.Fatalf("should not have error: %s", err)
 	}
 
 	config["snapshot_name"] = "{{timestamp}}"
 	b = scaleway.Builder{}
+
 	_, warnings, err = b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
+
 	if err != nil {
 		t.Fatalf("should not have error: %s", err)
 	}
@@ -201,12 +228,14 @@ func TestBuilderPrepare_SnapshotName(t *testing.T) {
 
 func TestBuilderPrepare_ServerName(t *testing.T) {
 	var b scaleway.Builder
+
 	config := testConfig()
 
 	_, warnings, err := b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
+
 	if err != nil {
 		t.Fatalf("should not have error: %s", err)
 	}
@@ -217,30 +246,36 @@ func TestBuilderPrepare_ServerName(t *testing.T) {
 
 	config["server_name"] = "foobar"
 	b = scaleway.Builder{}
+
 	_, warnings, err = b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
+
 	if err != nil {
 		t.Fatalf("should not have error: %s", err)
 	}
 
 	config["server_name"] = "foobar-{{timestamp}}"
 	b = scaleway.Builder{}
+
 	_, warnings, err = b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
+
 	if err != nil {
 		t.Fatalf("should not have error: %s", err)
 	}
 
 	config["server_name"] = "foobar-{{"
 	b = scaleway.Builder{}
+
 	_, warnings, err = b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
 	}
+
 	if err == nil {
 		t.Fatal("should have error")
 	}

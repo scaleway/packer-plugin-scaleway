@@ -44,6 +44,7 @@ func (c *ImageCheck) ExtraVolumeType(key string, volumeType string) *ImageCheck 
 	if c.extraVolumesType == nil {
 		c.extraVolumesType = map[string]string{}
 	}
+
 	c.extraVolumesType[key] = volumeType
 
 	return c
@@ -103,6 +104,7 @@ func (c *ImageCheck) Check(ctx context.Context) error {
 			if !exists {
 				return fmt.Errorf("extra volume %s does not exist", k)
 			}
+
 			if string(vol.VolumeType) != v {
 				return fmt.Errorf("extra volume %s type %s does not match expected %s", k, vol.VolumeType, v)
 			}

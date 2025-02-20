@@ -10,6 +10,7 @@ import (
 
 func TestComplete(t *testing.T) {
 	t.Skip("snapshot_name argument does not work")
+
 	zone := scw.ZoneFrPar2
 
 	tester.Test(t, &tester.TestConfig{

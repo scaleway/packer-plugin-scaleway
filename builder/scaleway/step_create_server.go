@@ -24,7 +24,9 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	instanceAPI := instance.NewAPI(state.Get("client").(*scw.Client))
 	ui := state.Get("ui").(packersdk.Ui)
 	c := state.Get("config").(*Config)
+
 	var tags []string
+
 	var bootscript *string
 
 	ui.Say("Creating server...")
@@ -63,6 +65,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		if createServerReq.Volumes == nil {
 			createServerReq.Volumes = make(map[string]*instance.VolumeServerTemplate)
 		}
+
 		createServerReq.Volumes["0"] = c.RootVolume.VolumeServerTemplate()
 	}
 
@@ -70,6 +73,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		if createServerReq.Volumes == nil {
 			createServerReq.Volumes = make(map[string]*instance.VolumeServerTemplate)
 		}
+
 		createdVolumes := state.Get(StateKeyCreatedVolumes).([]*instance.VolumeServerTemplate)
 		for i, blockVolume := range createdVolumes {
 			volumeIndex := strconv.FormatInt(int64(i+1), 10)
@@ -79,17 +83,19 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 
 	createServerResp, err := createServer(instanceAPI, createServerReq, scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("error creating server: %s", err)
+		err := fmt.Errorf("error creating server: %w", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
+
 		return multistep.ActionHalt
 	}
 
 	err = c.RootVolume.PostServerCreationSetup(block.NewAPI(state.Get("client").(*scw.Client)), createServerResp.Server)
 	if err != nil {
-		err := fmt.Errorf("error during post server creation setup server: %s", err)
+		err := fmt.Errorf("error during post server creation setup server: %w", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
+
 		return multistep.ActionHalt
 	}
 
@@ -107,9 +113,10 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 
 		err = instanceAPI.SetAllServerUserData(createUserDataReq, scw.WithContext(ctx))
 		if err != nil {
-			err := fmt.Errorf("error creating server: %s", err)
+			err := fmt.Errorf("error creating server: %w", err)
 			state.Put("error", err)
 			ui.Error(err.Error())
+
 			return multistep.ActionHalt
 		}
 	}
@@ -119,9 +126,10 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		ServerID: createServerResp.Server.ID,
 	}, scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("error starting server: %s", err)
+		err := fmt.Errorf("error starting server: %w", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
+
 		return multistep.ActionHalt
 	}
 
@@ -130,11 +138,13 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		Zone:     scw.Zone(c.Zone),
 		Timeout:  &c.ServerCreationTimeout,
 	}
+
 	server, err := instanceAPI.WaitForServer(waitServerRequest)
 	if err != nil {
-		err := fmt.Errorf("server is not available: %s", err)
+		err := fmt.Errorf("server is not available: %w", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
+
 		return multistep.ActionHalt
 	}
 
@@ -142,6 +152,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		err := errors.New("servert is in error state")
 		state.Put("error", err)
 		ui.Error(err.Error())
+
 		return multistep.ActionHalt
 	}
 
