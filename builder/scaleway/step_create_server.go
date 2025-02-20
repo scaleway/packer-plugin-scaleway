@@ -83,7 +83,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 
 	createServerResp, err := createServer(instanceAPI, createServerReq, scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("error creating server: %w", err)
+		err := fmt.Errorf("error creating server: %w", formatInstanceError(err))
 		state.Put("error", err)
 		ui.Error(err.Error())
 
