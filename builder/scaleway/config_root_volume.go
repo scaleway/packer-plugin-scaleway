@@ -37,11 +37,13 @@ func (c *ConfigRootVolume) PostServerCreationSetup(blockAPI *block.API, server *
 		if !exists {
 			return errors.New("root volume not found")
 		}
+
 		_, err := blockAPI.UpdateVolume(&block.UpdateVolumeRequest{
 			Zone:     rootVolume.Zone,
 			VolumeID: rootVolume.ID,
 			PerfIops: c.IOPS,
 		})
+
 		return err
 	}
 

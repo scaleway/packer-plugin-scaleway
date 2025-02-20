@@ -25,6 +25,7 @@ func getActiveProfile() *scw.Profile {
 	if err != nil {
 		return &scw.Profile{}
 	}
+
 	activeProfile, err := cfg.GetActiveProfile()
 	if err != nil {
 		return &scw.Profile{}
@@ -36,10 +37,12 @@ func getActiveProfile() *scw.Profile {
 func NewTestContext(ctx context.Context, httpClient *http.Client) (context.Context, error) {
 	activeProfile := getActiveProfile()
 	profile := scw.MergeProfiles(activeProfile, scw.LoadEnvProfile())
+
 	client, err := scw.NewClient(scw.WithProfile(profile), scw.WithHTTPClient(httpClient))
 	if err != nil {
 		return nil, fmt.Errorf("error creating scw client: %w", err)
 	}
+
 	projectID, exists := client.GetDefaultProjectID()
 	if !exists {
 		if vcr.UpdateCassettes == false {
@@ -74,7 +77,7 @@ func Test(t *testing.T, config *TestConfig) {
 	require.NoError(t, err)
 
 	// Create TMP Dir
-	tmpDir, err := os.MkdirTemp(os.TempDir(), "packer_e2e_test")
+	tmpDir := t.TempDir()
 	require.NoError(t, err)
 	t.Logf("Created tmp dir: %s", tmpDir)
 
@@ -83,6 +86,7 @@ func Test(t *testing.T, config *TestConfig) {
 
 	for i, check := range config.Checks {
 		t.Logf("Running check %d/%d", i+1, len(config.Checks))
+
 		err := check.Check(ctx)
 		if err != nil {
 			t.Fail()

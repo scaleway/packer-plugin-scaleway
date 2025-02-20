@@ -23,19 +23,22 @@ func (s *StepPreValidate) Run(ctx context.Context, state multistep.StateBag) mul
 
 	if s.Force {
 		ui.Say("Force flag found, skipping pre-validating image name")
+
 		return multistep.ActionContinue
 	}
 
 	ui.Say("Pre-validating image name: " + s.ImageName)
 
 	instanceAPI := instance.NewAPI(state.Get("client").(*scw.Client))
+
 	images, err := instanceAPI.ListImages(
 		&instance.ListImagesRequest{Name: &s.ImageName},
 		scw.WithAllPages(), scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("error: getting image list: %s", err)
+		err := fmt.Errorf("error: getting image list: %w", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
+
 		return multistep.ActionHalt
 	}
 
@@ -45,6 +48,7 @@ func (s *StepPreValidate) Run(ctx context.Context, state multistep.StateBag) mul
 				s.ImageName, im.ID)
 			state.Put("error", err)
 			ui.Error(err.Error())
+
 			return multistep.ActionHalt
 		}
 	}
@@ -55,9 +59,10 @@ func (s *StepPreValidate) Run(ctx context.Context, state multistep.StateBag) mul
 		&instance.ListSnapshotsRequest{Name: &s.SnapshotName},
 		scw.WithAllPages(), scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("error: getting snapshot list: %s", err)
+		err := fmt.Errorf("error: getting snapshot list: %w", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
+
 		return multistep.ActionHalt
 	}
 
@@ -67,6 +72,7 @@ func (s *StepPreValidate) Run(ctx context.Context, state multistep.StateBag) mul
 				s.SnapshotName, sn.ID)
 			state.Put("error", err)
 			ui.Error(err.Error())
+
 			return multistep.ActionHalt
 		}
 	}

@@ -31,7 +31,7 @@ func (s *stepSweep) Cleanup(state multistep.StateBag) {
 		Zone:    scw.Zone(c.Zone),
 	})
 	if err != nil {
-		err := fmt.Errorf("error deleting image: %s", err)
+		err := fmt.Errorf("error deleting image: %w", err)
 		state.Put("error", err)
 		ui.Error(fmt.Sprintf("Error deleting image: %s. (Ignored)", err))
 	}
@@ -44,7 +44,7 @@ func (s *stepSweep) Cleanup(state multistep.StateBag) {
 			Zone:       scw.Zone(c.Zone),
 		})
 		if err != nil {
-			err := fmt.Errorf("error deleting snapshot: %s", err)
+			err := fmt.Errorf("error deleting snapshot: %w", err)
 			state.Put("error", err)
 			ui.Error(fmt.Sprintf("Error deleting snapshot: %s. (Ignored)", err))
 		}

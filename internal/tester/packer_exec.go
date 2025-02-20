@@ -28,6 +28,7 @@ func preparePackerEnv(currentEnv []string) []string {
 	hasCassettesConfigured := false
 
 	env := make([]string, 0, len(currentEnv))
+
 	for _, envVariable := range currentEnv {
 		switch {
 		case strings.HasPrefix(envVariable, scw.ScwDefaultProjectIDEnv):
@@ -42,15 +43,19 @@ func preparePackerEnv(currentEnv []string) []string {
 
 		env = append(env, envVariable)
 	}
+
 	if !hasProject {
 		env = append(env, scw.ScwDefaultProjectIDEnv+"=11111111-1111-1111-1111-111111111111")
 	}
+
 	if !hasAccessKey {
 		env = append(env, scw.ScwAccessKeyEnv+"=SCWXXXXXXXXXXXXXFAKE")
 	}
+
 	if !hasSecretKey {
 		env = append(env, scw.ScwSecretKeyEnv+"=11111111-1111-1111-1111-111111111111")
 	}
+
 	if !hasCassettesConfigured {
 		env = append(env, vcr.UpdateCassettesEnvVariable+"=false")
 	}
@@ -62,6 +67,7 @@ func packerExec(folder, packerConfig string, fakeEnv bool) error {
 	// Create Packer file
 	packerFile := filepath.Join(folder, "build_scaleway.pkr.hcl")
 	packerFileContent := PackerFileHeader + packerConfig
+
 	err := os.WriteFile(packerFile, []byte(packerFileContent), 0o600)
 	if err != nil {
 		return fmt.Errorf("failed to create packer file: %w", err)
@@ -72,8 +78,10 @@ func packerExec(folder, packerConfig string, fakeEnv bool) error {
 	if fakeEnv {
 		cmd.Env = preparePackerEnv(os.Environ())
 	}
+
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
+
 	err = cmd.Run()
 	if err != nil {
 		return fmt.Errorf("failed to build image with packer: %w", err)

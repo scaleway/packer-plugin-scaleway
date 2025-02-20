@@ -68,10 +68,13 @@ func (a *Artifact) State(name string) interface{} {
 		)
 		if err != nil {
 			log.Printf("error when creating hcp registry image %v", err)
+
 			return nil
 		}
+
 		return img
 	}
+
 	return a.StateData[name]
 }
 
@@ -79,6 +82,7 @@ func (a *Artifact) Destroy() error {
 	instanceAPI := instance.NewAPI(a.Client)
 
 	log.Printf("Destroying image: %s (%s)", a.ImageID, a.ImageName)
+
 	err := instanceAPI.DeleteImage(&instance.DeleteImageRequest{
 		ImageID: a.ImageID,
 	})
@@ -87,6 +91,7 @@ func (a *Artifact) Destroy() error {
 	}
 
 	log.Printf("Destroying snapshots: %v", a.Snapshots)
+
 	for _, snapshot := range a.Snapshots {
 		err = instanceAPI.DeleteSnapshot(&instance.DeleteSnapshotRequest{
 			SnapshotID: snapshot.ID,

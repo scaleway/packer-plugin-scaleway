@@ -45,6 +45,7 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 	scwZone, err := scw.ParseZone(b.Config.Zone)
 	if err != nil {
 		ui.Error(err.Error())
+
 		return nil, err
 	}
 
@@ -65,6 +66,7 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		client, cleanup, err := vcr.GetHTTPRecorder(filepath.Join("testdata", b.Config.ImageName+".cassette"), vcr.UpdateCassettes)
 		if err != nil {
 			ui.Error(err.Error())
+
 			return nil, err
 		}
 		defer cleanup()
@@ -75,6 +77,7 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 	client, err := scw.NewClient(clientOpts...)
 	if err != nil {
 		ui.Error(err.Error())
+
 		return nil, err
 	}
 

@@ -32,6 +32,7 @@ func (s *stepBackup) Run(ctx context.Context, state multistep.StateBag) multiste
 		err := fmt.Errorf("failed to backup server: %w", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
+
 		return multistep.ActionHalt
 	}
 
@@ -39,6 +40,7 @@ func (s *stepBackup) Run(ctx context.Context, state multistep.StateBag) multiste
 	if err != nil {
 		state.Put("error", err)
 		ui.Error(err.Error())
+
 		return multistep.ActionHalt
 	}
 
@@ -51,6 +53,7 @@ func (s *stepBackup) Run(ctx context.Context, state multistep.StateBag) multiste
 		err := fmt.Errorf("failed to fetch generated image: %w", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
+
 		return multistep.ActionHalt
 	}
 
@@ -62,6 +65,7 @@ func (s *stepBackup) Run(ctx context.Context, state multistep.StateBag) multiste
 		if err != nil {
 			state.Put("error", err)
 			ui.Error(err.Error())
+
 			return multistep.ActionHalt
 		}
 	}
@@ -92,6 +96,7 @@ func artifactSnapshotFromImage(image *instance.Image) []ArtifactSnapshot {
 			Name: extraVolume.Name,
 		})
 	}
+
 	return snapshots
 }
 
@@ -101,6 +106,7 @@ func backupVolumesFromServer(server *instance.Server) map[string]*instance.Serve
 	for _, volume := range server.Volumes {
 		backupVolumes[volume.ID] = &instance.ServerActionRequestVolumeBackupTemplate{}
 	}
+
 	return backupVolumes
 }
 
@@ -110,6 +116,7 @@ func imageIDFromBackupResult(hrefResult string) (string, error) {
 	if len(hrefSplit) != 3 {
 		return "", fmt.Errorf("failed to parse backup request response (%s)", hrefResult)
 	}
+
 	imageID := hrefSplit[2]
 
 	return imageID, nil

@@ -26,9 +26,10 @@ func (s *stepShutdown) Run(ctx context.Context, state multistep.StateBag) multis
 		Zone:     scw.Zone(c.Zone),
 	}, scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("error stopping server: %s", err)
+		err := fmt.Errorf("error stopping server: %w", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
+
 		return multistep.ActionHalt
 	}
 
@@ -40,9 +41,10 @@ func (s *stepShutdown) Run(ctx context.Context, state multistep.StateBag) multis
 
 	instanceResp, err := instanceAPI.WaitForServer(waitRequest, scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("error shutting down server: %s", err)
+		err := fmt.Errorf("error shutting down server: %w", err)
 		state.Put("error", err)
 		ui.Error(err.Error())
+
 		return multistep.ActionHalt
 	}
 
@@ -50,6 +52,7 @@ func (s *stepShutdown) Run(ctx context.Context, state multistep.StateBag) multis
 		err := fmt.Errorf("server is in state %s instead of stopped", instanceResp.State.String())
 		state.Put("error", err)
 		ui.Error(err.Error())
+
 		return multistep.ActionHalt
 	}
 

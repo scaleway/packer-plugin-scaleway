@@ -14,6 +14,7 @@ func TestAccScalewayBuilder(t *testing.T) {
 	if skip := testAccPreCheck(t); skip {
 		return
 	}
+
 	acctest.TestPlugin(t, &acctest.PluginTestCase{
 		Name:     "test-scaleway-builder-basic",
 		Template: testBuilderAccBasic,
@@ -23,6 +24,7 @@ func TestAccScalewayBuilder(t *testing.T) {
 					return fmt.Errorf("Bad exit code. Logfile: %s", logfile)
 				}
 			}
+
 			return nil
 		},
 	})
@@ -30,11 +32,14 @@ func TestAccScalewayBuilder(t *testing.T) {
 
 func testAccPreCheck(t *testing.T) bool {
 	t.Helper()
+
 	if os.Getenv(acctest.TestEnvVar) == "" {
 		t.Skipf("Acceptance tests skipped unless env '%s' set",
 			acctest.TestEnvVar)
+
 		return true
 	}
+
 	return false
 }
 

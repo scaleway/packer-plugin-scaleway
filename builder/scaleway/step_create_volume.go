@@ -23,6 +23,7 @@ func (s *stepCreateVolume) Run(ctx context.Context, state multistep.StateBag) mu
 	c := state.Get("config").(*Config)
 
 	volumeTemplates := []*instance.VolumeServerTemplate(nil)
+
 	for _, requestedVolume := range c.BlockVolumes {
 		req := &block.CreateVolumeRequest{
 			Zone:      scw.Zone(c.Zone),
@@ -37,10 +38,12 @@ func (s *stepCreateVolume) Run(ctx context.Context, state multistep.StateBag) mu
 				Size: scw.Size(requestedVolume.SizeInGB) * scw.GB,
 			}
 		}
+
 		volume, err := blockAPI.CreateVolume(req, scw.WithContext(ctx))
 		if err != nil {
 			state.Put("error", err)
 			ui.Error(err.Error())
+
 			return multistep.ActionHalt
 		}
 
@@ -67,6 +70,7 @@ func (s *stepCreateVolume) Cleanup(state multistep.StateBag) {
 
 	_, serverWasCreated := state.GetOk("server_id")
 	createdVolumesI, createdVolumesExists := state.GetOk("created_volumes")
+
 	if !serverWasCreated && createdVolumesExists {
 		// If server was not created, we need to clean up manually created volumes
 		createdVolumes := createdVolumesI.([]*instance.VolumeServerTemplate)
@@ -95,16 +99,18 @@ func (s *stepCreateVolume) Cleanup(state multistep.StateBag) {
 	for _, volume := range volumes {
 		err := waitAndDeleteInstanceVolume(instanceAPI, scw.Zone(c.Zone), volume.ID)
 		if err != nil && !httperrors.Is404(err) {
-			err := fmt.Errorf("error removing block volume %s: %s", volume.ID, err)
+			err := fmt.Errorf("error removing block volume %s: %w", volume.ID, err)
 			state.Put("error", err)
 			ui.Error(fmt.Sprintf("Error removing block volume %s: %s. (Ignored)", volume.ID, err))
 		}
+
 		if err == nil {
 			continue
 		}
+
 		err = waitAndDeleteBlockVolume(blockAPI, scw.Zone(c.Zone), volume.ID)
 		if err != nil {
-			err := fmt.Errorf("error removing block volume %s: %s", volume.ID, err)
+			err := fmt.Errorf("error removing block volume %s: %w", volume.ID, err)
 			state.Put("error", err)
 			ui.Error(fmt.Sprintf("Error removing block volume %s: %s. (Ignored)", volume.ID, err))
 		}
@@ -133,6 +139,7 @@ func waitAndDeleteInstanceVolume(instanceAPI *instance.API, zone scw.Zone, volum
 
 func waitAndDeleteBlockVolume(blockAPI *block.API, zone scw.Zone, volumeID string) error {
 	volumeTerminalStatus := block.VolumeStatusAvailable
+
 	_, err := blockAPI.WaitForVolumeAndReferences(&block.WaitForVolumeAndReferencesRequest{
 		VolumeID:             volumeID,
 		Zone:                 zone,

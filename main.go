@@ -13,6 +13,7 @@ func main() {
 	pps := plugin.NewSet()
 	pps.RegisterBuilder(plugin.DEFAULT_NAME, new(scaleway.Builder))
 	pps.SetVersion(version.PluginVersion)
+
 	err := pps.Run()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())
