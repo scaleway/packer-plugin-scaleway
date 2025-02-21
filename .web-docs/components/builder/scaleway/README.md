@@ -91,6 +91,7 @@ can also be supplied to override the typical auto-generated key:
 - `remove_volume` (bool) - RemoveVolume remove the temporary volumes created before running the server
 
 - `root_volume` (ConfigRootVolume) - RootVolumeType lets you configure the root volume
+  See the [RootVolume](#root-volume-configuration) documentation for fields.
 
 - `block_volume` ([]ConfigBlockVolume) - BlockVolumes define block volumes attached to the server alongside the default volume
   See the [BlockVolumes](#block-volumes-configuration) documentation for fields.
@@ -147,6 +148,19 @@ can also be supplied to override the typical auto-generated key:
 - `iops` (\*uint32) - IOPS is the number of requested iops for the server's volume. This will not impact created snapshot.
 
 <!-- End of code generated from the comments of the ConfigBlockVolume struct in builder/scaleway/config.go; -->
+
+
+### Root volume configuration
+
+<!-- Code generated from the comments of the ConfigRootVolume struct in builder/scaleway/config_root_volume.go; DO NOT EDIT MANUALLY -->
+
+- `type` (string) - The type of the root volume
+
+- `iops` (\*uint32) - IOPS of the root volume if using SBS, will only affect runtime. Image's volumes cannot have a configured IOPS.
+
+- `size_in_gb` (uint64) - Size of the root volume
+
+<!-- End of code generated from the comments of the ConfigRootVolume struct in builder/scaleway/config_root_volume.go; -->
 
 
 ## Basic Example

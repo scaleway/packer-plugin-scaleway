@@ -1,3 +1,6 @@
+//go:generate packer-sdc struct-markdown
+//go:generate packer-sdc mapstructure-to-hcl2 -type ConfigRootVolume
+
 package scaleway
 
 import (
@@ -7,6 +10,16 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
+
+// ConfigRootVolume is the configuration for your server's root volume
+type ConfigRootVolume struct {
+	// The type of the root volume
+	Type string `mapstructure:"type"`
+	// IOPS of the root volume if using SBS, will only affect runtime. Image's volumes cannot have a configured IOPS.
+	IOPS *uint32 `mapstructure:"iops"`
+	// Size of the root volume
+	SizeInGB uint64 `mapstructure:"size_in_gb"`
+}
 
 // IsConfigured returns true if root volume has been manually configured.
 // If true, the volume template should be used when creating the server.
