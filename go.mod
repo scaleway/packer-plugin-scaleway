@@ -1,8 +1,7 @@
 module github.com/scaleway/packer-plugin-scaleway
 
 go 1.22.0
-
-toolchain go1.22.4
+toolchain go1.23.6
 
 require (
 	github.com/hashicorp/hcl/v2 v2.19.1
@@ -11,7 +10,7 @@ require (
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.30
 	github.com/stretchr/testify v1.10.0
 	github.com/zclconf/go-cty v1.13.3
-	golang.org/x/crypto v0.33.0
+	golang.org/x/crypto v0.35.0
 	gopkg.in/dnaeon/go-vcr.v4 v4.0.2
 )
 
