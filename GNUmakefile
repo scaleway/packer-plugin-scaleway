@@ -27,7 +27,7 @@ plugin-check: build
 testacc: dev
 	@PACKER_ACC=1 go test -count $(COUNT) -v $(TEST) -timeout=120m
 
-generate: install-packer-sdc
+generate:
 	@go generate ./...
 	@if [ -d ".docs" ]; then rm -r ".docs"; fi
 	@go tool packer-sdc renderdocs -src "docs" -partials docs-partials/ -dst ".docs/"
