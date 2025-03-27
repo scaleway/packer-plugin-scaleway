@@ -86,7 +86,7 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 			return multistep.ActionHalt
 		}
 
-		defer f.Close()
+		defer f.Close() //nolint
 
 		// Write the key out
 		if _, err := f.Write(pem.EncodeToMemory(&privateBlock)); err != nil {

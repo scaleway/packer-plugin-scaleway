@@ -8,7 +8,7 @@ import (
 )
 
 func TestArtifact_Impl(t *testing.T) {
-	var raw interface{}
+	var raw interface{} //nolint:staticcheck
 
 	raw = &scaleway.Artifact{}
 	if _, ok := raw.(packersdk.Artifact); !ok {

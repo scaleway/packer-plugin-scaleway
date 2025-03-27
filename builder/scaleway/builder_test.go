@@ -21,7 +21,7 @@ func testConfig() map[string]interface{} {
 }
 
 func TestBuilder_ImplementsBuilder(t *testing.T) {
-	var raw interface{}
+	var raw interface{} //nolint:staticcheck
 
 	raw = &scaleway.Builder{}
 	if _, ok := raw.(packersdk.Builder); !ok {

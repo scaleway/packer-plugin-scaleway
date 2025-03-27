@@ -41,7 +41,7 @@ type Artifact struct {
 	StateData map[string]interface{}
 }
 
-func (*Artifact) BuilderId() string { //nolint:revive,stylecheck
+func (*Artifact) BuilderId() string {
 	return BuilderID
 }
 
@@ -50,7 +50,7 @@ func (*Artifact) Files() []string {
 	return nil
 }
 
-func (a *Artifact) Id() string { //nolint:revive,stylecheck
+func (a *Artifact) Id() string {
 	return fmt.Sprintf("%s:%s", a.ZoneName, a.ImageID)
 }
 
