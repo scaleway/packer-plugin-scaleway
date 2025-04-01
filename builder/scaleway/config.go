@@ -1,5 +1,5 @@
-//go:generate packer-sdc struct-markdown
-//go:generate packer-sdc mapstructure-to-hcl2 -type Config,ConfigBlockVolume
+//go:generate go tool packer-sdc struct-markdown
+//go:generate go tool packer-sdc mapstructure-to-hcl2 -type Config,ConfigBlockVolume
 
 package scaleway
 
