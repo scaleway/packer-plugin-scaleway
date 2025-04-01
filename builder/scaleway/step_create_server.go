@@ -27,13 +27,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 
 	var tags []string
 
-	var bootscript *string
-
 	ui.Say("Creating server...")
-
-	if c.Bootscript != "" {
-		bootscript = &c.Bootscript
-	}
 
 	if c.Comm.SSHPublicKey != nil {
 		tags = []string{"AUTHORIZED_KEY=" + strings.ReplaceAll(strings.TrimSpace(string(c.Comm.SSHPublicKey)), " ", "_")}
@@ -43,10 +37,9 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 
 	createServerReq := &instance.CreateServerRequest{
 		BootType:       &bootType,
-		Bootscript:     bootscript,
 		CommercialType: c.CommercialType,
 		Name:           c.ServerName,
-		Image:          c.Image,
+		Image:          scw.StringPtr(c.Image),
 		Tags:           tags,
 		Zone:           scw.Zone(c.Zone),
 	}
