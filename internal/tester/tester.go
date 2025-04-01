@@ -72,7 +72,7 @@ func Test(t *testing.T, config *TestConfig) {
 	require.NoError(t, err)
 	defer cleanup()
 
-	ctx := context.Background()
+	ctx := t.Context()
 	ctx, err = NewTestContext(ctx, httpClient)
 	require.NoError(t, err)
 

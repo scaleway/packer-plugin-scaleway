@@ -2,7 +2,6 @@ package scaleway_test
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"math/rand"
 	"net/http"
@@ -158,7 +157,7 @@ func TestStepPreValidate(t *testing.T) {
 			state, teardown := setup(t, tc.fakeImgNames, tc.fakeSnapNames)
 			defer teardown()
 
-			if action := tc.step.Run(context.Background(), state); action != tc.wantAction {
+			if action := tc.step.Run(t.Context(), state); action != tc.wantAction {
 				t.Fatalf("step.Run: want: %v; got: %v", tc.wantAction, action)
 			}
 		})
