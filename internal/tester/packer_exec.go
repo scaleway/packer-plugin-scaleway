@@ -74,7 +74,7 @@ func packerExec(folder, packerConfig string, fakeEnv bool) error {
 	}
 
 	// Run Packer
-	cmd := exec.Command("packer", "build", packerFile)
+	cmd := exec.Command("packer", "build", packerFile) //nolint:gosec
 	if fakeEnv {
 		cmd.Env = preparePackerEnv(os.Environ())
 	}

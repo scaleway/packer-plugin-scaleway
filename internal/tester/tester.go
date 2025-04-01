@@ -45,7 +45,7 @@ func NewTestContext(ctx context.Context, httpClient *http.Client) (context.Conte
 
 	projectID, exists := client.GetDefaultProjectID()
 	if !exists {
-		if vcr.UpdateCassettes == false {
+		if !vcr.UpdateCassettes {
 			projectID = "11111111-1111-1111-1111-111111111111"
 		} else {
 			return nil, errors.New("error getting default project ID")
