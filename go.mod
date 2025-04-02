@@ -1,12 +1,11 @@
 module github.com/scaleway/packer-plugin-scaleway
 
 go 1.24.0
-
 require (
 	github.com/hashicorp/hcl/v2 v2.23.0
 	github.com/hashicorp/packer-plugin-sdk v0.6.1
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.30
+	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.33
 	github.com/stretchr/testify v1.10.0
 	github.com/zclconf/go-cty v1.13.3
 	golang.org/x/crypto v0.36.0
