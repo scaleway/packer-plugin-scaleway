@@ -58,6 +58,7 @@ func NoVolume(zone scw.Zone) *NoVolumesCheck {
 type VolumeCheck struct {
 	zone       scw.Zone
 	volumeName string
+	tags       []string
 
 	size *scw.Size
 }
@@ -65,6 +66,11 @@ type VolumeCheck struct {
 func (c *VolumeCheck) SizeInGB(size uint64) *VolumeCheck {
 	c.size = scw.SizePtr(scw.Size(size) * scw.GB)
 
+	return c
+}
+
+func (c *VolumeCheck) Tags(tags []string) *VolumeCheck {
+	c.tags = tags
 	return c
 }
 
@@ -97,6 +103,21 @@ func (c *VolumeCheck) Check(ctx context.Context) error {
 
 	if c.size != nil && volume.Size != *c.size {
 		return fmt.Errorf("volume size %d does not match expected size %d", volume.Size, *c.size)
+	}
+
+	if len(c.tags) > 0 {
+		for _, expectedTag := range c.tags {
+			found := false
+			for _, actualTag := range volume.Tags {
+				if actualTag == expectedTag {
+					found = true
+					break
+				}
+			}
+			if !found {
+				return fmt.Errorf("expected tag %q not found on volume %s", expectedTag, c.volumeName)
+			}
+		}
 	}
 
 	return nil

@@ -21,6 +21,7 @@ source "scaleway" "basic" {
   image_name = "packer-e2e-simple"
   ssh_username = "root"
   remove_volume = true
+  tags = ["devtools", "provider", "packer"]
 }
 
 build {
@@ -29,7 +30,8 @@ build {
 `,
 		Checks: []tester.PackerCheck{
 			checks.Image(zone, "packer-e2e-simple").
-				RootVolumeType("sbs_snapshot"),
+				RootVolumeType("sbs_snapshot").
+				Tags([]string{"devtools", "provider", "packer"}),
 			checks.NoVolume(zone),
 		},
 	})
