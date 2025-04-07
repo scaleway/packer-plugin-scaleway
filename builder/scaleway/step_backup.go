@@ -7,6 +7,7 @@ import (
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
+	"github.com/scaleway/scaleway-sdk-go/api/block/v1"
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
@@ -14,7 +15,9 @@ import (
 type stepBackup struct{}
 
 func (s *stepBackup) Run(ctx context.Context, state multistep.StateBag) multistep.StepAction {
-	instanceAPI := instance.NewAPI(state.Get("client").(*scw.Client))
+	client := state.Get("client").(*scw.Client)
+	instanceAPI := instance.NewAPI(client)
+	blockAPI := block.NewAPI(client)
 	ui := state.Get("ui").(packersdk.Ui)
 	c := state.Get("config").(*Config)
 	server := state.Get("server").(*instance.Server)
@@ -61,7 +64,7 @@ func (s *stepBackup) Run(ctx context.Context, state multistep.StateBag) multiste
 
 	// Apply tags to image, volumes and snapshots
 	if len(c.Tags) != 0 {
-		err = applyTags(ctx, instanceAPI, scw.Zone(c.Zone), imageID, server.Volumes, snapshots, c.Tags)
+		err = applyTags(ctx, instanceAPI, blockAPI, scw.Zone(c.Zone), imageID, server.Volumes, snapshots, c.Tags)
 		if err != nil {
 			state.Put("error", err)
 			ui.Error(err.Error())
@@ -122,7 +125,7 @@ func imageIDFromBackupResult(hrefResult string) (string, error) {
 	return imageID, nil
 }
 
-func applyTags(ctx context.Context, instanceAPI *instance.API, zone scw.Zone, imageID string, volumes map[string]*instance.VolumeServer, snapshots []ArtifactSnapshot, tags []string) error {
+func applyTags(ctx context.Context, instanceAPI *instance.API, blockAPI *block.API, zone scw.Zone, imageID string, volumes map[string]*instance.VolumeServer, snapshots []ArtifactSnapshot, tags []string) error {
 	if _, err := instanceAPI.UpdateImage(&instance.UpdateImageRequest{
 		ImageID: imageID,
 		Zone:    zone,
@@ -132,7 +135,7 @@ func applyTags(ctx context.Context, instanceAPI *instance.API, zone scw.Zone, im
 	}
 
 	for _, volume := range volumes {
-		if _, err := instanceAPI.UpdateVolume(&instance.UpdateVolumeRequest{
+		if _, err := blockAPI.UpdateVolume(&block.UpdateVolumeRequest{
 			VolumeID: volume.ID,
 			Zone:     zone,
 			Tags:     &tags,
@@ -142,7 +145,7 @@ func applyTags(ctx context.Context, instanceAPI *instance.API, zone scw.Zone, im
 	}
 
 	for _, snapshot := range snapshots {
-		if _, err := instanceAPI.UpdateSnapshot(&instance.UpdateSnapshotRequest{
+		if _, err := blockAPI.UpdateSnapshot(&block.UpdateSnapshotRequest{
 			SnapshotID: snapshot.ID,
 			Zone:       zone,
 			Tags:       &tags,

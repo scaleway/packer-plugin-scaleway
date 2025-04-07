@@ -16,8 +16,8 @@ interactions:
         form: {}
         headers:
             User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.5; darwin; arm64)
-        url: https://api.scaleway.com/instance/v1/zones/fr-par-1/images?name=packer-e2e-simple&page=1&project=b577a333-d52a-4d86-9310-b413d5fe9bb1
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.24.0; darwin; amd64)
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-1/images?name=packer-e2e-simple&page=1&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
         method: GET
       response:
         proto: HTTP/2.0
@@ -25,20 +25,20 @@ interactions:
         proto_minor: 0
         transfer_encoding: []
         trailer: {}
-        content_length: 616
+        content_length: 648
         uncompressed: false
-        body: '{"images": [{"id": "ec860961-5a7e-4126-9c69-af4591d076f0", "name": "packer-e2e-simple", "organization": "ee7bd9e1-9cbd-4724-b2f4-19e50f3cf38b", "project": "b577a333-d52a-4d86-9310-b413d5fe9bb1", "root_volume": {"volume_type": "sbs_snapshot", "id": "3a172cdf-c167-4979-b8fb-9e1a77eec206", "size": 0, "name": ""}, "extra_volumes": {}, "public": false, "arch": "x86_64", "creation_date": "2025-02-10T15:39:15.062024+00:00", "modification_date": "2025-02-10T15:39:15.062024+00:00", "default_bootscript": null, "from_server": "e2813b3a-bf1f-4a1b-887d-8bd54c63d0b7", "state": "available", "tags": [], "zone": "fr-par-1"}]}'
+        body: '{"images": [{"id": "de761f45-29da-4606-908d-f4a7c19c0fe9", "name": "packer-e2e-simple", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "root_volume": {"volume_type": "sbs_snapshot", "id": "a6d9f66b-eb63-4c65-80eb-46ab88971142", "size": 0, "name": ""}, "extra_volumes": {}, "public": false, "arch": "x86_64", "creation_date": "2025-04-07T07:42:00.550692+00:00", "modification_date": "2025-04-07T07:42:01.067231+00:00", "default_bootscript": null, "from_server": "9bda3172-9d28-4b3f-ab1f-b53dff735320", "state": "available", "tags": ["devtools", "provider", "packer"], "zone": "fr-par-1"}]}'
         headers:
             Content-Length:
-                - "616"
+                - "648"
             Content-Security-Policy:
                 - default-src 'none'; frame-ancestors 'none'
             Content-Type:
                 - application/json
             Date:
-                - Mon, 10 Feb 2025 15:39:16 GMT
+                - Mon, 07 Apr 2025 07:42:07 GMT
             Link:
-                - </images?page=1&per_page=50&name=packer-e2e-simple&project=b577a333-d52a-4d86-9310-b413d5fe9bb1>; rel="last"
+                - </images?page=1&per_page=50&name=packer-e2e-simple&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
             Server:
                 - Scaleway API Gateway (fr-par-1;edge03)
             Strict-Transport-Security:
@@ -48,12 +48,12 @@ interactions:
             X-Frame-Options:
                 - DENY
             X-Request-Id:
-                - 30850a63-0859-4be8-838d-c732781223d9
+                - 29d43124-984d-4fc2-bda4-8de555558c9a
             X-Total-Count:
                 - "1"
         status: 200 OK
         code: 200
-        duration: 152.757292ms
+        duration: 227.445759ms
     - id: 1
       request:
         proto: HTTP/1.1
@@ -69,8 +69,8 @@ interactions:
         form: {}
         headers:
             User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.5; darwin; arm64)
-        url: https://api.scaleway.com/instance/v1/zones/fr-par-1/volumes?project=b577a333-d52a-4d86-9310-b413d5fe9bb1
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.24.0; darwin; amd64)
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-1/volumes?project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
         method: GET
       response:
         proto: HTTP/2.0
@@ -89,9 +89,9 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Mon, 10 Feb 2025 15:39:17 GMT
+                - Mon, 07 Apr 2025 07:42:07 GMT
             Link:
-                - </volumes?page=0&per_page=100&project=b577a333-d52a-4d86-9310-b413d5fe9bb1>; rel="last"
+                - </volumes?page=0&per_page=100&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
             Server:
                 - Scaleway API Gateway (fr-par-1;edge03)
             Strict-Transport-Security:
@@ -101,12 +101,12 @@ interactions:
             X-Frame-Options:
                 - DENY
             X-Request-Id:
-                - 783998cd-60cd-455a-9472-21d8f068a85c
+                - 37196c0b-e8fd-44dd-bd88-aaaacc48d1cb
             X-Total-Count:
                 - "0"
         status: 200 OK
         code: 200
-        duration: 83.814792ms
+        duration: 67.77782ms
     - id: 2
       request:
         proto: HTTP/1.1
@@ -122,8 +122,8 @@ interactions:
         form: {}
         headers:
             User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.23.5; darwin; arm64)
-        url: https://api.scaleway.com/block/v1alpha1/zones/fr-par-1/volumes?order_by=created_at_asc&project_id=b577a333-d52a-4d86-9310-b413d5fe9bb1
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.24.0; darwin; amd64)
+        url: https://api.scaleway.com/block/v1alpha1/zones/fr-par-1/volumes?order_by=created_at_asc&project_id=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
         method: GET
       response:
         proto: HTTP/2.0
@@ -142,7 +142,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Mon, 10 Feb 2025 15:39:17 GMT
+                - Mon, 07 Apr 2025 07:42:07 GMT
             Server:
                 - Scaleway API Gateway (fr-par-1;edge03)
             Strict-Transport-Security:
@@ -152,7 +152,7 @@ interactions:
             X-Frame-Options:
                 - DENY
             X-Request-Id:
-                - 387707af-cfa8-434e-b672-05fe94780e05
+                - c283eb14-9de9-470d-936e-77a8c8b67de7
         status: 200 OK
         code: 200
-        duration: 54.427167ms
+        duration: 60.58975ms
