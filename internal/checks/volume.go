@@ -113,6 +113,7 @@ func (c *VolumeCheck) Check(ctx context.Context) error {
 			for _, actualTag := range volume.Tags {
 				if actualTag == expectedTag {
 					found = true
+
 					break
 				}
 			}
