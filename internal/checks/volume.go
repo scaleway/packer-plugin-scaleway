@@ -71,6 +71,7 @@ func (c *VolumeCheck) SizeInGB(size uint64) *VolumeCheck {
 
 func (c *VolumeCheck) Tags(tags []string) *VolumeCheck {
 	c.tags = tags
+
 	return c
 }
 
@@ -108,12 +109,14 @@ func (c *VolumeCheck) Check(ctx context.Context) error {
 	if len(c.tags) > 0 {
 		for _, expectedTag := range c.tags {
 			found := false
+
 			for _, actualTag := range volume.Tags {
 				if actualTag == expectedTag {
 					found = true
 					break
 				}
 			}
+
 			if !found {
 				return fmt.Errorf("expected tag %q not found on volume %s", expectedTag, c.volumeName)
 			}

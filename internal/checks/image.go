@@ -59,6 +59,7 @@ func (c *ImageCheck) SizeInGb(size uint64) *ImageCheck {
 
 func (c *ImageCheck) Tags(tags []string) *ImageCheck {
 	c.tags = tags
+
 	return c
 }
 
@@ -107,6 +108,7 @@ func (c *ImageCheck) Check(ctx context.Context) error {
 	if c.extraVolumesType != nil {
 		for k, v := range c.extraVolumesType {
 			vol, exists := image.ExtraVolumes[k]
+
 			if !exists {
 				return fmt.Errorf("extra volume %s does not exist", k)
 			}
@@ -120,12 +122,15 @@ func (c *ImageCheck) Check(ctx context.Context) error {
 	if c.tags != nil {
 		for _, expectedTag := range c.tags {
 			found := false
+
 			for _, actualTag := range image.Tags {
 				if actualTag == expectedTag {
 					found = true
+
 					break
 				}
 			}
+
 			if !found {
 				return fmt.Errorf("expected tag %q not found on image %s", expectedTag, c.imageName)
 			}

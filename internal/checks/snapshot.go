@@ -25,6 +25,7 @@ func (c *SnapshotCheck) SizeInGB(size uint64) *SnapshotCheck {
 
 func (c *SnapshotCheck) Tags(tags []string) *SnapshotCheck {
 	c.tags = tags
+
 	return c
 }
 
@@ -62,12 +63,15 @@ func (c *SnapshotCheck) Check(ctx context.Context) error {
 	if len(c.tags) > 0 {
 		for _, expectedTag := range c.tags {
 			found := false
+
 			for _, actualTag := range snapshot.Tags {
 				if actualTag == expectedTag {
 					found = true
+
 					break
 				}
 			}
+
 			if !found {
 				return fmt.Errorf("expected tag %q not found on snapshot %s", expectedTag, c.snapshotName)
 			}
