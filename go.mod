@@ -4,7 +4,7 @@ go 1.24.0
 
 require (
 	github.com/hashicorp/hcl/v2 v2.23.0
-	github.com/hashicorp/packer-plugin-sdk v0.6.1
+	github.com/hashicorp/packer-plugin-sdk v0.6.2
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.33
 	github.com/stretchr/testify v1.10.0
@@ -24,6 +24,7 @@ require (
 	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/Masterminds/semver/v3 v3.1.1 // indirect
 	github.com/Masterminds/sprig/v3 v3.2.1 // indirect
+	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
