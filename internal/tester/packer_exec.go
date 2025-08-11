@@ -1,6 +1,7 @@
 package tester
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/exec"
@@ -74,7 +75,7 @@ func packerExec(folder, packerConfig string, fakeEnv bool) error {
 	}
 
 	// Run Packer
-	cmd := exec.Command("packer", "build", packerFile) //nolint:gosec
+	cmd := exec.CommandContext(context.Background(), "packer", "build", packerFile) //nolint:gosec
 	if fakeEnv {
 		cmd.Env = preparePackerEnv(os.Environ())
 	}
