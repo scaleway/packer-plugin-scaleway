@@ -21,7 +21,7 @@ jobs:
       - name: Build binaries
         run: make build
       - name: Run e2e test
-        run: go test -count 1 -v ./builder/scaleway/builder_acc_test.go  -timeout=120m
+        run: go tool gotestsum --format github-actions -- -count 1 -v ./builder/scaleway/builder_acc_test.go -timeout=120m
         env:
           PACKER_ACC: 1
           PACKER_LOG: 1
