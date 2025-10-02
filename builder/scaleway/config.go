@@ -205,7 +205,7 @@ func (c *Config) Prepare(raws ...interface{}) ([]string, error) { //nolint:gocyc
 		}
 	}
 
-	if c.Organization != "" {
+	if c.Organization != "" && c.ProjectID == "" && profile.DefaultProjectID == nil {
 		warnings = append(warnings, "organization_id is deprecated in favor of project_id")
 		c.ProjectID = c.Organization
 	}
