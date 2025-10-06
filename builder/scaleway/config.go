@@ -71,8 +71,6 @@ type Config struct {
 	// get the complete list of the accepted image UUID.
 	// The marketplace image label (eg `ubuntu_focal`) also works.
 	Image string `mapstructure:"image" required:"true"`
-	// The Image size in GB. Will only work for images based on block volumes.
-	ImageSizeInGB int32 `mapstructure:"image_size_in_gb" required:"false"`
 	// The name of the server commercial type:
 	// DEV1-S, DEV1-M, DEV1-L, DEV1-XL,
 	// PLAY2-PICO, PLAY2-NANO, PLAY2-MICRO,

@@ -10,6 +10,9 @@ import (
 
 func TestComplete(t *testing.T) {
 	t.Skip("snapshot_name argument does not work")
+	// This test won't work as it is because b_ssd volumes are no longer supported. This means that the volume that gets
+	// created by default is now an SBS volume, and the check functions only work for Instance Block Volumes.
+	// To reactivate it, we will need to write new check functions for SBS volumes.
 
 	zone := scw.ZoneFrPar2
 
@@ -24,7 +27,6 @@ source "scaleway" "basic" {
   ssh_username = "root"
 
   remove_volume = false
-  image_size_in_gb = 42
   snapshot_name = "packer-e2e-complete-snapshot"
 }
 
