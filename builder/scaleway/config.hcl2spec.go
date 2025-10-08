@@ -73,7 +73,6 @@ type FlatConfig struct {
 	Zone                      *string                 `mapstructure:"zone" required:"true" cty:"zone" hcl:"zone"`
 	APIURL                    *string                 `mapstructure:"api_url" cty:"api_url" hcl:"api_url"`
 	Image                     *string                 `mapstructure:"image" required:"true" cty:"image" hcl:"image"`
-	ImageSizeInGB             *int32                  `mapstructure:"image_size_in_gb" required:"false" cty:"image_size_in_gb" hcl:"image_size_in_gb"`
 	CommercialType            *string                 `mapstructure:"commercial_type" required:"true" cty:"commercial_type" hcl:"commercial_type"`
 	SnapshotName              *string                 `mapstructure:"snapshot_name" required:"false" cty:"snapshot_name" hcl:"snapshot_name"`
 	ImageName                 *string                 `mapstructure:"image_name" required:"false" cty:"image_name" hcl:"image_name"`
@@ -171,7 +170,6 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"zone":                         &hcldec.AttrSpec{Name: "zone", Type: cty.String, Required: false},
 		"api_url":                      &hcldec.AttrSpec{Name: "api_url", Type: cty.String, Required: false},
 		"image":                        &hcldec.AttrSpec{Name: "image", Type: cty.String, Required: false},
-		"image_size_in_gb":             &hcldec.AttrSpec{Name: "image_size_in_gb", Type: cty.Number, Required: false},
 		"commercial_type":              &hcldec.AttrSpec{Name: "commercial_type", Type: cty.String, Required: false},
 		"snapshot_name":                &hcldec.AttrSpec{Name: "snapshot_name", Type: cty.String, Required: false},
 		"image_name":                   &hcldec.AttrSpec{Name: "image_name", Type: cty.String, Required: false},
