@@ -78,7 +78,6 @@ type Config struct {
 	// PLAY2-PICO, PLAY2-NANO, PLAY2-MICRO,
 	// PRO2-XXS, PRO2-XS, PRO2-S, PRO2-M, PRO2-L,
 	// GP1-XS, GP1-S, GP1-M, GP1-L, GP1-XL,
-	// ENT1-XXS, ENT1-XS, ENT1-S, ENT1-M, ENT1-L, ENT1-XL, ENT1-2XL,
 	// GPU-3070-S, RENDER-S, STARDUST1-S,
 	CommercialType string `mapstructure:"commercial_type" required:"true"`
 	// The name of the resulting snapshot that will
