@@ -44,9 +44,7 @@ func (b *Builder) Prepare(raws ...interface{}) ([]string, []string, error) {
 func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook) (packersdk.Artifact, error) { //nolint:ireturn
 	scwZone, err := scw.ParseZone(b.Config.Zone)
 	if err != nil {
-		ui.Error(err.Error())
-
-		return nil, err
+		ui.Sayf("error: %s cannot recognize zone, got: %", err.Error(), scwZone)
 	}
 
 	clientOpts := []scw.ClientOption{
