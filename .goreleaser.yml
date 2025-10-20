@@ -31,7 +31,6 @@ builds:
     ldflags:
       - '-s -w -X {{ .ModulePath }}/version.Version={{.Version}} -X {{ .ModulePath }}/version.VersionPrerelease= '
     goos:
-      - freebsd
       - windows
       - linux
       - darwin
