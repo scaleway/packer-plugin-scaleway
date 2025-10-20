@@ -16,7 +16,7 @@ jobs:
       - name: Install Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.24.0
+          go-version: stable
       - name: Build binaries
         run: make build
       - name: Run unit tests
@@ -36,7 +36,7 @@ jobs:
       - name: Install Go
         uses: actions/setup-go@v6
         with:
-          go-version: 1.24.0
+          go-version: stable
 
       - name: Generate
         run: make generate
