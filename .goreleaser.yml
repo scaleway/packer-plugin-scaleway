@@ -37,12 +37,9 @@ builds:
       - darwin
     goarch:
       - amd64
-      - '386'
       - arm
       - arm64
     ignore:
-      - goos: darwin
-        goarch: '386'
       - goos: linux
         goarch: amd64
     binary: '{{ .ProjectName }}_v{{ .Version }}_{{ .Env.API_VERSION }}_{{ .Os }}_{{ .Arch }}'
