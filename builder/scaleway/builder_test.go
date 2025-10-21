@@ -8,8 +8,8 @@ import (
 	"github.com/scaleway/packer-plugin-scaleway/builder/scaleway"
 )
 
-func testConfig() map[string]interface{} {
-	return map[string]interface{}{
+func testConfig() map[string]any {
+	return map[string]any{
 		"project_id":      "00000000-1111-2222-3333-444444444444",
 		"access_key":      "SCWABCXXXXXXXXXXXXXX",
 		"secret_key":      "00000000-1111-2222-3333-444444444444",
@@ -21,7 +21,7 @@ func testConfig() map[string]interface{} {
 }
 
 func TestBuilder_ImplementsBuilder(t *testing.T) {
-	var raw interface{} //nolint:staticcheck
+	var raw any //nolint:staticcheck
 
 	raw = &scaleway.Builder{}
 	if _, ok := raw.(packersdk.Builder); !ok {
@@ -31,7 +31,7 @@ func TestBuilder_ImplementsBuilder(t *testing.T) {
 
 func TestBuilder_Prepare_BadType(t *testing.T) {
 	b := &scaleway.Builder{}
-	c := map[string]interface{}{
+	c := map[string]any{
 		"api_token": []string{},
 	}
 

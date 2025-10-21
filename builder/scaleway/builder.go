@@ -32,7 +32,7 @@ type Builder struct {
 
 func (b *Builder) ConfigSpec() hcldec.ObjectSpec { return b.Config.FlatMapstructure().HCL2Spec() }
 
-func (b *Builder) Prepare(raws ...interface{}) ([]string, []string, error) {
+func (b *Builder) Prepare(raws ...any) ([]string, []string, error) {
 	warnings, errs := b.Config.Prepare(raws...)
 	if errs != nil {
 		return nil, warnings, errs
@@ -145,7 +145,7 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		Snapshots: state.Get("snapshots").([]ArtifactSnapshot),
 		ZoneName:  b.Config.Zone,
 		Client:    client,
-		StateData: map[string]interface{}{"generated_data": state.Get("generated_data")},
+		StateData: map[string]any{"generated_data": state.Get("generated_data")},
 	}
 
 	return artifact, nil

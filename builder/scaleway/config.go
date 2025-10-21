@@ -152,7 +152,7 @@ type Config struct {
 	Region string `mapstructure:"region" required:"false"`
 }
 
-func (c *Config) Prepare(raws ...interface{}) ([]string, error) { //nolint:gocyclo
+func (c *Config) Prepare(raws ...any) ([]string, error) { //nolint:gocyclo
 	var md mapstructure.Metadata
 
 	err := config.Decode(c, &config.DecodeOpts{
