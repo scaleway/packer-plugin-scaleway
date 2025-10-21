@@ -70,6 +70,7 @@ type TestConfig struct {
 func Test(t *testing.T, config *TestConfig) {
 	httpClient, cleanup, err := vcr.GetHTTPRecorder(vcr.GetTestFilePath(t, "."), vcr.UpdateCassettes)
 	require.NoError(t, err)
+
 	defer cleanup()
 
 	ctx := t.Context()

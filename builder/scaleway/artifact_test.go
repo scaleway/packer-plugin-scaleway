@@ -8,7 +8,7 @@ import (
 )
 
 func TestArtifact_Impl(t *testing.T) {
-	var raw interface{} //nolint:staticcheck
+	var raw any //nolint:staticcheck
 
 	raw = &scaleway.Artifact{}
 	if _, ok := raw.(packersdk.Artifact); !ok {
@@ -17,7 +17,7 @@ func TestArtifact_Impl(t *testing.T) {
 }
 
 func TestArtifactId(t *testing.T) {
-	generatedData := make(map[string]interface{})
+	generatedData := make(map[string]any)
 	a := &scaleway.Artifact{
 		"packer-foobar-image",
 		"cc586e45-5156-4f71-b223-cf406b10dd1d",
@@ -37,7 +37,7 @@ func TestArtifactId(t *testing.T) {
 }
 
 func TestArtifactString(t *testing.T) {
-	generatedData := make(map[string]interface{})
+	generatedData := make(map[string]any)
 	a := &scaleway.Artifact{
 		"packer-foobar-image",
 		"cc586e45-5156-4f71-b223-cf406b10dd1d",
@@ -65,7 +65,7 @@ func TestArtifactString(t *testing.T) {
 func TestArtifactState_StateData(t *testing.T) {
 	expectedData := "this is the data"
 	artifact := &scaleway.Artifact{
-		StateData: map[string]interface{}{"state_data": expectedData},
+		StateData: map[string]any{"state_data": expectedData},
 	}
 
 	// Valid state
