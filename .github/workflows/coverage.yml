@@ -19,6 +19,10 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version: stable
+      - name: Install plugin
+        run: make install-plugin
+      - name: Build binaries
+        run: make build
       - name: Run coverage
         run: go tool gotestsum --format github-actions --junitfile junit.xml -- -coverprofile=coverage.out -covermode=count ./...
       - name: Upload coverage to Codecov
