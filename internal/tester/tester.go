@@ -63,15 +63,16 @@ func ExtractCtx(ctx context.Context) *PackerCtx {
 }
 
 type TestConfig struct {
-	Config string
-	Checks []PackerCheck
+	Config  string
+	Checks  []PackerCheck
+	Cleanup []PackerCleanup
 }
 
 func Test(t *testing.T, config *TestConfig) {
-	httpClient, cleanup, err := vcr.GetHTTPRecorder(vcr.GetTestFilePath(t, "."), vcr.UpdateCassettes)
+	httpClient, vcrCleanupFunc, err := vcr.GetHTTPRecorder(vcr.GetTestFilePath(t, "."), vcr.UpdateCassettes)
 	require.NoError(t, err)
 
-	defer cleanup()
+	defer vcrCleanupFunc()
 
 	ctx := t.Context()
 	ctx, err = NewTestContext(ctx, httpClient)
@@ -92,6 +93,16 @@ func Test(t *testing.T, config *TestConfig) {
 		if err != nil {
 			t.Fail()
 			t.Errorf("Packer check %d failed: %s", i+1, err.Error())
+		}
+	}
+
+	for i, cleanup := range config.Cleanup {
+		t.Logf("Running cleanup func %d/%d", i+1, len(config.Cleanup))
+
+		err := cleanup.Cleanup(ctx)
+		if err != nil {
+			t.Fail()
+			t.Errorf("Packer cleanup %d failed: %s", i+1, err.Error())
 		}
 	}
 
