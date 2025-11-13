@@ -135,6 +135,7 @@ type Config struct {
 	// It can also be specified via environment variable SCALEWAY_API_TOKEN. You
 	// can see and generate tokens in the "Credentials"
 	// section of the control panel.
+	//
 	// Deprecated: use SecretKey instead
 	Token string `mapstructure:"api_token" required:"false"`
 	// The organization id to use to identify your
@@ -143,11 +144,13 @@ type Config struct {
 	// "Account" section of the
 	// control panel.
 	// Previously named: api_access_key with environment variable: SCALEWAY_API_ACCESS_KEY
+	//
 	// Deprecated: use ProjectID instead
 	Organization string `mapstructure:"organization_id" required:"false"`
 	// The name of the region to launch the server in (par1
 	// or ams1). Consequently, this is the region where the snapshot will be
 	// available.
+	//
 	// Deprecated: use Zone instead
 	Region string `mapstructure:"region" required:"false"`
 }
