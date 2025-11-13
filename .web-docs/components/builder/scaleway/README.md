@@ -114,6 +114,7 @@ can also be supplied to override the typical auto-generated key:
   It can also be specified via environment variable SCALEWAY_API_TOKEN. You
   can see and generate tokens in the "Credentials"
   section of the control panel.
+  
   Deprecated: use SecretKey instead
 
 - `organization_id` (string) - The organization id to use to identify your
@@ -122,11 +123,13 @@ can also be supplied to override the typical auto-generated key:
   "Account" section of the
   control panel.
   Previously named: api_access_key with environment variable: SCALEWAY_API_ACCESS_KEY
+  
   Deprecated: use ProjectID instead
 
 - `region` (string) - The name of the region to launch the server in (par1
   or ams1). Consequently, this is the region where the snapshot will be
   available.
+  
   Deprecated: use Zone instead
 
 <!-- End of code generated from the comments of the Config struct in builder/scaleway/config.go; -->
