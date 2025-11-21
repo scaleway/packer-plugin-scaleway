@@ -87,7 +87,7 @@ func Test(t *testing.T, config *TestConfig) {
 	require.NoError(t, err, "error executing packer command: %s", err)
 
 	for i, check := range config.Checks {
-		t.Logf("Running check %d/%d", i+1, len(config.Checks))
+		t.Logf("Running check %d/%d: %s", i+1, len(config.Checks), check.CheckName())
 
 		err := check.Check(ctx)
 		if err != nil {
