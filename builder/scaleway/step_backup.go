@@ -129,7 +129,7 @@ func (s *stepBackup) Run(ctx context.Context, state multistep.StateBag) multiste
 
 	artifactsSnapshots := artifactSnapshotFromImage(image)
 
-	// Apply tags to volumes // TODO and snapshots ?
+	// Apply tags to volumes
 	if len(c.Tags) != 0 {
 		err = applyTags(ctx, instanceAPI, blockAPI, scw.Zone(c.Zone), image.ID, server.Volumes, artifactsSnapshots, c.Tags)
 		if err != nil {
@@ -181,23 +181,6 @@ func applyTags(ctx context.Context, instanceAPI *instance.API, blockAPI *block.A
 			}, scw.WithContext(ctx))
 			if instanceErr != nil {
 				return fmt.Errorf("failed to set tags on the volume: %w", errors.Join(blockErr, instanceErr))
-			}
-		}
-	}
-
-	// TODO: see if really needed
-	for _, snapshot := range snapshots {
-		if _, blockErr := blockAPI.UpdateSnapshot(&block.UpdateSnapshotRequest{
-			SnapshotID: snapshot.ID,
-			Zone:       zone,
-			Tags:       &tags,
-		}, scw.WithContext(ctx)); blockErr != nil {
-			if _, instanceErr := instanceAPI.UpdateSnapshot(&instance.UpdateSnapshotRequest{
-				SnapshotID: snapshot.ID,
-				Zone:       zone,
-				Tags:       &tags,
-			}, scw.WithContext(ctx)); instanceErr != nil {
-				return fmt.Errorf("failed to set tags on the snapshot: %w", errors.Join(blockErr, instanceErr))
 			}
 		}
 	}
