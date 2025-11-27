@@ -44,12 +44,7 @@ func (s *StepPreValidate) Run(ctx context.Context, state multistep.StateBag) mul
 
 	for _, im := range images.Images {
 		if im.Name == s.ImageName {
-			err := fmt.Errorf("error: image name: '%s' is used by existing image with ID %s",
-				s.ImageName, im.ID)
-			state.Put("error", err)
-			ui.Error(err.Error())
-
-			return multistep.ActionHalt
+			return putErrorAndHalt(state, ui, fmt.Errorf("error: image name: '%s' is used by existing image with ID %s", s.ImageName, im.ID))
 		}
 	}
 
