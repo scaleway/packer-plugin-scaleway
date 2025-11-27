@@ -1,11 +1,12 @@
 package scaleway_test
 
 import (
-	"strconv"
+	"errors"
 	"testing"
 
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
 	"github.com/scaleway/packer-plugin-scaleway/builder/scaleway"
+	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
 func testConfig() map[string]any {
@@ -73,6 +74,27 @@ func TestBuilderPrepare_InvalidKey(t *testing.T) {
 	}
 }
 
+func getClientDefaultZone() (*string, error) {
+	configFile, err := scw.LoadConfig()
+	// If the config file do not exist, don't return an error as we may find config in ENV or flags.
+	var configFileNotFoundError *scw.ConfigFileNotFoundError
+	if errors.As(err, &configFileNotFoundError) {
+		configFile = &scw.Config{}
+	} else if err != nil {
+		return nil, err
+	}
+
+	activeProfile, err := configFile.GetActiveProfile()
+	if err != nil {
+		return nil, err
+	}
+
+	envProfile := scw.LoadEnvProfile()
+	profile := scw.MergeProfiles(activeProfile, envProfile)
+
+	return profile.DefaultZone, nil
+}
+
 func TestBuilderPrepare_Zone(t *testing.T) {
 	var b scaleway.Builder
 
@@ -85,11 +107,16 @@ func TestBuilderPrepare_Zone(t *testing.T) {
 		t.Fatalf("bad: %#v", warnings)
 	}
 
-	if err == nil {
+	clientDefaultZone, defaultZoneErr := getClientDefaultZone()
+	if defaultZoneErr == nil {
+		if clientDefaultZone != nil && *clientDefaultZone != b.Config.Zone {
+			t.Errorf("expected zone in config (%s) to be the same as client default zone (%s)", b.Config.Zone, *clientDefaultZone)
+		}
+	} else if err == nil {
 		t.Fatalf("should error")
 	}
 
-	expected := "fr-par-1"
+	expected := "pl-waw-3"
 
 	config["zone"] = expected
 	b = scaleway.Builder{}
