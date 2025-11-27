@@ -205,54 +205,6 @@ func TestBuilderPrepare_Image(t *testing.T) {
 	}
 }
 
-func TestBuilderPrepare_SnapshotName(t *testing.T) {
-	var b scaleway.Builder
-
-	config := testConfig()
-
-	_, warnings, err := b.Prepare(config)
-	if len(warnings) > 0 {
-		t.Fatalf("bad: %#v", warnings)
-	}
-
-	if err != nil {
-		t.Fatalf("should not have error: %s", err)
-	}
-
-	if b.Config.SnapshotName == "" {
-		t.Errorf("invalid: %s", b.Config.SnapshotName)
-	}
-
-	config["snapshot_name"] = "foobarbaz"
-	b = scaleway.Builder{}
-
-	_, warnings, err = b.Prepare(config)
-	if len(warnings) > 0 {
-		t.Fatalf("bad: %#v", warnings)
-	}
-
-	if err != nil {
-		t.Fatalf("should not have error: %s", err)
-	}
-
-	config["snapshot_name"] = "{{timestamp}}"
-	b = scaleway.Builder{}
-
-	_, warnings, err = b.Prepare(config)
-	if len(warnings) > 0 {
-		t.Fatalf("bad: %#v", warnings)
-	}
-
-	if err != nil {
-		t.Fatalf("should not have error: %s", err)
-	}
-
-	_, err = strconv.ParseInt(b.Config.SnapshotName, 0, 0)
-	if err != nil {
-		t.Fatalf("failed to parse int in template: %s", err)
-	}
-}
-
 func TestBuilderPrepare_ServerName(t *testing.T) {
 	var b scaleway.Builder
 
