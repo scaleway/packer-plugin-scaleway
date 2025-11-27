@@ -10,8 +10,10 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
-var _ tester.PackerCheck = (*InstanceSnapshotCheck)(nil)
-var _ SnapshotCheck = (*InstanceSnapshotCheck)(nil)
+var (
+	_ tester.PackerCheck = (*InstanceSnapshotCheck)(nil)
+	_ SnapshotCheck      = (*InstanceSnapshotCheck)(nil)
+)
 
 type InstanceSnapshotCheck struct {
 	zone       scw.Zone
@@ -57,7 +59,7 @@ func findInstanceSnapshot(ctx context.Context, zone scw.Zone, namePrefix string)
 		Project: &testCtx.ProjectID,
 	}, scw.WithContext(ctx))
 	if err != nil {
-		return nil, fmt.Errorf("error listing instance snapshots: %v", err)
+		return nil, fmt.Errorf("error listing instance snapshots: %w", err)
 	}
 
 	if len(resp.Snapshots) == 0 {

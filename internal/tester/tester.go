@@ -99,7 +99,7 @@ func Test(t *testing.T, config *TestConfig) {
 	for i, cleanup := range config.Cleanup {
 		t.Logf("Running cleanup func %d/%d", i+1, len(config.Cleanup))
 
-		err := cleanup.Cleanup(ctx)
+		err := cleanup.Cleanup(ctx, t)
 		if err != nil {
 			t.Fail()
 			t.Errorf("Packer cleanup %d failed: %s", i+1, err.Error())

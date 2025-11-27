@@ -3,6 +3,7 @@ package cleanup
 import (
 	"context"
 	"fmt"
+	"testing"
 
 	"github.com/scaleway/packer-plugin-scaleway/internal/tester"
 	"github.com/scaleway/scaleway-sdk-go/api/block/v1"
@@ -23,7 +24,9 @@ func BlockSnapshot(zone scw.Zone, namePrefix string) *BlockSnapshotCleanup {
 	}
 }
 
-func (b *BlockSnapshotCleanup) Cleanup(ctx context.Context) error {
+func (b *BlockSnapshotCleanup) Cleanup(ctx context.Context, t *testing.T) error {
+	t.Helper()
+
 	testCtx := tester.ExtractCtx(ctx)
 	api := block.NewAPI(testCtx.ScwClient)
 
@@ -50,7 +53,7 @@ func (b *BlockSnapshotCleanup) Cleanup(ctx context.Context) error {
 		}
 	}
 
-	fmt.Printf("deleted block snapshot %q\n", resp.Snapshots[0].Name)
+	t.Logf("deleted block snapshot %q\n", resp.Snapshots[0].Name)
 
 	return nil
 }

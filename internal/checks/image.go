@@ -141,6 +141,7 @@ func (c *ImageCheck) Check(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("could not calculate image size: %w", err)
 	}
+
 	if c.size != nil && imageSize != *c.size {
 		return fmt.Errorf("image size %d does not match expected %d", image.RootVolume.Size, *c.size)
 	}

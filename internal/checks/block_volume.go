@@ -105,6 +105,7 @@ func (c *BlockVolumeCheck) Check(ctx context.Context) error {
 	}
 
 	volumeMatchingErrors := []error(nil)
+
 	for _, volume := range volumes {
 		err = c.compareSingleBlockVolume(volume)
 		if err != nil {
@@ -116,5 +117,5 @@ func (c *BlockVolumeCheck) Check(ctx context.Context) error {
 		return nil
 	}
 
-	return fmt.Errorf("no block volume matched the expected specs, got the following matching errors:\n%s", errors.Join(volumeMatchingErrors...))
+	return fmt.Errorf("no block volume matched the expected specs, got the following matching errors:\n%w", errors.Join(volumeMatchingErrors...))
 }

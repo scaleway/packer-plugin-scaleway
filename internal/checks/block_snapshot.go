@@ -11,8 +11,10 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
-var _ tester.PackerCheck = (*BlockSnapshotCheck)(nil)
-var _ SnapshotCheck = (*BlockSnapshotCheck)(nil)
+var (
+	_ tester.PackerCheck = (*BlockSnapshotCheck)(nil)
+	_ SnapshotCheck      = (*BlockSnapshotCheck)(nil)
+)
 
 type BlockSnapshotCheck struct {
 	zone       scw.Zone
@@ -58,7 +60,7 @@ func findBlockSnapshots(ctx context.Context, zone scw.Zone, namePrefix string) (
 		ProjectID: &testCtx.ProjectID,
 	}, scw.WithContext(ctx))
 	if err != nil {
-		return nil, fmt.Errorf("error listing block snapshots: %v", err)
+		return nil, fmt.Errorf("error listing block snapshots: %w", err)
 	}
 
 	if len(resp.Snapshots) == 0 {
@@ -95,6 +97,7 @@ func (c *BlockSnapshotCheck) Check(ctx context.Context) error {
 	}
 
 	snapshotMatchingErrors := []error(nil)
+
 	for _, snapshot := range snapshots {
 		err = c.compareSingleBlockSnapshot(snapshot)
 		if err != nil {
@@ -106,5 +109,5 @@ func (c *BlockSnapshotCheck) Check(ctx context.Context) error {
 		return nil
 	}
 
-	return fmt.Errorf("no block snapshot matched the expected specs, got the following matching errors:\n%s", errors.Join(snapshotMatchingErrors...))
+	return fmt.Errorf("no block snapshot matched the expected specs, got the following matching errors:\n%w", errors.Join(snapshotMatchingErrors...))
 }

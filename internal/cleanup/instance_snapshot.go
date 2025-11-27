@@ -3,6 +3,7 @@ package cleanup
 import (
 	"context"
 	"fmt"
+	"testing"
 
 	"github.com/scaleway/packer-plugin-scaleway/internal/tester"
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
@@ -23,7 +24,9 @@ func InstanceSnapshot(zone scw.Zone, namePrefix string) *InstanceSnapshotCleanup
 	}
 }
 
-func (i *InstanceSnapshotCleanup) Cleanup(ctx context.Context) error {
+func (i *InstanceSnapshotCleanup) Cleanup(ctx context.Context, t *testing.T) error {
+	t.Helper()
+
 	testCtx := tester.ExtractCtx(ctx)
 	api := instance.NewAPI(testCtx.ScwClient)
 
@@ -48,7 +51,7 @@ func (i *InstanceSnapshotCleanup) Cleanup(ctx context.Context) error {
 		return fmt.Errorf("failed to delete instance snapshot: %w", err)
 	}
 
-	fmt.Printf("deleted instance snapshot %q\n", resp.Snapshots[0].Name)
+	t.Logf("deleted instance snapshot %q\n", resp.Snapshots[0].Name)
 
 	return nil
 }
