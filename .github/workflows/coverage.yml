@@ -15,7 +15,7 @@ jobs:
       # Checkout should always be before setup-go to ensure caching is working
       - uses: actions/checkout@v5
         with:
-          fetch-depth: 2
+          fetch-depth: 1
       - uses: actions/setup-go@v6
         with:
           go-version: stable
