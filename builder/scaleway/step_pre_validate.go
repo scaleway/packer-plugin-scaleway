@@ -11,7 +11,7 @@ import (
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
-const DefaultZoneInMock = scw.ZoneFrPar1
+const DefaultZone = scw.ZoneFrPar1
 
 // StepPreValidate provides an opportunity to pre-validate any configuration for
 // the build before actually doing any time-consuming work
@@ -27,7 +27,7 @@ func (s *StepPreValidate) Run(ctx context.Context, state multistep.StateBag) mul
 	blockAPI := block.NewAPI(client)
 	ui := state.Get("ui").(packersdk.Ui)
 
-	zone := DefaultZoneInMock
+	zone := DefaultZone
 	if c := state.Get("config"); c != nil {
 		zone = scw.Zone(c.(*Config).Zone)
 	}

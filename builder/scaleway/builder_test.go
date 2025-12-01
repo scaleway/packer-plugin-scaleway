@@ -15,7 +15,7 @@ func testConfig() map[string]any {
 		"access_key":      "SCWABCXXXXXXXXXXXXXX",
 		"secret_key":      "00000000-1111-2222-3333-444444444444",
 		"zone":            "fr-par-1",
-		"commercial_type": "START1-S",
+		"commercial_type": "PRO2-S",
 		"ssh_username":    "root",
 		"image":           "image-uuid",
 	}
@@ -151,7 +151,7 @@ func TestBuilderPrepare_CommercialType(t *testing.T) {
 		t.Fatalf("should error")
 	}
 
-	expected := "START1-S"
+	expected := "PRO2-S"
 
 	config["commercial_type"] = expected
 	b = scaleway.Builder{}

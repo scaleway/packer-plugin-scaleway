@@ -51,9 +51,9 @@ func (b *BlockVolumeCleanup) Cleanup(ctx context.Context, t *testing.T) error {
 		if err != nil {
 			return fmt.Errorf("failed to delete block volume: %w", err)
 		}
-	}
 
-	t.Logf("deleted block volume %q\n", resp.Volumes[0].Name)
+		t.Logf("deleted block volume %q\n", volume.Name)
+	}
 
 	return nil
 }

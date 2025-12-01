@@ -15,7 +15,7 @@ func TestBuilderPrepare_SnapshotName(t *testing.T) {
 		"access_key":      "SCWABCXXXXXXXXXXXXXX",
 		"secret_key":      "00000000-1111-2222-3333-444444444444",
 		"zone":            "fr-par-3",
-		"commercial_type": "START1-S",
+		"commercial_type": "PRO2-S",
 		"ssh_username":    "root",
 		"image":           "image-uuid",
 		"root_volume": map[string]any{

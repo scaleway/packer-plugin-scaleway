@@ -37,7 +37,7 @@ func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multis
 				imgs.Images = append(imgs.Images, &instance.Image{
 					ID:   strconv.Itoa(rand.Int()), //nolint:gosec
 					Name: name,
-					Zone: scaleway.DefaultZoneInMock,
+					Zone: scaleway.DefaultZone,
 				})
 			}
 
@@ -51,7 +51,7 @@ func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multis
 				snaps.Snapshots = append(snaps.Snapshots, &instance.Snapshot{
 					ID:   strconv.Itoa(rand.Int()), //nolint:gosec
 					Name: name,
-					Zone: scaleway.DefaultZoneInMock,
+					Zone: scaleway.DefaultZone,
 				})
 			}
 
@@ -65,7 +65,7 @@ func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multis
 				snaps.Snapshots = append(snaps.Snapshots, &block.Snapshot{
 					ID:   strconv.Itoa(rand.Int()), //nolint:gosec
 					Name: name,
-					Zone: scaleway.DefaultZoneInMock,
+					Zone: scaleway.DefaultZone,
 				})
 			}
 
@@ -80,7 +80,7 @@ func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multis
 	}))
 
 	clientOpts := []scw.ClientOption{
-		scw.WithDefaultZone(scaleway.DefaultZoneInMock),
+		scw.WithDefaultZone(scaleway.DefaultZone),
 		scw.WithAPIURL(ts.URL),
 	}
 

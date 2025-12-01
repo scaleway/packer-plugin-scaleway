@@ -51,9 +51,9 @@ func (b *BlockSnapshotCleanup) Cleanup(ctx context.Context, t *testing.T) error 
 		if err != nil {
 			return fmt.Errorf("failed to delete block snapshot: %w", err)
 		}
-	}
 
-	t.Logf("deleted block snapshot %q\n", resp.Snapshots[0].Name)
+		t.Logf("deleted block snapshot %q\n", snapshot.Name)
+	}
 
 	return nil
 }
