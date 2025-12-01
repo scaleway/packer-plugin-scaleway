@@ -26,11 +26,7 @@ func (s *stepCleanupMachineData) Run(ctx context.Context, state multistep.StateB
 
 	str, err := strconv.ParseBool(c.CleanupMachineRelatedData)
 	if err != nil {
-		err := fmt.Errorf("value must be: 1, t, T, TRUE, true, True, 0, f, F, FALSE, false, False %w", err)
-		state.Put("error", err)
-		ui.Error(err.Error())
-
-		return multistep.ActionHalt
+		return putErrorAndHalt(state, ui, fmt.Errorf("value must be: 1, t, T, TRUE, true, True, 0, f, F, FALSE, false, False %w", err))
 	}
 
 	if !str {

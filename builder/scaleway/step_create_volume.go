@@ -41,10 +41,7 @@ func (s *stepCreateVolume) Run(ctx context.Context, state multistep.StateBag) mu
 
 		volume, err := blockAPI.CreateVolume(req, scw.WithContext(ctx))
 		if err != nil {
-			state.Put("error", err)
-			ui.Error(err.Error())
-
-			return multistep.ActionHalt
+			return putErrorAndHalt(state, ui, err)
 		}
 
 		volumeTemplates = append(volumeTemplates, &instance.VolumeServerTemplate{

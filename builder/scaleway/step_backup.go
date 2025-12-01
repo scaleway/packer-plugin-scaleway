@@ -2,8 +2,9 @@ package scaleway
 
 import (
 	"context"
+	"errors"
 	"fmt"
-	"strings"
+	"strconv"
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
@@ -21,59 +22,122 @@ func (s *stepBackup) Run(ctx context.Context, state multistep.StateBag) multiste
 	ui := state.Get("ui").(packersdk.Ui)
 	c := state.Get("config").(*Config)
 	server := state.Get("server").(*instance.Server)
+	zone := scw.Zone(c.Zone)
 
 	ui.Say(fmt.Sprintf("Backing up server to image: %v", c.ImageName))
 
-	actionResp, err := instanceAPI.ServerAction(&instance.ServerActionRequest{
-		ServerID: server.ID,
-		Action:   instance.ServerActionBackup,
-		Name:     &c.ImageName,
-		Volumes:  backupVolumesFromServer(server),
-		Zone:     scw.Zone(c.Zone),
-	}, scw.WithContext(ctx))
-	if err != nil {
-		err := fmt.Errorf("failed to backup server: %w", err)
-		state.Put("error", err)
-		ui.Error(err.Error())
+	snapshots := make(map[string]any, len(server.Volumes))
+	for index, volume := range server.Volumes {
+		volumeIdentifier := volume.ID
+		if volume.Name != nil {
+			volumeIdentifier = *volume.Name
+		}
 
-		return multistep.ActionHalt
-	}
+		ui.Say("Creating snapshot for volume: " + volumeIdentifier)
 
-	imageID, err := imageIDFromBackupResult(actionResp.Task.HrefResult)
-	if err != nil {
-		state.Put("error", err)
-		ui.Error(err.Error())
+		switch volume.VolumeType {
+		case instance.VolumeServerVolumeTypeLSSD:
+			req := &instance.CreateSnapshotRequest{
+				Zone:       zone,
+				Name:       c.RootVolume.SnapshotName,
+				VolumeID:   &volume.ID,
+				VolumeType: instance.SnapshotVolumeTypeLSSD,
+			}
 
-		return multistep.ActionHalt
-	}
+			if len(c.Tags) > 0 {
+				req.Tags = &c.Tags
+			}
 
-	image, err := instanceAPI.WaitForImage(&instance.WaitForImageRequest{
-		ImageID: imageID,
-		Zone:    scw.Zone(c.Zone),
-		Timeout: &c.ImageCreationTimeout,
-	}, scw.WithContext(ctx))
-	if err != nil {
-		err := fmt.Errorf("failed to fetch generated image: %w", err)
-		state.Put("error", err)
-		ui.Error(err.Error())
+			snap, err := instanceAPI.CreateSnapshot(req, scw.WithContext(ctx))
+			if err != nil {
+				return putErrorAndHalt(state, ui, fmt.Errorf("failed to snapshot instance volume: %w", err))
+			}
 
-		return multistep.ActionHalt
-	}
+			snapshots[index] = snap.Snapshot
+		case instance.VolumeServerVolumeTypeSbsVolume:
+			snapshotName := c.RootVolume.SnapshotName
+			if i, _ := strconv.Atoi(index); i != 0 {
+				snapshotName = c.BlockVolumes[i-1].SnapshotName
+			}
 
-	snapshots := artifactSnapshotFromImage(image)
+			snap, err := blockAPI.CreateSnapshot(&block.CreateSnapshotRequest{
+				Zone:     zone,
+				VolumeID: volume.ID,
+				Name:     snapshotName,
+				Tags:     c.Tags,
+			}, scw.WithContext(ctx))
+			if err != nil {
+				return putErrorAndHalt(state, ui, fmt.Errorf("failed to snapshot block volume: %w", err))
+			}
 
-	// Apply tags to image, volumes and snapshots
-	if len(c.Tags) != 0 {
-		err = applyTags(ctx, instanceAPI, blockAPI, scw.Zone(c.Zone), imageID, server.Volumes, snapshots, c.Tags)
-		if err != nil {
-			state.Put("error", err)
-			ui.Error(err.Error())
+			availableStatus := block.SnapshotStatusAvailable
 
-			return multistep.ActionHalt
+			_, err = blockAPI.WaitForSnapshot(&block.WaitForSnapshotRequest{
+				SnapshotID:     snap.ID,
+				Zone:           zone,
+				TerminalStatus: &availableStatus,
+			}, scw.WithContext(ctx))
+			if err != nil {
+				return putErrorAndHalt(state, ui, fmt.Errorf("failed to wait for block snapshot: %w", err))
+			}
+
+			snapshots[index] = snap
+		default:
+			return putErrorAndHalt(state, ui, fmt.Errorf("cannot snapshot unknown volume type %T", volume.VolumeType))
 		}
 	}
 
-	state.Put("snapshots", snapshots)
+	// Build volume templates for image creation
+	rootVolumeSnapID := ""
+	extraVolumes := make(map[string]*instance.VolumeTemplate, len(snapshots)-1)
+
+	for index, snapshot := range snapshots {
+		if instanceSnap, ok := snapshot.(*instance.Snapshot); ok && index == "0" {
+			rootVolumeSnapID = instanceSnap.ID
+		} else if blockSnap, ok := snapshot.(*block.Snapshot); ok {
+			if index == "0" {
+				rootVolumeSnapID = blockSnap.ID
+			} else {
+				extraVolumes[index] = &instance.VolumeTemplate{ID: blockSnap.ID}
+			}
+		}
+	}
+
+	ui.Say(fmt.Sprintf("Creating image from snapshots: %v", c.ImageName))
+
+	imageResp, err := instanceAPI.CreateImage(&instance.CreateImageRequest{
+		Zone:         zone,
+		Name:         c.ImageName,
+		RootVolume:   rootVolumeSnapID,
+		Arch:         server.Arch,
+		ExtraVolumes: extraVolumes,
+		Tags:         c.Tags,
+		Public:       scw.BoolPtr(false),
+	}, scw.WithContext(ctx))
+	if err != nil {
+		return putErrorAndHalt(state, ui, fmt.Errorf("failed to create image: %w", err))
+	}
+
+	image, err := instanceAPI.WaitForImage(&instance.WaitForImageRequest{
+		ImageID: imageResp.Image.ID,
+		Zone:    zone,
+		Timeout: &c.ImageCreationTimeout,
+	}, scw.WithContext(ctx))
+	if err != nil {
+		return putErrorAndHalt(state, ui, fmt.Errorf("failed to fetch generated image: %w", err))
+	}
+
+	artifactsSnapshots := artifactSnapshotFromImage(image)
+
+	// Apply tags to volumes
+	if len(c.Tags) != 0 {
+		err = applyTags(ctx, instanceAPI, blockAPI, scw.Zone(c.Zone), image.ID, server.Volumes, artifactsSnapshots, c.Tags)
+		if err != nil {
+			return putErrorAndHalt(state, ui, err)
+		}
+	}
+
+	state.Put("snapshots", artifactsSnapshots)
 	state.Put("image_id", image.ID)
 	state.Put("image_name", c.ImageName)
 	state.Put("region", c.Zone) // Deprecated
@@ -103,54 +167,21 @@ func artifactSnapshotFromImage(image *instance.Image) []ArtifactSnapshot {
 	return snapshots
 }
 
-func backupVolumesFromServer(server *instance.Server) map[string]*instance.ServerActionRequestVolumeBackupTemplate {
-	backupVolumes := map[string]*instance.ServerActionRequestVolumeBackupTemplate{}
-
-	for _, volume := range server.Volumes {
-		backupVolumes[volume.ID] = &instance.ServerActionRequestVolumeBackupTemplate{}
-	}
-
-	return backupVolumes
-}
-
-func imageIDFromBackupResult(hrefResult string) (string, error) {
-	// HrefResult format is /images/<uuid>
-	hrefSplit := strings.Split(hrefResult, "/")
-	if len(hrefSplit) != 3 {
-		return "", fmt.Errorf("failed to parse backup request response (%s)", hrefResult)
-	}
-
-	imageID := hrefSplit[2]
-
-	return imageID, nil
-}
-
 func applyTags(ctx context.Context, instanceAPI *instance.API, blockAPI *block.API, zone scw.Zone, imageID string, volumes map[string]*instance.VolumeServer, snapshots []ArtifactSnapshot, tags []string) error {
-	if _, err := instanceAPI.UpdateImage(&instance.UpdateImageRequest{
-		ImageID: imageID,
-		Zone:    zone,
-		Tags:    &tags,
-	}, scw.WithContext(ctx)); err != nil {
-		return fmt.Errorf("failed to set tags on the image: %w", err)
-	}
-
 	for _, volume := range volumes {
-		if _, err := blockAPI.UpdateVolume(&block.UpdateVolumeRequest{
+		if _, blockErr := blockAPI.UpdateVolume(&block.UpdateVolumeRequest{
 			VolumeID: volume.ID,
 			Zone:     zone,
 			Tags:     &tags,
-		}, scw.WithContext(ctx)); err != nil {
-			return fmt.Errorf("failed to set tags on the volume: %w", err)
-		}
-	}
-
-	for _, snapshot := range snapshots {
-		if _, err := blockAPI.UpdateSnapshot(&block.UpdateSnapshotRequest{
-			SnapshotID: snapshot.ID,
-			Zone:       zone,
-			Tags:       &tags,
-		}, scw.WithContext(ctx)); err != nil {
-			return fmt.Errorf("failed to set tags on the snapshot: %w", err)
+		}, scw.WithContext(ctx)); blockErr != nil {
+			_, instanceErr := instanceAPI.UpdateVolume(&instance.UpdateVolumeRequest{
+				Zone:     zone,
+				VolumeID: volume.ID,
+				Tags:     &tags,
+			}, scw.WithContext(ctx))
+			if instanceErr != nil {
+				return fmt.Errorf("failed to set tags on the volume: %w", errors.Join(blockErr, instanceErr))
+			}
 		}
 	}
 

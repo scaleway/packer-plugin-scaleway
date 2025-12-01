@@ -26,27 +26,15 @@ func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) mult
 		Zone:     scw.Zone(c.Zone),
 	}, scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("error waiting for server to become booted: %w", err)
-		state.Put("error", err)
-		ui.Error(err.Error())
-
-		return multistep.ActionHalt
+		return putErrorAndHalt(state, ui, fmt.Errorf("error waiting for server to become booted: %w", err))
 	}
 
 	if instanceResp.State != instance.ServerStateRunning {
-		err := fmt.Errorf("server is in state %s", instanceResp.State.String())
-		state.Put("error", err)
-		ui.Error(err.Error())
-
-		return multistep.ActionHalt
+		return putErrorAndHalt(state, ui, fmt.Errorf("server is in state %s", instanceResp.State.String()))
 	}
 
 	if instanceResp.PublicIP == nil {
-		err := errors.New("server does not have a public IP")
-		state.Put("error", err)
-		ui.Error(err.Error())
-
-		return multistep.ActionHalt
+		return putErrorAndHalt(state, ui, errors.New("server does not have a public IP"))
 	}
 
 	state.Put("server_ip", instanceResp.PublicIP.Address.String())

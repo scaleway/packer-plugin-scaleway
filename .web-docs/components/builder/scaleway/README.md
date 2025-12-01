@@ -70,9 +70,6 @@ can also be supplied to override the typical auto-generated key:
   Will be fetched first from the [scaleway configuration file](https://github.com/scaleway/scaleway-sdk-go/blob/master/scw/README.md).
   It can also be specified via the environment variable SCW_API_URL
 
-- `snapshot_name` (string) - The name of the resulting snapshot that will
-  appear in your account. Default packer-TIMESTAMP
-
 - `image_name` (string) - The name of the resulting image that will appear in
   your account. Default packer-TIMESTAMP
 
@@ -147,6 +144,8 @@ can also be supplied to override the typical auto-generated key:
 
 - `iops` (\*uint32) - IOPS is the number of requested iops for the server's volume. This will not impact created snapshot.
 
+- `snapshot_name` (string) - The name of the resulting snapshot that will appear in your account. Default packer-TIMESTAMP
+
 <!-- End of code generated from the comments of the ConfigBlockVolume struct in builder/scaleway/config.go; -->
 
 
@@ -159,6 +158,8 @@ can also be supplied to override the typical auto-generated key:
 - `iops` (\*uint32) - IOPS of the root volume if using SBS, will only affect runtime. Image's volumes cannot have a configured IOPS.
 
 - `size_in_gb` (uint64) - Size of the root volume
+
+- `snapshot_name` (string) - The name of the resulting snapshot that will appear in your account. Default packer-TIMESTAMP
 
 <!-- End of code generated from the comments of the ConfigRootVolume struct in builder/scaleway/config_root_volume.go; -->
 

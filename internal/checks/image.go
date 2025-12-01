@@ -3,13 +3,25 @@ package checks
 import (
 	"context"
 	"fmt"
+	"reflect"
 
 	"github.com/scaleway/packer-plugin-scaleway/internal/tester"
+	"github.com/scaleway/scaleway-sdk-go/api/block/v1"
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
 var _ tester.PackerCheck = (*ImageCheck)(nil)
+
+type ImageCheck struct {
+	zone      scw.Zone
+	imageName string
+
+	tags                  []string
+	size                  *scw.Size
+	rootVolumeSnapshot    SnapshotCheck
+	extraVolumesSnapshots map[string]SnapshotCheck
+}
 
 func Image(zone scw.Zone, name string) *ImageCheck {
 	return &ImageCheck{
@@ -18,40 +30,7 @@ func Image(zone scw.Zone, name string) *ImageCheck {
 	}
 }
 
-type ImageCheck struct {
-	zone      scw.Zone
-	imageName string
-	tags      []string
-
-	rootVolumeType     *string
-	rootVolumeSnapshot *BlockSnapshotCheck
-	size               *scw.Size
-	extraVolumesType   map[string]string
-}
-
-func (c *ImageCheck) RootVolumeType(rootVolumeType string) *ImageCheck {
-	c.rootVolumeType = &rootVolumeType
-
-	return c
-}
-
-func (c *ImageCheck) RootVolumeBlockSnapshot(snapshotCheck *BlockSnapshotCheck) *ImageCheck {
-	c.rootVolumeSnapshot = snapshotCheck
-
-	return c
-}
-
-func (c *ImageCheck) ExtraVolumeType(key string, volumeType string) *ImageCheck {
-	if c.extraVolumesType == nil {
-		c.extraVolumesType = map[string]string{}
-	}
-
-	c.extraVolumesType[key] = volumeType
-
-	return c
-}
-
-func (c *ImageCheck) SizeInGb(size uint64) *ImageCheck {
+func (c *ImageCheck) SizeInGB(size uint64) *ImageCheck {
 	c.size = scw.SizePtr(scw.Size(size) * scw.GB)
 
 	return c
@@ -63,76 +42,132 @@ func (c *ImageCheck) Tags(tags []string) *ImageCheck {
 	return c
 }
 
-func (c *ImageCheck) Check(ctx context.Context) error {
+func (c *ImageCheck) RootVolumeSnapshot(snapshotCheck SnapshotCheck) *ImageCheck {
+	c.rootVolumeSnapshot = snapshotCheck
+
+	return c
+}
+
+func (c *ImageCheck) ExtraVolumeSnapshot(index string, snapshotCheck SnapshotCheck) *ImageCheck {
+	if c.extraVolumesSnapshots == nil {
+		c.extraVolumesSnapshots = map[string]SnapshotCheck{index: snapshotCheck}
+	} else {
+		c.extraVolumesSnapshots[index] = snapshotCheck
+	}
+
+	return c
+}
+
+func (c *ImageCheck) CheckName() string {
+	return "Image"
+}
+
+func findImage(ctx context.Context, zone scw.Zone, imageName string) (*instance.Image, error) {
 	testCtx := tester.ExtractCtx(ctx)
 	api := instance.NewAPI(testCtx.ScwClient)
 	images := []*instance.Image(nil)
 
 	resp, err := api.ListImages(&instance.ListImagesRequest{
-		Name:    &c.imageName,
-		Zone:    c.zone,
+		Name:    &imageName,
+		Zone:    zone,
 		Project: &testCtx.ProjectID,
 	}, scw.WithAllPages(), scw.WithContext(ctx))
 	if err != nil {
-		return fmt.Errorf("failed to list images: %w", err)
+		return nil, fmt.Errorf("failed to list images: %w", err)
 	}
 
+	// Filtering by name returns all images which name is prefixed with imageName,
+	// so we need to select the ones which name is strictly equal.
 	for _, img := range resp.Images {
-		if img.Name == c.imageName {
+		if img.Name == imageName {
 			images = append(images, img)
 		}
 	}
 
-	if len(images) == 0 {
-		return fmt.Errorf("image %s not found, no images found", c.imageName)
+	if len(resp.Images) == 0 {
+		return nil, fmt.Errorf("image %s not found, no images found", imageName)
 	}
 
-	if len(images) > 1 {
-		return fmt.Errorf("multiple images found with name %s", c.imageName)
+	if len(resp.Images) > 1 {
+		return nil, fmt.Errorf("multiple images found with name %s", imageName)
 	}
 
-	image := images[0]
+	return resp.Images[0], nil
+}
 
-	if image.Name != c.imageName {
-		return fmt.Errorf("image name %s does not match expected %s", image.Name, c.imageName)
+func computeImageSize(ctx context.Context, image *instance.Image) (scw.Size, error) {
+	testCtx := tester.ExtractCtx(ctx)
+	blockAPI := block.NewAPI(testCtx.ScwClient)
+	imageSize := image.RootVolume.Size
+
+	if image.RootVolume.VolumeType == instance.VolumeVolumeTypeSbsSnapshot {
+		blockSnapshot, err := blockAPI.GetSnapshot(&block.GetSnapshotRequest{
+			Zone:       image.Zone,
+			SnapshotID: image.RootVolume.ID,
+		}, scw.WithContext(ctx))
+		if err != nil {
+			return 0, fmt.Errorf("could not get block snapshot %s: %w", image.RootVolume.ID, err)
+		}
+
+		imageSize += blockSnapshot.Size
 	}
 
-	if c.rootVolumeType != nil && string(image.RootVolume.VolumeType) != *c.rootVolumeType {
-		return fmt.Errorf("image root volume type %s does not match expected %s", image.RootVolume.VolumeType, *c.rootVolumeType)
+	for _, extraVolume := range image.ExtraVolumes {
+		blockSnapshot, err := blockAPI.GetSnapshot(&block.GetSnapshotRequest{
+			Zone:       image.Zone,
+			SnapshotID: extraVolume.ID,
+		}, scw.WithContext(ctx))
+		if err != nil {
+			return 0, fmt.Errorf("could not get block snapshot %s: %w", extraVolume.ID, err)
+		}
+
+		imageSize += blockSnapshot.Size
 	}
 
-	if c.size != nil && image.RootVolume.Size != *c.size {
+	return imageSize, nil
+}
+
+func (c *ImageCheck) Check(ctx context.Context) error {
+	image, err := findImage(ctx, c.zone, c.imageName)
+	if err != nil {
+		return err
+	}
+
+	if len(c.tags) > 0 && !reflect.DeepEqual(c.tags, image.Tags) {
+		return fmt.Errorf("image tags did not match, expected %v, got %v", c.tags, image.Tags)
+	}
+
+	imageSize, err := computeImageSize(ctx, image)
+	if err != nil {
+		return fmt.Errorf("could not calculate image size: %w", err)
+	}
+
+	if c.size != nil && imageSize != *c.size {
 		return fmt.Errorf("image size %d does not match expected %d", image.RootVolume.Size, *c.size)
 	}
 
-	if c.extraVolumesType != nil {
-		for k, v := range c.extraVolumesType {
-			vol, exists := image.ExtraVolumes[k]
-
-			if !exists {
-				return fmt.Errorf("extra volume %s does not exist", k)
-			}
-
-			if string(vol.VolumeType) != v {
-				return fmt.Errorf("extra volume %s type %s does not match expected %s", k, vol.VolumeType, v)
-			}
+	if c.rootVolumeSnapshot != nil {
+		err = c.rootVolumeSnapshot.Check(ctx)
+		if err != nil {
+			return fmt.Errorf("root volume check failed: %w", err)
 		}
 	}
 
-	if c.tags != nil {
-		for _, expectedTag := range c.tags {
-			found := false
+	if c.extraVolumesSnapshots != nil {
+		for imageExtraVolumeKey := range image.ExtraVolumes {
+			if _, exists := c.extraVolumesSnapshots[imageExtraVolumeKey]; !exists {
+				return fmt.Errorf("expected extra volume %q does not exist in image", imageExtraVolumeKey)
+			}
+		}
 
-			for _, actualTag := range image.Tags {
-				if actualTag == expectedTag {
-					found = true
-
-					break
-				}
+		for checkExtraVolumeKey, snapshotCheck := range c.extraVolumesSnapshots {
+			if _, exists := image.ExtraVolumes[checkExtraVolumeKey]; !exists {
+				return fmt.Errorf("unexpected extra volume %q found in image", checkExtraVolumeKey)
 			}
 
-			if !found {
-				return fmt.Errorf("expected tag %q not found on image %s", expectedTag, c.imageName)
+			err = snapshotCheck.Check(ctx)
+			if err != nil {
+				return fmt.Errorf("extra volume %q check failed: %w", checkExtraVolumeKey, err)
 			}
 		}
 	}
