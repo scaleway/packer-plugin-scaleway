@@ -87,11 +87,16 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 	state.Put("hook", hook)
 	state.Put("ui", ui)
 
+	snapshotsNames := []string{b.Config.RootVolume.SnapshotName}
+	for _, blockVolumeConfig := range b.Config.BlockVolumes {
+		snapshotsNames = append(snapshotsNames, blockVolumeConfig.SnapshotName)
+	}
+
 	steps := []multistep.Step{
 		&StepPreValidate{
-			Force:        b.Config.PackerForce,
-			ImageName:    b.Config.ImageName,
-			SnapshotName: b.Config.SnapshotName,
+			Force:          b.Config.PackerForce,
+			ImageName:      b.Config.ImageName,
+			SnapshotsNames: snapshotsNames,
 		},
 		&stepCreateSSHKey{
 			Debug:        b.Config.PackerDebug,

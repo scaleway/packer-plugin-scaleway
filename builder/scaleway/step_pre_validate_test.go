@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
 	"github.com/scaleway/packer-plugin-scaleway/builder/scaleway"
+	"github.com/scaleway/scaleway-sdk-go/api/block/v1"
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
@@ -36,7 +37,7 @@ func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multis
 				imgs.Images = append(imgs.Images, &instance.Image{
 					ID:   strconv.Itoa(rand.Int()), //nolint:gosec
 					Name: name,
-					Zone: "fr-par-1",
+					Zone: scaleway.DefaultZone,
 				})
 			}
 
@@ -50,7 +51,7 @@ func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multis
 				snaps.Snapshots = append(snaps.Snapshots, &instance.Snapshot{
 					ID:   strconv.Itoa(rand.Int()), //nolint:gosec
 					Name: name,
-					Zone: "fr-par-1",
+					Zone: scaleway.DefaultZone,
 				})
 			}
 
@@ -58,13 +59,28 @@ func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multis
 			if err := enc.Encode(snaps); err != nil {
 				t.Fatalf("fake server: encoding reply: %s", err)
 			}
+		case "/block/v1/zones/fr-par-1/snapshots":
+			var snaps block.ListSnapshotsResponse
+			for _, name := range fakeSnapNames {
+				snaps.Snapshots = append(snaps.Snapshots, &block.Snapshot{
+					ID:   strconv.Itoa(rand.Int()), //nolint:gosec
+					Name: name,
+					Zone: scaleway.DefaultZone,
+				})
+			}
+
+			snaps.TotalCount = uint64(len(fakeSnapNames))
+			if err := enc.Encode(snaps); err != nil {
+				t.Fatalf("fake server: encoding reply: %s", err)
+			}
+
 		default:
 			t.Fatalf("fake server: unexpected path: %q", r.URL.Path)
 		}
 	}))
 
 	clientOpts := []scw.ClientOption{
-		scw.WithDefaultZone(scw.ZoneFrPar1),
+		scw.WithDefaultZone(scaleway.DefaultZone),
 		scw.WithAPIURL(ts.URL),
 	}
 
@@ -101,9 +117,9 @@ func TestStepPreValidate(t *testing.T) {
 			[]string{"image-old"},
 			[]string{"snapshot-old"},
 			scaleway.StepPreValidate{
-				Force:        false,
-				ImageName:    "image-new",
-				SnapshotName: "snapshot-new",
+				Force:          false,
+				ImageName:      "image-new",
+				SnapshotsNames: []string{"snapshot-new"},
 			},
 			multistep.ActionContinue,
 		},
@@ -112,9 +128,9 @@ func TestStepPreValidate(t *testing.T) {
 			[]string{"image-old"},
 			[]string{"snapshot-old"},
 			scaleway.StepPreValidate{
-				Force:        false,
-				ImageName:    "image-old",
-				SnapshotName: "snapshot-new",
+				Force:          false,
+				ImageName:      "image-old",
+				SnapshotsNames: []string{"snapshot-new"},
 			},
 			multistep.ActionHalt,
 		},
@@ -123,9 +139,9 @@ func TestStepPreValidate(t *testing.T) {
 			[]string{"image-old"},
 			[]string{"snapshot-old"},
 			scaleway.StepPreValidate{
-				Force:        false,
-				ImageName:    "image-new",
-				SnapshotName: "snapshot-old",
+				Force:          false,
+				ImageName:      "image-new",
+				SnapshotsNames: []string{"snapshot-old"},
 			},
 			multistep.ActionHalt,
 		},
@@ -134,9 +150,9 @@ func TestStepPreValidate(t *testing.T) {
 			[]string{"image-old"},
 			[]string{"snapshot-old"},
 			scaleway.StepPreValidate{
-				Force:        true,
-				ImageName:    "image-old",
-				SnapshotName: "snapshot-new",
+				Force:          true,
+				ImageName:      "image-old",
+				SnapshotsNames: []string{"snapshot-new"},
 			},
 			multistep.ActionContinue,
 		},
@@ -145,9 +161,9 @@ func TestStepPreValidate(t *testing.T) {
 			[]string{"image-old"},
 			[]string{"snapshot-old"},
 			scaleway.StepPreValidate{
-				Force:        true,
-				ImageName:    "image-new",
-				SnapshotName: "snapshot-old",
+				Force:          true,
+				ImageName:      "image-new",
+				SnapshotsNames: []string{"snapshot-old"},
 			},
 			multistep.ActionContinue,
 		},

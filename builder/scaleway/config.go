@@ -39,6 +39,8 @@ type ConfigBlockVolume struct {
 	SizeInGB uint64 `mapstructure:"size_in_gb"`
 	// IOPS is the number of requested iops for the server's volume. This will not impact created snapshot.
 	IOPS *uint32 `mapstructure:"iops"`
+	// The name of the resulting snapshot that will appear in your account. Default packer-TIMESTAMP
+	SnapshotName string `mapstructure:"snapshot_name" required:"false"`
 }
 
 type Config struct {
@@ -131,26 +133,22 @@ type Config struct {
 
 	// Deprecated configs
 
-	// The token to use to authenticate with your account.
-	// It can also be specified via environment variable SCALEWAY_API_TOKEN. You
-	// can see and generate tokens in the "Credentials"
-	// section of the control panel.
-	//
+	// The token to use to authenticate with your account. It can also be specified via environment variable
+	// SCALEWAY_API_TOKEN. You can see and generate tokens in the "Credentials" section of the control panel.
+
 	// Deprecated: use SecretKey instead
 	Token string `mapstructure:"api_token" required:"false"`
-	// The organization id to use to identify your
-	// organization. It can also be specified via environment variable
-	// SCALEWAY_ORGANIZATION. Your organization id is available in the
-	// "Account" section of the
-	// control panel.
+
+	// The organization id to use to identify your organization. It can also be specified via environment variable
+	// SCALEWAY_ORGANIZATION. Your organization id is available in the "Account" section of the control panel.
 	// Previously named: api_access_key with environment variable: SCALEWAY_API_ACCESS_KEY
-	//
+
 	// Deprecated: use ProjectID instead
 	Organization string `mapstructure:"organization_id" required:"false"`
-	// The name of the region to launch the server in (par1
-	// or ams1). Consequently, this is the region where the snapshot will be
-	// available.
-	//
+
+	// The name of the region to launch the server in (par1 or ams1). Consequently, this is the region where the
+	// snapshot will be available.
+
 	// Deprecated: use Zone instead
 	Region string `mapstructure:"region" required:"false"`
 }
@@ -252,15 +250,6 @@ func (c *Config) Prepare(raws ...any) ([]string, error) { //nolint:gocyclo
 		if profile.APIURL != nil {
 			c.APIURL = *profile.APIURL
 		}
-	}
-
-	if c.SnapshotName == "" {
-		def, err := interpolate.Render("snapshot-packer-{{timestamp}}", nil)
-		if err != nil {
-			panic(err)
-		}
-
-		c.SnapshotName = def
 	}
 
 	if c.ImageName == "" {

@@ -10,9 +10,10 @@ import (
 // FlatConfigRootVolume is an auto-generated flat version of ConfigRootVolume.
 // Where the contents of a field with a `mapstructure:,squash` tag are bubbled up.
 type FlatConfigRootVolume struct {
-	Type     *string `mapstructure:"type" cty:"type" hcl:"type"`
-	IOPS     *uint32 `mapstructure:"iops" cty:"iops" hcl:"iops"`
-	SizeInGB *uint64 `mapstructure:"size_in_gb" cty:"size_in_gb" hcl:"size_in_gb"`
+	Type         *string `mapstructure:"type" cty:"type" hcl:"type"`
+	IOPS         *uint32 `mapstructure:"iops" cty:"iops" hcl:"iops"`
+	SizeInGB     *uint64 `mapstructure:"size_in_gb" cty:"size_in_gb" hcl:"size_in_gb"`
+	SnapshotName *string `mapstructure:"snapshot_name" required:"false" cty:"snapshot_name" hcl:"snapshot_name"`
 }
 
 // FlatMapstructure returns a new FlatConfigRootVolume.
@@ -27,9 +28,10 @@ func (*ConfigRootVolume) FlatMapstructure() interface{ HCL2Spec() map[string]hcl
 // The decoded values from this spec will then be applied to a FlatConfigRootVolume.
 func (*FlatConfigRootVolume) HCL2Spec() map[string]hcldec.Spec {
 	s := map[string]hcldec.Spec{
-		"type":       &hcldec.AttrSpec{Name: "type", Type: cty.String, Required: false},
-		"iops":       &hcldec.AttrSpec{Name: "iops", Type: cty.Number, Required: false},
-		"size_in_gb": &hcldec.AttrSpec{Name: "size_in_gb", Type: cty.Number, Required: false},
+		"type":          &hcldec.AttrSpec{Name: "type", Type: cty.String, Required: false},
+		"iops":          &hcldec.AttrSpec{Name: "iops", Type: cty.Number, Required: false},
+		"size_in_gb":    &hcldec.AttrSpec{Name: "size_in_gb", Type: cty.Number, Required: false},
+		"snapshot_name": &hcldec.AttrSpec{Name: "snapshot_name", Type: cty.String, Required: false},
 	}
 	return s
 }

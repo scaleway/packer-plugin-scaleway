@@ -63,15 +63,16 @@ func ExtractCtx(ctx context.Context) *PackerCtx {
 }
 
 type TestConfig struct {
-	Config string
-	Checks []PackerCheck
+	Config  string
+	Checks  []PackerCheck
+	Cleanup []PackerCleanup
 }
 
 func Test(t *testing.T, config *TestConfig) {
-	httpClient, cleanup, err := vcr.GetHTTPRecorder(vcr.GetTestFilePath(t, "."), vcr.UpdateCassettes)
+	httpClient, vcrCleanupFunc, err := vcr.GetHTTPRecorder(vcr.GetTestFilePath(t, "."), vcr.UpdateCassettes)
 	require.NoError(t, err)
 
-	defer cleanup()
+	defer vcrCleanupFunc()
 
 	ctx := t.Context()
 	ctx, err = NewTestContext(ctx, httpClient)
@@ -86,12 +87,22 @@ func Test(t *testing.T, config *TestConfig) {
 	require.NoError(t, err, "error executing packer command: %s", err)
 
 	for i, check := range config.Checks {
-		t.Logf("Running check %d/%d", i+1, len(config.Checks))
+		t.Logf("Running check %d/%d: %s", i+1, len(config.Checks), check.CheckName())
 
 		err := check.Check(ctx)
 		if err != nil {
 			t.Fail()
 			t.Errorf("Packer check %d failed: %s", i+1, err.Error())
+		}
+	}
+
+	for i, cleanup := range config.Cleanup {
+		t.Logf("Running cleanup func %d/%d", i+1, len(config.Cleanup))
+
+		err := cleanup.Cleanup(ctx, t)
+		if err != nil {
+			t.Fail()
+			t.Errorf("Packer cleanup %d failed: %s", i+1, err.Error())
 		}
 	}
 

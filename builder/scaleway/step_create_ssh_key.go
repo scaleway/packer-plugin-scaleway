@@ -30,9 +30,7 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 
 		privateKeyBytes, err := config.Comm.ReadSSHPrivateKeyFile()
 		if err != nil {
-			state.Put("error", err)
-
-			return multistep.ActionHalt
+			return putErrorAndHalt(state, nil, err)
 		}
 
 		config.Comm.SSHPrivateKey = privateKeyBytes
@@ -45,11 +43,7 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 
 	priv, err := rsa.GenerateKey(rand.Reader, 4096)
 	if err != nil {
-		err := fmt.Errorf("error creating temporary SSH key: %w", err)
-		state.Put("error", err)
-		ui.Error(err.Error())
-
-		return multistep.ActionHalt
+		return putErrorAndHalt(state, ui, fmt.Errorf("error creating temporary SSH key: %w", err))
 	}
 
 	// ASN.1 DER encoded form
@@ -62,11 +56,7 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 
 	pub, err := ssh.NewPublicKey(&priv.PublicKey)
 	if err != nil {
-		err := fmt.Errorf("error creating temporary SSH key: %w", err)
-		state.Put("error", err)
-		ui.Error(err.Error())
-
-		return multistep.ActionHalt
+		return putErrorAndHalt(state, ui, fmt.Errorf("error creating temporary SSH key: %w", err))
 	}
 
 	log.Printf("temporary ssh key created")
@@ -81,26 +71,20 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 
 		f, err := os.Create(s.DebugKeyPath)
 		if err != nil {
-			state.Put("error", fmt.Errorf("error saving debug key: %w", err))
-
-			return multistep.ActionHalt
+			return putErrorAndHalt(state, nil, fmt.Errorf("error saving debug key: %w", err))
 		}
 
 		defer f.Close() //nolint
 
 		// Write the key out
 		if _, err := f.Write(pem.EncodeToMemory(&privateBlock)); err != nil {
-			state.Put("error", fmt.Errorf("error saving debug key: %w", err))
-
-			return multistep.ActionHalt
+			return putErrorAndHalt(state, nil, fmt.Errorf("error saving debug key: %w", err))
 		}
 
 		// Chmod it so that it is SSH ready
 		if runtime.GOOS != "windows" {
 			if err := f.Chmod(0o600); err != nil {
-				state.Put("error", fmt.Errorf("error setting permissions of debug key: %w", err))
-
-				return multistep.ActionHalt
+				return putErrorAndHalt(state, nil, fmt.Errorf("error setting permissions of debug key: %w", err))
 			}
 		}
 	}

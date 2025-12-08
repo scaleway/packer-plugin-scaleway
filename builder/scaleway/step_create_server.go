@@ -66,20 +66,12 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 
 	createServerResp, err := createServer(instanceAPI, createServerReq, scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("error creating server: %w", formatInstanceError(err))
-		state.Put("error", err)
-		ui.Error(err.Error())
-
-		return multistep.ActionHalt
+		return putErrorAndHalt(state, ui, fmt.Errorf("error creating server: %w", formatInstanceError(err)))
 	}
 
 	err = c.RootVolume.PostServerCreationSetup(block.NewAPI(state.Get("client").(*scw.Client)), createServerResp.Server)
 	if err != nil {
-		err := fmt.Errorf("error during post server creation setup server: %w", err)
-		state.Put("error", err)
-		ui.Error(err.Error())
-
-		return multistep.ActionHalt
+		return putErrorAndHalt(state, ui, fmt.Errorf("error during post server creation setup server: %w", err))
 	}
 
 	if len(c.UserData) > 0 {
@@ -96,11 +88,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 
 		err = instanceAPI.SetAllServerUserData(createUserDataReq, scw.WithContext(ctx))
 		if err != nil {
-			err := fmt.Errorf("error creating server: %w", err)
-			state.Put("error", err)
-			ui.Error(err.Error())
-
-			return multistep.ActionHalt
+			return putErrorAndHalt(state, ui, fmt.Errorf("error creating server: %w", err))
 		}
 	}
 
@@ -109,11 +97,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		ServerID: createServerResp.Server.ID,
 	}, scw.WithContext(ctx))
 	if err != nil {
-		err := fmt.Errorf("error starting server: %w", err)
-		state.Put("error", err)
-		ui.Error(err.Error())
-
-		return multistep.ActionHalt
+		return putErrorAndHalt(state, ui, fmt.Errorf("error starting server: %w", err))
 	}
 
 	waitServerRequest := &instance.WaitForServerRequest{
@@ -124,19 +108,11 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 
 	server, err := instanceAPI.WaitForServer(waitServerRequest)
 	if err != nil {
-		err := fmt.Errorf("server is not available: %w", err)
-		state.Put("error", err)
-		ui.Error(err.Error())
-
-		return multistep.ActionHalt
+		return putErrorAndHalt(state, ui, fmt.Errorf("server is not available: %w", err))
 	}
 
 	if server.State != instance.ServerStateRunning {
-		err := errors.New("servert is in error state")
-		state.Put("error", err)
-		ui.Error(err.Error())
-
-		return multistep.ActionHalt
+		return putErrorAndHalt(state, ui, errors.New("server is in error state"))
 	}
 
 	s.serverID = createServerResp.Server.ID

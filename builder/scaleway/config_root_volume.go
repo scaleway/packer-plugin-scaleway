@@ -6,6 +6,7 @@ package scaleway
 import (
 	"errors"
 
+	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"
 	block "github.com/scaleway/scaleway-sdk-go/api/block/v1alpha1"
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
 	"github.com/scaleway/scaleway-sdk-go/scw"
@@ -19,6 +20,8 @@ type ConfigRootVolume struct {
 	IOPS *uint32 `mapstructure:"iops"`
 	// Size of the root volume
 	SizeInGB uint64 `mapstructure:"size_in_gb"`
+	// The name of the resulting snapshot that will appear in your account. Default packer-TIMESTAMP
+	SnapshotName string `mapstructure:"snapshot_name" required:"false"`
 }
 
 // IsConfigured returns true if root volume has been manually configured.
@@ -39,6 +42,15 @@ func (c *ConfigRootVolume) VolumeServerTemplate() *instance.VolumeServerTemplate
 
 	if c.SizeInGB > 0 {
 		tmpl.Size = scw.SizePtr(scw.Size(c.SizeInGB) * scw.GB)
+	}
+
+	if c.SnapshotName == "" {
+		def, err := interpolate.Render("packer-{{timestamp}}", nil)
+		if err != nil {
+			panic(err)
+		}
+
+		c.SnapshotName = def
 	}
 
 	return tmpl

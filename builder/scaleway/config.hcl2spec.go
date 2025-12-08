@@ -74,7 +74,6 @@ type FlatConfig struct {
 	APIURL                    *string                 `mapstructure:"api_url" cty:"api_url" hcl:"api_url"`
 	Image                     *string                 `mapstructure:"image" required:"true" cty:"image" hcl:"image"`
 	CommercialType            *string                 `mapstructure:"commercial_type" required:"true" cty:"commercial_type" hcl:"commercial_type"`
-	SnapshotName              *string                 `mapstructure:"snapshot_name" required:"false" cty:"snapshot_name" hcl:"snapshot_name"`
 	ImageName                 *string                 `mapstructure:"image_name" required:"false" cty:"image_name" hcl:"image_name"`
 	ServerName                *string                 `mapstructure:"server_name" required:"false" cty:"server_name" hcl:"server_name"`
 	Bootscript                *string                 `mapstructure:"bootscript" required:"false" cty:"bootscript" hcl:"bootscript"`
@@ -171,7 +170,6 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"api_url":                      &hcldec.AttrSpec{Name: "api_url", Type: cty.String, Required: false},
 		"image":                        &hcldec.AttrSpec{Name: "image", Type: cty.String, Required: false},
 		"commercial_type":              &hcldec.AttrSpec{Name: "commercial_type", Type: cty.String, Required: false},
-		"snapshot_name":                &hcldec.AttrSpec{Name: "snapshot_name", Type: cty.String, Required: false},
 		"image_name":                   &hcldec.AttrSpec{Name: "image_name", Type: cty.String, Required: false},
 		"server_name":                  &hcldec.AttrSpec{Name: "server_name", Type: cty.String, Required: false},
 		"bootscript":                   &hcldec.AttrSpec{Name: "bootscript", Type: cty.String, Required: false},
@@ -197,10 +195,11 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 // FlatConfigBlockVolume is an auto-generated flat version of ConfigBlockVolume.
 // Where the contents of a field with a `mapstructure:,squash` tag are bubbled up.
 type FlatConfigBlockVolume struct {
-	Name       *string `mapstructure:"name" cty:"name" hcl:"name"`
-	SnapshotID *string `mapstructure:"snapshot_id" cty:"snapshot_id" hcl:"snapshot_id"`
-	SizeInGB   *uint64 `mapstructure:"size_in_gb" cty:"size_in_gb" hcl:"size_in_gb"`
-	IOPS       *uint32 `mapstructure:"iops" cty:"iops" hcl:"iops"`
+	Name         *string `mapstructure:"name" cty:"name" hcl:"name"`
+	SnapshotID   *string `mapstructure:"snapshot_id" cty:"snapshot_id" hcl:"snapshot_id"`
+	SizeInGB     *uint64 `mapstructure:"size_in_gb" cty:"size_in_gb" hcl:"size_in_gb"`
+	IOPS         *uint32 `mapstructure:"iops" cty:"iops" hcl:"iops"`
+	SnapshotName *string `mapstructure:"snapshot_name" required:"false" cty:"snapshot_name" hcl:"snapshot_name"`
 }
 
 // FlatMapstructure returns a new FlatConfigBlockVolume.
@@ -215,10 +214,11 @@ func (*ConfigBlockVolume) FlatMapstructure() interface{ HCL2Spec() map[string]hc
 // The decoded values from this spec will then be applied to a FlatConfigBlockVolume.
 func (*FlatConfigBlockVolume) HCL2Spec() map[string]hcldec.Spec {
 	s := map[string]hcldec.Spec{
-		"name":        &hcldec.AttrSpec{Name: "name", Type: cty.String, Required: false},
-		"snapshot_id": &hcldec.AttrSpec{Name: "snapshot_id", Type: cty.String, Required: false},
-		"size_in_gb":  &hcldec.AttrSpec{Name: "size_in_gb", Type: cty.Number, Required: false},
-		"iops":        &hcldec.AttrSpec{Name: "iops", Type: cty.Number, Required: false},
+		"name":          &hcldec.AttrSpec{Name: "name", Type: cty.String, Required: false},
+		"snapshot_id":   &hcldec.AttrSpec{Name: "snapshot_id", Type: cty.String, Required: false},
+		"size_in_gb":    &hcldec.AttrSpec{Name: "size_in_gb", Type: cty.Number, Required: false},
+		"iops":          &hcldec.AttrSpec{Name: "iops", Type: cty.Number, Required: false},
+		"snapshot_name": &hcldec.AttrSpec{Name: "snapshot_name", Type: cty.String, Required: false},
 	}
 	return s
 }

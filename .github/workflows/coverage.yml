@@ -15,14 +15,12 @@ jobs:
       # Checkout should always be before setup-go to ensure caching is working
       - uses: actions/checkout@v5
         with:
-          fetch-depth: 2
+          fetch-depth: 1
       - uses: actions/setup-go@v6
         with:
           go-version: stable
-      - name: Install plugin
-        run: make install-plugin
       - name: Build binaries
-        run: make build
+        run: make dev
       - name: Run coverage
         run: go tool gotestsum --format github-actions --junitfile junit.xml -- -coverprofile=coverage.out -covermode=count ./...
       - name: Upload coverage to Codecov
