@@ -74,6 +74,7 @@ type FlatConfig struct {
 	APIURL                    *string                 `mapstructure:"api_url" cty:"api_url" hcl:"api_url"`
 	Image                     *string                 `mapstructure:"image" required:"true" cty:"image" hcl:"image"`
 	CommercialType            *string                 `mapstructure:"commercial_type" required:"true" cty:"commercial_type" hcl:"commercial_type"`
+	SnapshotName              *string                 `mapstructure:"snapshot_name" required:"false" cty:"snapshot_name" hcl:"snapshot_name"`
 	ImageName                 *string                 `mapstructure:"image_name" required:"false" cty:"image_name" hcl:"image_name"`
 	ServerName                *string                 `mapstructure:"server_name" required:"false" cty:"server_name" hcl:"server_name"`
 	Bootscript                *string                 `mapstructure:"bootscript" required:"false" cty:"bootscript" hcl:"bootscript"`
@@ -170,6 +171,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"api_url":                      &hcldec.AttrSpec{Name: "api_url", Type: cty.String, Required: false},
 		"image":                        &hcldec.AttrSpec{Name: "image", Type: cty.String, Required: false},
 		"commercial_type":              &hcldec.AttrSpec{Name: "commercial_type", Type: cty.String, Required: false},
+		"snapshot_name":                &hcldec.AttrSpec{Name: "snapshot_name", Type: cty.String, Required: false},
 		"image_name":                   &hcldec.AttrSpec{Name: "image_name", Type: cty.String, Required: false},
 		"server_name":                  &hcldec.AttrSpec{Name: "server_name", Type: cty.String, Required: false},
 		"bootscript":                   &hcldec.AttrSpec{Name: "bootscript", Type: cty.String, Required: false},

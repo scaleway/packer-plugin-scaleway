@@ -70,6 +70,9 @@ can also be supplied to override the typical auto-generated key:
   Will be fetched first from the [scaleway configuration file](https://github.com/scaleway/scaleway-sdk-go/blob/master/scw/README.md).
   It can also be specified via the environment variable SCW_API_URL
 
+- `snapshot_name` (string) - The name of the resulting snapshot that will
+  appear in your account. Default packer-TIMESTAMP
+
 - `image_name` (string) - The name of the resulting image that will appear in
   your account. Default packer-TIMESTAMP
 
@@ -107,27 +110,11 @@ can also be supplied to override the typical auto-generated key:
 
 - `tags` ([]string) - A list of tags to apply on the created image, volumes, and snapshots
 
-- `api_token` (string) - The token to use to authenticate with your account.
-  It can also be specified via environment variable SCALEWAY_API_TOKEN. You
-  can see and generate tokens in the "Credentials"
-  section of the control panel.
-  
-  Deprecated: use SecretKey instead
+- `api_token` (string) - Deprecated: use SecretKey instead
 
-- `organization_id` (string) - The organization id to use to identify your
-  organization. It can also be specified via environment variable
-  SCALEWAY_ORGANIZATION. Your organization id is available in the
-  "Account" section of the
-  control panel.
-  Previously named: api_access_key with environment variable: SCALEWAY_API_ACCESS_KEY
-  
-  Deprecated: use ProjectID instead
+- `organization_id` (string) - Deprecated: use ProjectID instead
 
-- `region` (string) - The name of the region to launch the server in (par1
-  or ams1). Consequently, this is the region where the snapshot will be
-  available.
-  
-  Deprecated: use Zone instead
+- `region` (string) - Deprecated: use Zone instead
 
 <!-- End of code generated from the comments of the Config struct in builder/scaleway/config.go; -->
 
