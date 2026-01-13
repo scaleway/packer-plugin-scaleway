@@ -131,7 +131,7 @@ func (s *stepBackup) Run(ctx context.Context, state multistep.StateBag) multiste
 
 	// Apply tags to volumes
 	if len(c.Tags) != 0 {
-		err = applyTags(ctx, instanceAPI, blockAPI, scw.Zone(c.Zone), image.ID, server.Volumes, artifactsSnapshots, c.Tags)
+		err = applyTags(ctx, instanceAPI, blockAPI, scw.Zone(c.Zone), server.Volumes, c.Tags)
 		if err != nil {
 			return putErrorAndHalt(state, ui, err)
 		}
@@ -151,11 +151,11 @@ func (s *stepBackup) Cleanup(_ multistep.StateBag) {
 }
 
 func artifactSnapshotFromImage(image *instance.Image) []ArtifactSnapshot {
-	snapshots := []ArtifactSnapshot{
-		{
-			ID:   image.RootVolume.ID,
-			Name: image.RootVolume.Name,
-		},
+	snapshots := make([]ArtifactSnapshot, 0, len(image.ExtraVolumes)+1)
+
+	snapshots[0] = ArtifactSnapshot{
+		ID:   image.RootVolume.ID,
+		Name: image.RootVolume.Name,
 	}
 	for _, extraVolume := range image.ExtraVolumes {
 		snapshots = append(snapshots, ArtifactSnapshot{
@@ -167,7 +167,7 @@ func artifactSnapshotFromImage(image *instance.Image) []ArtifactSnapshot {
 	return snapshots
 }
 
-func applyTags(ctx context.Context, instanceAPI *instance.API, blockAPI *block.API, zone scw.Zone, imageID string, volumes map[string]*instance.VolumeServer, snapshots []ArtifactSnapshot, tags []string) error {
+func applyTags(ctx context.Context, instanceAPI *instance.API, blockAPI *block.API, zone scw.Zone, volumes map[string]*instance.VolumeServer, tags []string) error {
 	for _, volume := range volumes {
 		if _, blockErr := blockAPI.UpdateVolume(&block.UpdateVolumeRequest{
 			VolumeID: volume.ID,
