@@ -153,10 +153,10 @@ func (s *stepBackup) Cleanup(_ multistep.StateBag) {
 func artifactSnapshotFromImage(image *instance.Image) []ArtifactSnapshot {
 	snapshots := make([]ArtifactSnapshot, 0, len(image.ExtraVolumes)+1)
 
-	snapshots[0] = ArtifactSnapshot{
+	snapshots = append(snapshots, ArtifactSnapshot{
 		ID:   image.RootVolume.ID,
 		Name: image.RootVolume.Name,
-	}
+	})
 	for _, extraVolume := range image.ExtraVolumes {
 		snapshots = append(snapshots, ArtifactSnapshot{
 			ID:   extraVolume.ID,
