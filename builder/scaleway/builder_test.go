@@ -259,3 +259,49 @@ func TestBuilderPrepare_ServerName(t *testing.T) {
 		t.Fatal("should have error")
 	}
 }
+
+func TestBuilderPrepare_PrivateNetworkIDs(t *testing.T) {
+	var b scaleway.Builder
+
+	config := testConfig()
+	expected := []string{
+		"11111111-1111-1111-1111-111111111111",
+		"22222222-2222-2222-2222-222222222222",
+	}
+	config["private_network_ids"] = expected
+
+	_, warnings, err := b.Prepare(config)
+	if len(warnings) > 0 {
+		t.Fatalf("bad: %#v", warnings)
+	}
+
+	if err != nil {
+		t.Fatalf("should not have error: %s", err)
+	}
+
+	if len(b.Config.PrivateNetworkIDs) != len(expected) {
+		t.Fatalf("found %d private networks, expected %d", len(b.Config.PrivateNetworkIDs), len(expected))
+	}
+
+	for i, want := range expected {
+		if got := b.Config.PrivateNetworkIDs[i]; got != want {
+			t.Fatalf("found %s, expected %s", got, want)
+		}
+	}
+}
+
+func TestBuilderPrepare_PrivateNetworkIDsRejectsEmptyValues(t *testing.T) {
+	var b scaleway.Builder
+
+	config := testConfig()
+	config["private_network_ids"] = []string{"valid-id", " "}
+
+	_, warnings, err := b.Prepare(config)
+	if len(warnings) > 0 {
+		t.Fatalf("bad: %#v", warnings)
+	}
+
+	if err == nil {
+		t.Fatal("should have error")
+	}
+}

@@ -104,6 +104,7 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		},
 		new(stepCreateVolume),
 		new(stepCreateServer),
+		new(stepCreatePrivateNICs),
 		new(stepServerInfo),
 		&communicator.StepConnect{
 			Config:    &b.Config.Comm,
