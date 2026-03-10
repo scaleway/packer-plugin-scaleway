@@ -7,6 +7,7 @@ import (
 	"errors"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/hashicorp/packer-plugin-sdk/common"
@@ -127,6 +128,9 @@ type Config struct {
 
 	// A list of tags to apply on the created image, volumes, and snapshots
 	Tags []string `mapstructure:"tags" required:"false"`
+
+	// A list of private network IDs to attach to the instance during the build
+	PrivateNetworkIDs []string `mapstructure:"private_network_ids" required:"false"`
 
 	UserAgent string `mapstructure-to-hcl2:",skip"`
 	ctx       interpolate.Context
@@ -333,6 +337,15 @@ func (c *Config) Prepare(raws ...any) ([]string, error) { //nolint:gocyclo
 		blockErrors := prepareBlockVolumes(c.BlockVolumes)
 		if blockErrors != nil {
 			errs = packersdk.MultiErrorAppend(errs, blockErrors.Errors...)
+		}
+	}
+
+	for _, id := range c.PrivateNetworkIDs {
+		if strings.TrimSpace(id) == "" {
+			errs = packersdk.MultiErrorAppend(
+				errs, errors.New("private_network_ids must not contain empty values"))
+
+			break
 		}
 	}
 

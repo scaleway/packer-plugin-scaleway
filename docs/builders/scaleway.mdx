@@ -81,7 +81,6 @@ build {
 }
 ```
 
-
 **JSON**
 
     ```json
@@ -98,7 +97,44 @@ build {
     }
     ```
 
-
 When you do not specify the `ssh_private_key_file`, a temporary SSH keypair
 is generated to connect the server. This key will only allow the `root` user to
 connect the server.
+
+## Private Network Example
+
+If you need to access internal resources (like a private package repository) during the build,
+you can attach the instance to one or more private networks:
+
+**HCL2**
+
+```hcl
+source "scaleway" "with_private_network" {
+  project_id      = "YOUR PROJECT ID"
+  access_key      = "YOUR ACCESS KEY"
+  secret_key      = "YOUR SECRET KEY"
+  image           = "ubuntu_jammy"
+  zone            = "fr-par-1"
+  commercial_type = "DEV1-S"
+  ssh_username    = "root"
+  ssh_private_key_file = "~/.ssh/id_rsa"
+
+  private_network_ids = [
+    "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+  ]
+}
+
+build {
+  sources = ["source.scaleway.with_private_network"]
+
+  provisioner "shell" {
+    inline = [
+      "apt-get update",
+      "apt-get install -y curl",
+      "curl http://internal-repo.private.local/package.deb -o /tmp/package.deb"
+    ]
+  }
+}
+```
+
+The private networks are attached after the instance is started and are available to provisioners.

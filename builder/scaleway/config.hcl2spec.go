@@ -90,6 +90,7 @@ type FlatConfig struct {
 	UserData                  map[string]string       `mapstructure:"user_data" required:"false" cty:"user_data" hcl:"user_data"`
 	UserDataTimeout           *string                 `mapstructure:"user_data_timeout" required:"false" cty:"user_data_timeout" hcl:"user_data_timeout"`
 	Tags                      []string                `mapstructure:"tags" required:"false" cty:"tags" hcl:"tags"`
+	PrivateNetworkIDs         []string                `mapstructure:"private_network_ids" required:"false" cty:"private_network_ids" hcl:"private_network_ids"`
 	Token                     *string                 `mapstructure:"api_token" required:"false" cty:"api_token" hcl:"api_token"`
 	Organization              *string                 `mapstructure:"organization_id" required:"false" cty:"organization_id" hcl:"organization_id"`
 	Region                    *string                 `mapstructure:"region" required:"false" cty:"region" hcl:"region"`
@@ -187,6 +188,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"user_data":                    &hcldec.AttrSpec{Name: "user_data", Type: cty.Map(cty.String), Required: false},
 		"user_data_timeout":            &hcldec.AttrSpec{Name: "user_data_timeout", Type: cty.String, Required: false},
 		"tags":                         &hcldec.AttrSpec{Name: "tags", Type: cty.List(cty.String), Required: false},
+		"private_network_ids":          &hcldec.AttrSpec{Name: "private_network_ids", Type: cty.List(cty.String), Required: false},
 		"api_token":                    &hcldec.AttrSpec{Name: "api_token", Type: cty.String, Required: false},
 		"organization_id":              &hcldec.AttrSpec{Name: "organization_id", Type: cty.String, Required: false},
 		"region":                       &hcldec.AttrSpec{Name: "region", Type: cty.String, Required: false},
