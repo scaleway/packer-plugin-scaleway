@@ -4,7 +4,7 @@ go 1.24.0
 
 require (
 	github.com/hashicorp/hcl/v2 v2.23.0
-	github.com/hashicorp/packer-plugin-sdk v0.6.5
+	github.com/hashicorp/packer-plugin-sdk v0.6.6
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.35.0.20251020071439-b2bca397788f
 	github.com/stretchr/testify v1.11.1
