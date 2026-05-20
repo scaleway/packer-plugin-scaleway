@@ -15,6 +15,21 @@ const (
 	rootVolumeFromUbuntuJammyNamePrefix = "Ubuntu 22.04 Jammy Jellyfish"
 	packerGeneratedResourceNamePrefix   = "packer-"
 	apiGeneratedSnapshotNamePrefix      = "snp-"
+	tagTest                             = "test"
+	tagPacker                           = "packer"
+	tagComplete                         = "complete"
+	tagDevtools                         = "devtools"
+	tagProvider                         = "provider"
+	tagSnapshotName                     = "snapshot-name"
+	tagBlock                            = "block"
+	tagLocal                            = "local"
+)
+
+var (
+	e2eTagsComplete          = []string{tagTest, tagPacker, tagComplete}
+	e2eTagsDevtools          = []string{tagDevtools, tagProvider, tagPacker}
+	e2eTagsSnapshotNameBlock = []string{tagTest, tagSnapshotName, tagBlock}
+	e2eTagsSnapshotNameLocal = []string{tagTest, tagSnapshotName, tagLocal}
 )
 
 func TestSimple(t *testing.T) {
@@ -31,18 +46,18 @@ func TestSimple(t *testing.T) {
 			  image_name = "%s"
 			  ssh_username = "root"
 			  remove_volume = true
-			  tags = ["devtools", "provider", "packer"]
+			  tags = ["%s", "%s", "%s"]
 			}
 			
 			build {
 			  sources = ["source.scaleway.basic"]
 			}
-			`, zone, imageName),
+			`, zone, imageName, tagDevtools, tagProvider, tagPacker),
 		Checks: []tester.PackerCheck{
 			checks.Image(zone, imageName).
-				Tags([]string{"devtools", "provider", "packer"}).
+				Tags(e2eTagsDevtools).
 				RootVolumeSnapshot(checks.BlockSnapshot(zone, apiGeneratedSnapshotNamePrefix).
-					Tags([]string{"devtools", "provider", "packer"}),
+					Tags(e2eTagsDevtools),
 				),
 			checks.NoVolume(zone),
 		},

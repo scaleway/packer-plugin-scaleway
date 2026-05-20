@@ -26,7 +26,7 @@ func TestComplete(t *testing.T) {
 			  image_name = "%[2]s"
 			  ssh_username = "root"
 			  remove_volume = false
-              tags = [ "test", "packer", "complete" ]
+              tags = [ "%[5]s", "%[6]s", "%[7]s" ]
 
 			  root_volume {
 				type = "l_ssd"
@@ -55,47 +55,47 @@ func TestComplete(t *testing.T) {
 			build {
 			  sources = ["source.scaleway.basic"]
 			}
-			`, zone, imageName, rootVolumeSize, blockVolumeSize),
+			`, zone, imageName, rootVolumeSize, blockVolumeSize, tagTest, tagPacker, tagComplete),
 		Checks: []tester.PackerCheck{
 			checks.Image(zone, imageName).
 				SizeInGB(42).
-				Tags([]string{"test", "packer", "complete"}).
+				Tags(e2eTagsComplete).
 				RootVolumeSnapshot(
 					checks.InstanceSnapshot(zone, "named-snap-root").
 						SizeInGB(uint64(rootVolumeSize)).
 						Name("named-snap-root-volume-0").
-						Tags([]string{"test", "packer", "complete"}),
+						Tags(e2eTagsComplete),
 				).
 				ExtraVolumeSnapshot("1", checks.BlockSnapshot(zone, packerGeneratedResourceNamePrefix).
 					SizeInGB(uint64(blockVolumeSize)).
-					Tags([]string{"test", "packer", "complete"}),
+					Tags(e2eTagsComplete),
 				).
 				ExtraVolumeSnapshot("2", checks.BlockSnapshot(zone, packerGeneratedResourceNamePrefix).
 					SizeInGB(uint64(blockVolumeSize)).
-					Tags([]string{"test", "packer", "complete"}),
+					Tags(e2eTagsComplete),
 				).
 				ExtraVolumeSnapshot("3", checks.BlockSnapshot(zone, "named-snap-extra").
 					SizeInGB(uint64(blockVolumeSize)).
 					Name("named-snap-extra-volume-3").
-					Tags([]string{"test", "packer", "complete"}),
+					Tags(e2eTagsComplete),
 				),
 			checks.InstanceVolume(zone, rootVolumeNamePrefix).
 				SizeInGB(12).
 				Name(rootVolumeFromUbuntuJammyNamePrefix).
-				Tags([]string{"test", "packer", "complete"}),
+				Tags(e2eTagsComplete),
 			checks.BlockVolume(zone, "named-extra-volume").
 				SizeInGB(uint64(blockVolumeSize)).
 				Name("named-extra-volume-1").
 				IOPS(5000).
-				Tags([]string{"test", "packer", "complete"}),
+				Tags(e2eTagsComplete),
 			checks.BlockVolume(zone, packerGeneratedResourceNamePrefix).
 				SizeInGB(uint64(blockVolumeSize)).
 				IOPS(15000).
-				Tags([]string{"test", "packer", "complete"}),
+				Tags(e2eTagsComplete),
 			checks.BlockVolume(zone, packerGeneratedResourceNamePrefix).
 				SizeInGB(uint64(blockVolumeSize)).
 				IOPS(5000).
-				Tags([]string{"test", "packer", "complete"}),
+				Tags(e2eTagsComplete),
 		},
 		Cleanup: []tester.PackerCleanup{
 			cleanup.Image(zone, imageName),

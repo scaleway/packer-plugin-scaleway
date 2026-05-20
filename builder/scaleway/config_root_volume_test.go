@@ -11,15 +11,15 @@ func TestBuilderPrepare_SnapshotName(t *testing.T) {
 	var b scaleway.Builder
 
 	config := map[string]any{
-		"project_id":      "00000000-1111-2222-3333-444444444444",
+		"project_id":      testProjectID,
 		"access_key":      "SCWABCXXXXXXXXXXXXXX",
-		"secret_key":      "00000000-1111-2222-3333-444444444444",
+		"secret_key":      testProjectID,
 		"zone":            "fr-par-3",
-		"commercial_type": "PRO2-S",
+		"commercial_type": testCommercialTypePRO2S,
 		"ssh_username":    "root",
 		"image":           "image-uuid",
 		"root_volume": map[string]any{
-			"snapshot_name": "default",
+			testSnapshotNameKey: testDefaultSnapshotName,
 		},
 	}
 
@@ -36,7 +36,7 @@ func TestBuilderPrepare_SnapshotName(t *testing.T) {
 		t.Errorf("invalid: %s", b.Config.RootVolume.SnapshotName)
 	}
 
-	config["root_volume"] = map[string]any{"snapshot_name": "foobarbaz"}
+	config["root_volume"] = map[string]any{testSnapshotNameKey: "foobarbaz"}
 	b = scaleway.Builder{}
 
 	_, warnings, err = b.Prepare(config)
@@ -48,7 +48,7 @@ func TestBuilderPrepare_SnapshotName(t *testing.T) {
 		t.Fatalf("should not have error: %s", err)
 	}
 
-	config["root_volume"] = map[string]any{"snapshot_name": "{{timestamp}}"}
+	config["root_volume"] = map[string]any{testSnapshotNameKey: "{{timestamp}}"}
 	b = scaleway.Builder{}
 
 	_, warnings, err = b.Prepare(config)
