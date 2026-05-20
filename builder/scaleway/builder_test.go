@@ -11,11 +11,11 @@ import (
 
 func testConfig() map[string]any {
 	return map[string]any{
-		"project_id":      "00000000-1111-2222-3333-444444444444",
+		"project_id":      testProjectID,
 		"access_key":      "SCWABCXXXXXXXXXXXXXX",
-		"secret_key":      "00000000-1111-2222-3333-444444444444",
+		"secret_key":      testProjectID,
 		"zone":            "fr-par-1",
-		"commercial_type": "PRO2-S",
+		"commercial_type": testCommercialTypePRO2S,
 		"ssh_username":    "root",
 		"image":           "image-uuid",
 	}
@@ -151,7 +151,7 @@ func TestBuilderPrepare_CommercialType(t *testing.T) {
 		t.Fatalf("should error")
 	}
 
-	expected := "PRO2-S"
+	expected := testCommercialTypePRO2S
 
 	config["commercial_type"] = expected
 	b = scaleway.Builder{}
@@ -186,7 +186,7 @@ func TestBuilderPrepare_Image(t *testing.T) {
 		t.Fatal("should error")
 	}
 
-	expected := "cc586e45-5156-4f71-b223-cf406b10dd1c"
+	expected := testSnapshotUUID
 
 	config["image"] = expected
 	b = scaleway.Builder{}

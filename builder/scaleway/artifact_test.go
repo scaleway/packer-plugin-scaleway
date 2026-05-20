@@ -23,7 +23,7 @@ func TestArtifactId(t *testing.T) {
 		"cc586e45-5156-4f71-b223-cf406b10dd1d",
 		[]scaleway.ArtifactSnapshot{{
 			"packer-foobar-snapshot",
-			"cc586e45-5156-4f71-b223-cf406b10dd1c",
+			testSnapshotUUID,
 		}},
 		"ams1",
 		nil,
@@ -43,7 +43,7 @@ func TestArtifactString(t *testing.T) {
 		"cc586e45-5156-4f71-b223-cf406b10dd1d",
 		[]scaleway.ArtifactSnapshot{
 			{
-				"cc586e45-5156-4f71-b223-cf406b10dd1c",
+				testSnapshotUUID,
 				"packer-foobar-snapshot",
 			},
 			{
@@ -55,7 +55,7 @@ func TestArtifactString(t *testing.T) {
 		nil,
 		generatedData,
 	}
-	expected := "An image was created: 'packer-foobar-image' (ID: cc586e45-5156-4f71-b223-cf406b10dd1d) in zone 'ams1' based on snapshots [(packer-foobar-snapshot: cc586e45-5156-4f71-b223-cf406b10dd1c) (packer-foobar-snapshot2: cc586e45-5156-4f71-b223-cf406b10dd1e)]"
+	expected := "An image was created: 'packer-foobar-image' (ID: cc586e45-5156-4f71-b223-cf406b10dd1d) in zone 'ams1' based on snapshots [(packer-foobar-snapshot: " + testSnapshotUUID + ") (packer-foobar-snapshot2: cc586e45-5156-4f71-b223-cf406b10dd1e)]"
 
 	if a.String() != expected {
 		t.Fatalf("artifact string (%v) should match: %v", a.String(), expected)

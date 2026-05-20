@@ -25,7 +25,7 @@ func TestSnapshotNameBlock(t *testing.T) {
 			  image_name = "%s"
 			  ssh_username = "root"
 			  remove_volume = false
-              tags = [ "test", "snapshot-name", "block" ]
+              tags = [ "%s", "%s", "%s" ]
 
 			  root_volume {
 			    type = "sbs_volume"
@@ -36,17 +36,17 @@ func TestSnapshotNameBlock(t *testing.T) {
 			build {
 			  sources = ["source.scaleway.basic"]
 			}
-			`, zone, imageName, snapshotName),
+			`, zone, imageName, snapshotName, tagTest, tagSnapshotName, tagBlock),
 		Checks: []tester.PackerCheck{
 			checks.Image(zone, imageName).
-				Tags([]string{"test", "snapshot-name", "block"}).
+				Tags(e2eTagsSnapshotNameBlock).
 				RootVolumeSnapshot(
 					checks.BlockSnapshot(zone, snapshotName).
 						Name(snapshotName).
-						Tags([]string{"test", "snapshot-name", "block"}),
+						Tags(e2eTagsSnapshotNameBlock),
 				),
 			checks.BlockVolume(zone, rootVolumeNamePrefix).
-				Tags([]string{"test", "snapshot-name", "block"}).
+				Tags(e2eTagsSnapshotNameBlock).
 				Name(rootVolumeFromUbuntuJammyNamePrefix + "_sbs_volume_0"),
 		},
 		Cleanup: []tester.PackerCleanup{
@@ -72,7 +72,7 @@ func TestSnapshotNameLocal(t *testing.T) {
 			  image_name = "%s"
 			  ssh_username = "root"
 			  remove_volume = false
-              tags = [ "test", "snapshot-name", "local" ]
+              tags = [ "%s", "%s", "%s" ]
 
 			  root_volume {
 			    type = "l_ssd"
@@ -83,17 +83,17 @@ func TestSnapshotNameLocal(t *testing.T) {
 			build {
 			  sources = ["source.scaleway.basic"]
 			}
-			`, zone, imageName, snapshotName),
+			`, zone, imageName, snapshotName, tagTest, tagSnapshotName, tagLocal),
 		Checks: []tester.PackerCheck{
 			checks.Image(zone, imageName).
-				Tags([]string{"test", "snapshot-name", "local"}).
+				Tags(e2eTagsSnapshotNameLocal).
 				RootVolumeSnapshot(
 					checks.InstanceSnapshot(zone, snapshotName).
 						Name(snapshotName).
-						Tags([]string{"test", "snapshot-name", "local"}),
+						Tags(e2eTagsSnapshotNameLocal),
 				),
 			checks.InstanceVolume(zone, rootVolumeNamePrefix).
-				Tags([]string{"test", "snapshot-name", "local"}).
+				Tags(e2eTagsSnapshotNameLocal).
 				Name(rootVolumeFromUbuntuJammyNamePrefix),
 		},
 		Cleanup: []tester.PackerCleanup{
