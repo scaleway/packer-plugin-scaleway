@@ -13,6 +13,8 @@ import (
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
+	iam "github.com/scaleway/scaleway-sdk-go/api/iam/v1alpha1"
+	"github.com/scaleway/scaleway-sdk-go/scw"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -34,7 +36,23 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 		}
 
 		config.Comm.SSHPrivateKey = privateKeyBytes
-		config.Comm.SSHPublicKey = nil
+		rawPrivateKey, err := ssh.ParseRawPrivateKey(privateKeyBytes)
+		if err != nil {
+			return putErrorAndHalt(state, ui, fmt.Errorf("error parsing SSH private key: %w", err))
+		}
+
+		signer, err := ssh.NewSignerFromKey(rawPrivateKey)
+		if err != nil {
+			return putErrorAndHalt(state, ui, fmt.Errorf("error creating SSH signer from private key: %w", err))
+		}
+
+		config.Comm.SSHPublicKey = ssh.MarshalAuthorizedKey(signer.PublicKey())
+
+		if isWindowsCommercialType(config.CommercialType) {
+			if err := s.createWindowsIAMSSHKey(state); err != nil {
+				return putErrorAndHalt(state, ui, err)
+			}
+		}
 
 		return multistep.ActionContinue
 	}
@@ -65,6 +83,12 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 	config.Comm.SSHPrivateKey = pem.EncodeToMemory(&privateBlock)
 	config.Comm.SSHPublicKey = ssh.MarshalAuthorizedKey(pub)
 
+	if isWindowsCommercialType(config.CommercialType) {
+		if err := s.createWindowsIAMSSHKey(state); err != nil {
+			return putErrorAndHalt(state, ui, err)
+		}
+	}
+
 	// If we're in debug mode, output the private key to the working directory.
 	if s.Debug {
 		ui.Message("Saving key for debug purposes: " + s.DebugKeyPath)
@@ -92,6 +116,40 @@ func (s *stepCreateSSHKey) Run(_ context.Context, state multistep.StateBag) mult
 	return multistep.ActionContinue
 }
 
-func (s *stepCreateSSHKey) Cleanup(_ multistep.StateBag) {
-	// SSH key is passed via tag. Nothing to do here.
+func (s *stepCreateSSHKey) Cleanup(state multistep.StateBag) {
+	sshKeyID, ok := state.GetOk("windows_iam_ssh_key_id")
+	if !ok {
+		return
+	}
+
+	client := state.Get("client").(*scw.Client)
+	iamAPI := iam.NewAPI(client)
+	ui := state.Get("ui").(packersdk.Ui)
+
+	ui.Say("Deleting temporary Windows IAM SSH key...")
+
+	if err := iamAPI.DeleteSSHKey(&iam.DeleteSSHKeyRequest{
+		SSHKeyID: sshKeyID.(string),
+	}); err != nil {
+		ui.Error(fmt.Sprintf("Error deleting Windows IAM SSH key: %s", err))
+	}
+}
+
+func (s *stepCreateSSHKey) createWindowsIAMSSHKey(state multistep.StateBag) error {
+	client := state.Get("client").(*scw.Client)
+	config := state.Get("config").(*Config)
+	iamAPI := iam.NewAPI(client)
+
+	sshKey, err := iamAPI.CreateSSHKey(&iam.CreateSSHKeyRequest{
+		Name:      config.ServerName + "-windows-ssh",
+		PublicKey: string(config.Comm.SSHPublicKey),
+		ProjectID: config.ProjectID,
+	})
+	if err != nil {
+		return fmt.Errorf("error creating Windows IAM SSH key: %w", err)
+	}
+
+	state.Put("windows_iam_ssh_key_id", sshKey.ID)
+
+	return nil
 }

@@ -33,6 +33,10 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		tags = []string{"AUTHORIZED_KEY=" + strings.ReplaceAll(strings.TrimSpace(string(c.Comm.SSHPublicKey)), " ", "_")}
 	}
 
+	if isWindowsCommercialType(c.CommercialType) {
+		tags = append(tags, "with-ssh")
+	}
+
 	bootType := instance.BootType(c.BootType)
 
 	createServerReq := &instance.CreateServerRequest{
@@ -42,6 +46,13 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		Image:          scw.StringPtr(c.Image),
 		Tags:           tags,
 		Zone:           scw.Zone(c.Zone),
+	}
+
+	if isWindowsCommercialType(c.CommercialType) {
+		if sshKeyID, ok := state.GetOk("windows_iam_ssh_key_id"); ok {
+			windowsSSHKeyID := sshKeyID.(string)
+			createServerReq.AdminPasswordEncryptionSSHKeyID = &windowsSSHKeyID
+		}
 	}
 
 	if c.RootVolume.IsConfigured() {
