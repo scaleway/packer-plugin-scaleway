@@ -24,13 +24,12 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	instanceAPI := instance.NewAPI(state.Get("client").(*scw.Client))
 	ui := state.Get("ui").(packersdk.Ui)
 	c := state.Get("config").(*Config)
-
-	var tags []string
+	tags := c.Tags
 
 	ui.Say("Creating server...")
 
 	if c.Comm.SSHPublicKey != nil {
-		tags = []string{"AUTHORIZED_KEY=" + strings.ReplaceAll(strings.TrimSpace(string(c.Comm.SSHPublicKey)), " ", "_")}
+		tags = append(tags, "AUTHORIZED_KEY="+strings.ReplaceAll(strings.TrimSpace(string(c.Comm.SSHPublicKey)), " ", "_"))
 	}
 
 	bootType := instance.BootType(c.BootType)
