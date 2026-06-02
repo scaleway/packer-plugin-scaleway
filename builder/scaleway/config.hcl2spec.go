@@ -80,6 +80,7 @@ type FlatConfig struct {
 	Bootscript                *string                 `mapstructure:"bootscript" required:"false" cty:"bootscript" hcl:"bootscript"`
 	BootType                  *string                 `mapstructure:"boottype" required:"false" cty:"boottype" hcl:"boottype"`
 	RemoveVolume              *bool                   `mapstructure:"remove_volume" cty:"remove_volume" hcl:"remove_volume"`
+	KeepServer                *bool                   `mapstructure:"keep_server" cty:"keep_server" hcl:"keep_server"`
 	RootVolume                *FlatConfigRootVolume   `mapstructure:"root_volume" required:"false" cty:"root_volume" hcl:"root_volume"`
 	BlockVolumes              []FlatConfigBlockVolume `mapstructure:"block_volume" cty:"block_volume" hcl:"block_volume"`
 	CleanupMachineRelatedData *string                 `mapstructure:"cleanup_machine_related_data" required:"false" cty:"cleanup_machine_related_data" hcl:"cleanup_machine_related_data"`
@@ -90,6 +91,7 @@ type FlatConfig struct {
 	UserData                  map[string]string       `mapstructure:"user_data" required:"false" cty:"user_data" hcl:"user_data"`
 	UserDataTimeout           *string                 `mapstructure:"user_data_timeout" required:"false" cty:"user_data_timeout" hcl:"user_data_timeout"`
 	Tags                      []string                `mapstructure:"tags" required:"false" cty:"tags" hcl:"tags"`
+	ServerTags                []string                `mapstructure:"server_tags" required:"false" cty:"server_tags" hcl:"server_tags"`
 	PrivateNetworkIDs         []string                `mapstructure:"private_network_ids" required:"false" cty:"private_network_ids" hcl:"private_network_ids"`
 	Token                     *string                 `mapstructure:"api_token" required:"false" cty:"api_token" hcl:"api_token"`
 	Organization              *string                 `mapstructure:"organization_id" required:"false" cty:"organization_id" hcl:"organization_id"`
@@ -178,6 +180,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"bootscript":                   &hcldec.AttrSpec{Name: "bootscript", Type: cty.String, Required: false},
 		"boottype":                     &hcldec.AttrSpec{Name: "boottype", Type: cty.String, Required: false},
 		"remove_volume":                &hcldec.AttrSpec{Name: "remove_volume", Type: cty.Bool, Required: false},
+		"keep_server":                  &hcldec.AttrSpec{Name: "keep_server", Type: cty.Bool, Required: false},
 		"root_volume":                  &hcldec.BlockSpec{TypeName: "root_volume", Nested: hcldec.ObjectSpec((*FlatConfigRootVolume)(nil).HCL2Spec())},
 		"block_volume":                 &hcldec.BlockListSpec{TypeName: "block_volume", Nested: hcldec.ObjectSpec((*FlatConfigBlockVolume)(nil).HCL2Spec())},
 		"cleanup_machine_related_data": &hcldec.AttrSpec{Name: "cleanup_machine_related_data", Type: cty.String, Required: false},
@@ -188,6 +191,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"user_data":                    &hcldec.AttrSpec{Name: "user_data", Type: cty.Map(cty.String), Required: false},
 		"user_data_timeout":            &hcldec.AttrSpec{Name: "user_data_timeout", Type: cty.String, Required: false},
 		"tags":                         &hcldec.AttrSpec{Name: "tags", Type: cty.List(cty.String), Required: false},
+		"server_tags":                  &hcldec.AttrSpec{Name: "server_tags", Type: cty.List(cty.String), Required: false},
 		"private_network_ids":          &hcldec.AttrSpec{Name: "private_network_ids", Type: cty.List(cty.String), Required: false},
 		"api_token":                    &hcldec.AttrSpec{Name: "api_token", Type: cty.String, Required: false},
 		"organization_id":              &hcldec.AttrSpec{Name: "organization_id", Type: cty.String, Required: false},

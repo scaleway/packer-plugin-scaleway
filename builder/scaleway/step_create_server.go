@@ -24,7 +24,12 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	instanceAPI := instance.NewAPI(state.Get("client").(*scw.Client))
 	ui := state.Get("ui").(packersdk.Ui)
 	c := state.Get("config").(*Config)
-	tags := c.Tags
+
+	// Add specific server_tags if provided, else apply the tags
+	tags := c.ServerTags
+	if len(tags) == 0 {
+		tags = c.Tags
+	}
 
 	ui.Say("Creating server...")
 
@@ -125,7 +130,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 }
 
 func (s *stepCreateServer) Cleanup(state multistep.StateBag) {
-	if s.serverID == "" {
+	if s.serverID == "" || state.Get("config").(*Config).KeepServer {
 		return
 	}
 

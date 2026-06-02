@@ -99,6 +99,8 @@ type Config struct {
 
 	// RemoveVolume remove the temporary volumes created before running the server
 	RemoveVolume bool `mapstructure:"remove_volume"`
+	// KeepServer prevents the termination of the temporary server after the build. Used for testing purposes.
+	KeepServer bool `mapstructure:"keep_server"`
 
 	// RootVolumeType lets you configure the root volume
 	// See the [RootVolume](#root-volume-configuration) documentation for fields.
@@ -128,6 +130,8 @@ type Config struct {
 
 	// A list of tags to apply on the created image, volumes, and snapshots
 	Tags []string `mapstructure:"tags" required:"false"`
+	// A list of tags to apply on the temporary server
+	ServerTags []string `mapstructure:"server_tags" required:"false"`
 
 	// A list of private network IDs to attach to the instance during the build
 	PrivateNetworkIDs []string `mapstructure:"private_network_ids" required:"false"`
