@@ -25,12 +25,16 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	ui := state.Get("ui").(packersdk.Ui)
 	c := state.Get("config").(*Config)
 
-	var tags []string
+	// Add specific server_tags if provided, else apply the tags
+	tags := c.ServerTags
+	if len(tags) == 0 {
+		tags = c.Tags
+	}
 
 	ui.Say("Creating server...")
 
 	if c.Comm.SSHPublicKey != nil {
-		tags = []string{"AUTHORIZED_KEY=" + strings.ReplaceAll(strings.TrimSpace(string(c.Comm.SSHPublicKey)), " ", "_")}
+		tags = append(tags, "AUTHORIZED_KEY="+strings.ReplaceAll(strings.TrimSpace(string(c.Comm.SSHPublicKey)), " ", "_"))
 	}
 
 	bootType := instance.BootType(c.BootType)
@@ -126,7 +130,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 }
 
 func (s *stepCreateServer) Cleanup(state multistep.StateBag) {
-	if s.serverID == "" {
+	if s.serverID == "" || state.Get("config").(*Config).KeepServer {
 		return
 	}
 

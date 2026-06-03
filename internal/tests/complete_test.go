@@ -13,6 +13,7 @@ import (
 func TestComplete(t *testing.T) {
 	zone := scw.ZoneNlAms1
 	imageName := "packer-e2e-complete"
+	serverName := "packer-tmp-server"
 	rootVolumeSize := 12
 	blockVolumeSize := 10
 
@@ -23,10 +24,14 @@ func TestComplete(t *testing.T) {
 			  commercial_type = "DEV1-M"
 			  zone = "%[1]s"
 			  image = "ubuntu_jammy"
-			  image_name = "%[2]s"
 			  ssh_username = "root"
-			  remove_volume = false
+
+			  image_name = "%[2]s"
               tags = [ "%[5]s", "%[6]s", "%[7]s" ]
+			  server_name = "%[8]s"
+			  server_tags = [ "packer-build", "tmp-server" ]
+			  remove_volume = false
+			  keep_server = true
 
 			  root_volume {
 				type = "l_ssd"
@@ -55,7 +60,7 @@ func TestComplete(t *testing.T) {
 			build {
 			  sources = ["source.scaleway.basic"]
 			}
-			`, zone, imageName, rootVolumeSize, blockVolumeSize, tagTest, tagPacker, tagComplete),
+			`, zone, imageName, rootVolumeSize, blockVolumeSize, tagTest, tagPacker, tagComplete, serverName),
 		Checks: []tester.PackerCheck{
 			checks.Image(zone, imageName).
 				SizeInGB(42).
@@ -96,8 +101,11 @@ func TestComplete(t *testing.T) {
 				SizeInGB(uint64(blockVolumeSize)).
 				IOPS(5000).
 				Tags(e2eTagsComplete),
+			checks.Server(zone, serverName).
+				Tags([]string{"packer-build", "tmp-server"}),
 		},
 		Cleanup: []tester.PackerCleanup{
+			cleanup.Server(zone, serverName),
 			cleanup.Image(zone, imageName),
 			cleanup.InstanceSnapshot(zone, "named"),
 			cleanup.InstanceVolume(zone, rootVolumeNamePrefix),
