@@ -87,6 +87,8 @@ can also be supplied to override the typical auto-generated key:
 
 - `remove_volume` (bool) - RemoveVolume remove the temporary volumes created before running the server
 
+- `keep_server` (bool) - KeepServer prevents the termination of the temporary server after the build. Used for testing purposes.
+
 - `root_volume` (ConfigRootVolume) - RootVolumeType lets you configure the root volume
   See the [RootVolume](#root-volume-configuration) documentation for fields.
 
@@ -109,6 +111,8 @@ can also be supplied to override the typical auto-generated key:
 - `user_data_timeout` (duration string | ex: "1h5m2s") - A custom timeout for user data to assure its completion. Defaults to "0s"
 
 - `tags` ([]string) - A list of tags to apply on the created image, volumes, and snapshots
+
+- `server_tags` ([]string) - A list of tags to apply on the temporary server
 
 - `private_network_ids` ([]string) - A list of private network IDs to attach to the instance during the build
 
