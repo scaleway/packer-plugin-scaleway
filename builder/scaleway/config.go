@@ -133,6 +133,9 @@ type Config struct {
 	// A list of private network IDs to attach to the instance during the build
 	PrivateNetworkIDs []string `mapstructure:"private_network_ids" required:"false"`
 
+	// The ID of the SSH Key used to encrypt the admin password on Windows instances
+	AdminPasswordEncryptionSSHKeyID string `mapstructure:"admin_password_encryption_ssh_key_id" required:"false"`
+
 	UserAgent string `mapstructure-to-hcl2:",skip"`
 	ctx       interpolate.Context
 

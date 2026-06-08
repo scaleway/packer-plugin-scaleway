@@ -17,7 +17,8 @@ type ServerCheck struct {
 	zone scw.Zone
 	name string
 
-	tags []string
+	tags                    []string
+	adminPwdEncryptSSHKeyID *string
 }
 
 func Server(zone scw.Zone, name string) *ServerCheck {
@@ -29,6 +30,12 @@ func Server(zone scw.Zone, name string) *ServerCheck {
 
 func (c *ServerCheck) Tags(tags []string) *ServerCheck {
 	c.tags = tags
+
+	return c
+}
+
+func (c *ServerCheck) AdminPasswordEncryptionSSHKeyID(sshKeyID string) *ServerCheck {
+	c.adminPwdEncryptSSHKeyID = &sshKeyID
 
 	return c
 }
@@ -65,6 +72,26 @@ func (c *ServerCheck) Check(ctx context.Context) error {
 	server, err := findServer(ctx, c.zone, c.name)
 	if err != nil {
 		return err
+	}
+
+	if c.adminPwdEncryptSSHKeyID != nil {
+		testCtx := tester.ExtractCtx(ctx)
+		api := instance.NewAPI(testCtx.ScwClient)
+
+		// AdminPasswordEncryptionSSHKeyID is only readable in the GetServer response and not ListServers's
+		serverGetResponse, err := api.GetServer(&instance.GetServerRequest{
+			Zone:     server.Zone,
+			ServerID: server.ID,
+		}, scw.WithContext(ctx))
+		if err != nil {
+			return fmt.Errorf("could not get server: %w", err)
+		}
+
+		if serverGetResponse.Server.AdminPasswordEncryptionSSHKeyID == nil {
+			return errors.New("expected AdminPasswordEncryptionSSHKeyID to be set but was <nil>")
+		} else if *c.adminPwdEncryptSSHKeyID != *serverGetResponse.Server.AdminPasswordEncryptionSSHKeyID {
+			return fmt.Errorf("AdminPasswordEncryptionSSHKeyID did not match: expected %q, got %q", *c.adminPwdEncryptSSHKeyID, *serverGetResponse.Server.AdminPasswordEncryptionSSHKeyID)
+		}
 	}
 
 	actualTags := make(map[string]bool, len(server.Tags))
