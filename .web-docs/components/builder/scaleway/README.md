@@ -116,6 +116,8 @@ can also be supplied to override the typical auto-generated key:
 
 - `private_network_ids` ([]string) - A list of private network IDs to attach to the instance during the build
 
+- `admin_password_encryption_ssh_key_id` (string) - The ID of the SSH Key used to encrypt the admin password on Windows instances
+
 - `api_token` (string) - Deprecated: use SecretKey instead
 
 - `organization_id` (string) - Deprecated: use ProjectID instead
