@@ -59,7 +59,11 @@ func NewTestContext(ctx context.Context, httpClient *http.Client) (context.Conte
 }
 
 func ExtractCtx(ctx context.Context) *PackerCtx {
-	return ctx.Value(PackerCtxKey{}).(*PackerCtx)
+	if packerCtx, ok := ctx.Value(PackerCtxKey{}).(*PackerCtx); ok {
+		return packerCtx
+	}
+
+	return nil
 }
 
 type TestConfig struct {
@@ -68,16 +72,36 @@ type TestConfig struct {
 	Cleanup []PackerCleanup
 }
 
-func Test(t *testing.T, httpClient *http.Client, config *TestConfig) {
-	ctx := t.Context()
-	ctx, err := NewTestContext(ctx, httpClient)
+func CreateRecordedClientAndContext(t *testing.T) (context.Context, func()) {
+	t.Helper()
+
+	httpClient, vcrCleanupFunc, err := vcr.GetHTTPRecorder(vcr.GetTestFilePath(t, "."), vcr.UpdateCassettes)
 	require.NoError(t, err)
+
+	ctx := t.Context()
+	ctx, err = NewTestContext(ctx, httpClient)
+	require.NoError(t, err)
+
+	return ctx, vcrCleanupFunc
+}
+
+func Test(t *testing.T, config *TestConfig) {
+	ctx := t.Context()
+
+	// Check if test context needs to be initialized
+	if packerCtx := ExtractCtx(ctx); packerCtx == nil {
+		var vcrCleanupFunc func()
+
+		ctx, vcrCleanupFunc = CreateRecordedClientAndContext(t)
+
+		defer vcrCleanupFunc()
+	}
 
 	// Create TMP Dir
 	tmpDir := t.TempDir()
 	t.Logf("Created tmp dir: %s", tmpDir)
 
-	err = packerExec(tmpDir, config.Config, !vcr.UpdateCassettes)
+	err := packerExec(tmpDir, config.Config, !vcr.UpdateCassettes)
 	require.NoError(t, err, "error executing packer command: %s", err)
 
 	for i, check := range config.Checks {

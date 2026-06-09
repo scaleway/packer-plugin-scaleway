@@ -7,9 +7,7 @@ import (
 	"github.com/scaleway/packer-plugin-scaleway/internal/checks"
 	"github.com/scaleway/packer-plugin-scaleway/internal/cleanup"
 	"github.com/scaleway/packer-plugin-scaleway/internal/tester"
-	"github.com/scaleway/packer-plugin-scaleway/internal/vcr"
 	"github.com/scaleway/scaleway-sdk-go/scw"
-	"github.com/stretchr/testify/require"
 )
 
 func TestSnapshotNameBlock(t *testing.T) {
@@ -17,12 +15,7 @@ func TestSnapshotNameBlock(t *testing.T) {
 	imageName := "packer-e2e-snap-name-block"
 	snapshotName := "named-block-snapshot"
 
-	httpClient, vcrCleanupFunc, err := vcr.GetHTTPRecorder(vcr.GetTestFilePath(t, "."), vcr.UpdateCassettes)
-	require.NoError(t, err)
-
-	defer vcrCleanupFunc()
-
-	tester.Test(t, httpClient, &tester.TestConfig{
+	tester.Test(t, &tester.TestConfig{
 		Config: fmt.Sprintf(`
 			source "scaleway" "basic" {
 			  communicator = "none"
@@ -69,12 +62,7 @@ func TestSnapshotNameLocal(t *testing.T) {
 	imageName := "packer-e2e-snap-name-local"
 	snapshotName := "named-local-snapshot"
 
-	httpClient, vcrCleanupFunc, err := vcr.GetHTTPRecorder(vcr.GetTestFilePath(t, "."), vcr.UpdateCassettes)
-	require.NoError(t, err)
-
-	defer vcrCleanupFunc()
-
-	tester.Test(t, httpClient, &tester.TestConfig{
+	tester.Test(t, &tester.TestConfig{
 		Config: fmt.Sprintf(`
 			source "scaleway" "basic" {
 			  communicator = "none"

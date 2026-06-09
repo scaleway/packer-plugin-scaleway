@@ -1,7 +1,8 @@
 package pretasks
 
 import (
-	"testing"
+	"context"
+	"errors"
 
 	"github.com/scaleway/packer-plugin-scaleway/internal/tester"
 	iam "github.com/scaleway/scaleway-sdk-go/api/iam/v1alpha1"
@@ -21,12 +22,13 @@ func SSHKey(publicKey string, sshKeyName string) *SSHKeyTask {
 	}
 }
 
-func (s *SSHKeyTask) Create(t *testing.T) error {
-	ctx := tester.CreateClientAndContext(t)
+func (s *SSHKeyTask) Create(ctx context.Context) error {
 	testCtx := tester.ExtractCtx(ctx)
-	api := iam.NewAPI(testCtx.ScwClient)
+	if testCtx == nil {
+		return errors.New("test context was not initialized")
+	}
 
-	t.Log("Running pre-task: Create SSH key")
+	api := iam.NewAPI(testCtx.ScwClient)
 
 	sshKey, err := api.CreateSSHKey(&iam.CreateSSHKeyRequest{
 		Name:      s.sshKeyName,
