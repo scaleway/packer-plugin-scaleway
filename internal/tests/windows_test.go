@@ -17,7 +17,8 @@ func TestWindows(t *testing.T) {
 	imageName := "packer-e2e-windows"
 	serverName := "packer-tmp-server-windows"
 
-	ctx, vcrCleanupFunc := tester.CreateRecordedClientAndContext(t)
+	ctx := t.Context()
+	ctx, vcrCleanupFunc := tester.CreateRecordedClientAndContext(ctx, t)
 
 	defer vcrCleanupFunc()
 
