@@ -68,27 +68,16 @@ type TestConfig struct {
 	Cleanup []PackerCleanup
 }
 
-func CreateClientAndContext(t *testing.T) context.Context {
-	httpClient, vcrCleanupFunc, err := vcr.GetHTTPRecorder(vcr.GetTestFilePath(t, "."), vcr.UpdateCassettes)
-	require.NoError(t, err)
-
-	defer vcrCleanupFunc()
-
+func Test(t *testing.T, httpClient *http.Client, config *TestConfig) {
 	ctx := t.Context()
-	ctx, err = NewTestContext(ctx, httpClient)
+	ctx, err := NewTestContext(ctx, httpClient)
 	require.NoError(t, err)
-
-	return ctx
-}
-
-func Test(t *testing.T, config *TestConfig) {
-	ctx := CreateClientAndContext(t)
 
 	// Create TMP Dir
 	tmpDir := t.TempDir()
 	t.Logf("Created tmp dir: %s", tmpDir)
 
-	err := packerExec(tmpDir, config.Config, !vcr.UpdateCassettes)
+	err = packerExec(tmpDir, config.Config, !vcr.UpdateCassettes)
 	require.NoError(t, err, "error executing packer command: %s", err)
 
 	for i, check := range config.Checks {

@@ -7,7 +7,9 @@ import (
 	"github.com/scaleway/packer-plugin-scaleway/internal/checks"
 	"github.com/scaleway/packer-plugin-scaleway/internal/cleanup"
 	"github.com/scaleway/packer-plugin-scaleway/internal/tester"
+	"github.com/scaleway/packer-plugin-scaleway/internal/vcr"
 	"github.com/scaleway/scaleway-sdk-go/scw"
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -36,7 +38,12 @@ func TestSimple(t *testing.T) {
 	zone := scw.ZoneFrPar1
 	imageName := "packer-e2e-simple"
 
-	tester.Test(t, &tester.TestConfig{
+	httpClient, vcrCleanupFunc, err := vcr.GetHTTPRecorder(vcr.GetTestFilePath(t, "."), vcr.UpdateCassettes)
+	require.NoError(t, err)
+
+	defer vcrCleanupFunc()
+
+	tester.Test(t, httpClient, &tester.TestConfig{
 		Config: fmt.Sprintf(`
 			source "scaleway" "basic" {
 			  communicator = "none"

@@ -7,7 +7,9 @@ import (
 	"github.com/scaleway/packer-plugin-scaleway/internal/checks"
 	"github.com/scaleway/packer-plugin-scaleway/internal/cleanup"
 	"github.com/scaleway/packer-plugin-scaleway/internal/tester"
+	"github.com/scaleway/packer-plugin-scaleway/internal/vcr"
 	"github.com/scaleway/scaleway-sdk-go/scw"
+	"github.com/stretchr/testify/require"
 )
 
 func TestRootVolumeLocal(t *testing.T) {
@@ -16,7 +18,12 @@ func TestRootVolumeLocal(t *testing.T) {
 	rootVolumeType := "l_ssd"
 	rootVolumeSize := 20
 
-	tester.Test(t, &tester.TestConfig{
+	httpClient, vcrCleanupFunc, err := vcr.GetHTTPRecorder(vcr.GetTestFilePath(t, "."), vcr.UpdateCassettes)
+	require.NoError(t, err)
+
+	defer vcrCleanupFunc()
+
+	tester.Test(t, httpClient, &tester.TestConfig{
 		Config: fmt.Sprintf(`
 			source "scaleway" "basic" {
 			  communicator = "none"
@@ -58,7 +65,12 @@ func TestRootVolumeSBS(t *testing.T) {
 	imageName := "packer-e2e-root-volume-sbs"
 	rootVolumeSize := 50
 
-	tester.Test(t, &tester.TestConfig{
+	httpClient, vcrCleanupFunc, err := vcr.GetHTTPRecorder(vcr.GetTestFilePath(t, "."), vcr.UpdateCassettes)
+	require.NoError(t, err)
+
+	defer vcrCleanupFunc()
+
+	tester.Test(t, httpClient, &tester.TestConfig{
 		Config: fmt.Sprintf(`
 			source "scaleway" "basic" {
 			  communicator = "none"
