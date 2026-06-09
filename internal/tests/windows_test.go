@@ -29,7 +29,7 @@ func TestWindows(t *testing.T) {
 	err := sshKeyPreTask.Create(ctx)
 	require.NoError(t, err)
 
-	tester.Test(t, &tester.TestConfig{
+	tester.Test(ctx, t, &tester.TestConfig{
 		Config: fmt.Sprintf(`
 			source "scaleway" "basic" {
 			  communicator = "none"

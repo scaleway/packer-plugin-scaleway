@@ -17,7 +17,7 @@ func TestComplete(t *testing.T) {
 	rootVolumeSize := 12
 	blockVolumeSize := 10
 
-	tester.Test(t, &tester.TestConfig{
+	tester.Test(t.Context(), t, &tester.TestConfig{
 		Config: fmt.Sprintf(`
 			source "scaleway" "basic" {
 			  communicator = "none"

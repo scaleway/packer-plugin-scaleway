@@ -36,7 +36,7 @@ func TestSimple(t *testing.T) {
 	zone := scw.ZoneFrPar1
 	imageName := "packer-e2e-simple"
 
-	tester.Test(t, &tester.TestConfig{
+	tester.Test(t.Context(), t, &tester.TestConfig{
 		Config: fmt.Sprintf(`
 			source "scaleway" "basic" {
 			  communicator = "none"

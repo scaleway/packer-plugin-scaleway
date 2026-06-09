@@ -16,7 +16,7 @@ func TestRootVolumeLocal(t *testing.T) {
 	rootVolumeType := "l_ssd"
 	rootVolumeSize := 20
 
-	tester.Test(t, &tester.TestConfig{
+	tester.Test(t.Context(), t, &tester.TestConfig{
 		Config: fmt.Sprintf(`
 			source "scaleway" "basic" {
 			  communicator = "none"
@@ -58,7 +58,7 @@ func TestRootVolumeSBS(t *testing.T) {
 	imageName := "packer-e2e-root-volume-sbs"
 	rootVolumeSize := 50
 
-	tester.Test(t, &tester.TestConfig{
+	tester.Test(t.Context(), t, &tester.TestConfig{
 		Config: fmt.Sprintf(`
 			source "scaleway" "basic" {
 			  communicator = "none"

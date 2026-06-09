@@ -85,9 +85,7 @@ func CreateRecordedClientAndContext(t *testing.T) (context.Context, func()) {
 	return ctx, vcrCleanupFunc
 }
 
-func Test(t *testing.T, config *TestConfig) {
-	ctx := t.Context()
-
+func Test(ctx context.Context, t *testing.T, config *TestConfig) {
 	// Check if test context needs to be initialized
 	if packerCtx := ExtractCtx(ctx); packerCtx == nil {
 		var vcrCleanupFunc func()

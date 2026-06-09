@@ -15,7 +15,7 @@ func TestSnapshotNameBlock(t *testing.T) {
 	imageName := "packer-e2e-snap-name-block"
 	snapshotName := "named-block-snapshot"
 
-	tester.Test(t, &tester.TestConfig{
+	tester.Test(t.Context(), t, &tester.TestConfig{
 		Config: fmt.Sprintf(`
 			source "scaleway" "basic" {
 			  communicator = "none"
@@ -62,7 +62,7 @@ func TestSnapshotNameLocal(t *testing.T) {
 	imageName := "packer-e2e-snap-name-local"
 	snapshotName := "named-local-snapshot"
 
-	tester.Test(t, &tester.TestConfig{
+	tester.Test(t.Context(), t, &tester.TestConfig{
 		Config: fmt.Sprintf(`
 			source "scaleway" "basic" {
 			  communicator = "none"
