@@ -81,9 +81,6 @@ type Config struct {
 	// GP1-XS, GP1-S, GP1-M, GP1-L, GP1-XL,
 	// GPU-3070-S, RENDER-S, STARDUST1-S,
 	CommercialType string `mapstructure:"commercial_type" required:"true"`
-	// The name of the resulting snapshot that will
-	// appear in your account. Default packer-TIMESTAMP
-	SnapshotName string `mapstructure:"snapshot_name" required:"false"`
 	// The name of the resulting image that will appear in
 	// your account. Default packer-TIMESTAMP
 	ImageName string `mapstructure:"image_name" required:"false"`
