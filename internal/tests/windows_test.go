@@ -20,7 +20,7 @@ func TestWindows(t *testing.T) {
 	ctx := t.Context()
 	ctx, vcrCleanupFunc := tester.CreateRecordedClientAndContext(ctx, t)
 
-	defer vcrCleanupFunc()
+	t.Cleanup(vcrCleanupFunc)
 
 	t.Log("Running pre-task: Create SSH key")
 

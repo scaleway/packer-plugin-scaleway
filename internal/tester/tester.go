@@ -91,7 +91,7 @@ func Test(ctx context.Context, t *testing.T, config *TestConfig) {
 
 		ctx, vcrCleanupFunc = CreateRecordedClientAndContext(ctx, t)
 
-		defer vcrCleanupFunc()
+		t.Cleanup(vcrCleanupFunc)
 	}
 
 	// Create TMP Dir
