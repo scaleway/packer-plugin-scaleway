@@ -64,7 +64,7 @@ func preparePackerEnv(currentEnv []string) []string {
 	return env
 }
 
-func packerExec(folder, packerConfig string, fakeEnv bool) error {
+func packerExec(ctx context.Context, folder, packerConfig string, fakeEnv bool) error {
 	// Create Packer file
 	packerFile := filepath.Join(folder, "build_scaleway.pkr.hcl")
 	packerFileContent := PackerFileHeader + packerConfig
@@ -75,7 +75,7 @@ func packerExec(folder, packerConfig string, fakeEnv bool) error {
 	}
 
 	// Run Packer
-	cmd := exec.CommandContext(context.Background(), "packer", "build", packerFile) //nolint:gosec
+	cmd := exec.CommandContext(ctx, "packer", "build", packerFile) //nolint:gosec
 	if fakeEnv {
 		cmd.Env = preparePackerEnv(os.Environ())
 	}

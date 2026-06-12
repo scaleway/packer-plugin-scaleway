@@ -59,7 +59,11 @@ func NewTestContext(ctx context.Context, httpClient *http.Client) (context.Conte
 }
 
 func ExtractCtx(ctx context.Context) *PackerCtx {
-	return ctx.Value(PackerCtxKey{}).(*PackerCtx)
+	if packerCtx, ok := ctx.Value(PackerCtxKey{}).(*PackerCtx); ok {
+		return packerCtx
+	}
+
+	return nil
 }
 
 type TestConfig struct {
@@ -68,28 +72,39 @@ type TestConfig struct {
 	Cleanup []PackerCleanup
 }
 
-func Test(t *testing.T, config *TestConfig) {
+func CreateRecordedClientAndContext(ctx context.Context, t *testing.T) (context.Context, func()) {
+	t.Helper()
+
 	httpClient, vcrCleanupFunc, err := vcr.GetHTTPRecorder(vcr.GetTestFilePath(t, "."), vcr.UpdateCassettes)
 	require.NoError(t, err)
 
-	defer vcrCleanupFunc()
-
-	ctx := t.Context()
 	ctx, err = NewTestContext(ctx, httpClient)
 	require.NoError(t, err)
 
+	return ctx, vcrCleanupFunc
+}
+
+func Test(ctx context.Context, t *testing.T, config *TestConfig) {
+	// Check if test context needs to be initialized
+	if packerCtx := ExtractCtx(ctx); packerCtx == nil {
+		var vcrCleanupFunc func()
+
+		ctx, vcrCleanupFunc = CreateRecordedClientAndContext(ctx, t)
+
+		t.Cleanup(vcrCleanupFunc)
+	}
+
 	// Create TMP Dir
 	tmpDir := t.TempDir()
-	require.NoError(t, err)
 	t.Logf("Created tmp dir: %s", tmpDir)
 
-	err = packerExec(tmpDir, config.Config, !vcr.UpdateCassettes)
+	err := packerExec(ctx, tmpDir, config.Config, !vcr.UpdateCassettes)
 	require.NoError(t, err, "error executing packer command: %s", err)
 
 	for i, check := range config.Checks {
 		t.Logf("Running check %d/%d: %s", i+1, len(config.Checks), check.CheckName())
 
-		err := check.Check(ctx)
+		err = check.Check(ctx)
 		if err != nil {
 			t.Fail()
 			t.Errorf("Packer check %d failed: %s", i+1, err.Error())
@@ -99,7 +114,7 @@ func Test(t *testing.T, config *TestConfig) {
 	for i, cleanup := range config.Cleanup {
 		t.Logf("Running cleanup func %d/%d", i+1, len(config.Cleanup))
 
-		err := cleanup.Cleanup(ctx, t)
+		err = cleanup.Cleanup(ctx, t)
 		if err != nil {
 			t.Fail()
 			t.Errorf("Packer cleanup %d failed: %s", i+1, err.Error())

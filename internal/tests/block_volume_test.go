@@ -16,7 +16,7 @@ func TestLocalWithSBSVolume(t *testing.T) {
 	rootVolumeSize := 20
 	blockVolumeSize := 50
 
-	tester.Test(t, &tester.TestConfig{
+	tester.Test(t.Context(), t, &tester.TestConfig{
 		Config: fmt.Sprintf(`
 			source "scaleway" "basic" {
 			  communicator = "none"
@@ -73,7 +73,7 @@ func TestBlockOnly(t *testing.T) {
 	volumeName := "volume-with-name"
 	volumeSize := 20
 
-	tester.Test(t, &tester.TestConfig{
+	tester.Test(t.Context(), t, &tester.TestConfig{
 		Config: fmt.Sprintf(`
 			source "scaleway" "basic" {
 			  communicator = "none"

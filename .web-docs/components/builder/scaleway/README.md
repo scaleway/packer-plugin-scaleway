@@ -70,9 +70,6 @@ can also be supplied to override the typical auto-generated key:
   Will be fetched first from the [scaleway configuration file](https://github.com/scaleway/scaleway-sdk-go/blob/master/scw/README.md).
   It can also be specified via the environment variable SCW_API_URL
 
-- `snapshot_name` (string) - The name of the resulting snapshot that will
-  appear in your account. Default packer-TIMESTAMP
-
 - `image_name` (string) - The name of the resulting image that will appear in
   your account. Default packer-TIMESTAMP
 
@@ -115,6 +112,8 @@ can also be supplied to override the typical auto-generated key:
 - `server_tags` ([]string) - A list of tags to apply on the temporary server
 
 - `private_network_ids` ([]string) - A list of private network IDs to attach to the instance during the build
+
+- `admin_password_encryption_ssh_key_id` (string) - The ID of the SSH Key used to encrypt the admin password on Windows instances
 
 - `api_token` (string) - Deprecated: use SecretKey instead
 
