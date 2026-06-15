@@ -6,22 +6,19 @@ import (
 
 	"github.com/scaleway/packer-plugin-scaleway/internal/checks"
 	"github.com/scaleway/packer-plugin-scaleway/internal/cleanup"
-	"github.com/scaleway/packer-plugin-scaleway/internal/pretasks"
 	"github.com/scaleway/packer-plugin-scaleway/internal/tester"
 	"github.com/scaleway/scaleway-sdk-go/scw"
-	"github.com/stretchr/testify/require"
 )
+
+// This ID corresponds to the SSH key named "opensource@scaleway.com" of the "packer-e2e" project on the "terraform-provider-scaleway" organization.
+// It should be removed when we're able to implement pre-tasks and share the same client/context between the pre-tasks and the actual test tasks, without one returning early.
+// Then we'll be able to create and upload the key at each run of the test.
+const sshPublicKeyID = "c31f516d-ed85-4aca-bfd6-ca352060f536"
 
 func TestWindows(t *testing.T) {
 	zone := scw.ZoneFrPar1
 	imageName := "packer-e2e-windows"
 	serverName := "packer-tmp-server-windows"
-
-	sshPublicKey := "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFNaFderD6JUbMr6LoL7SdTaQ31gLcXwKv07Zyw0t4pq6Y8CGaeEvevS54TBR2iNJHa3hlIIUmA2qvH7Oh4v1QmMG2djWi2cD1lDEl8/8PYakaEBGh6snp3TMyhoqHOZqqKwDhPW0gJbe2vXfAgWSEzI8h1fs1D7iEkC1L/11hZjkqbUX/KduWFLyIRWdSuI3SWk4CXKRXwIkeYeSYb8AiIGY21u2z8H2J7YmhRzE85Kj/Fk4tST5gLW/IfLD4TMJjC/cZiJevETjs+XVmzTMIyU2sTQKufSQTj2qZ7RfgGwTHDoOeFvylgAdMGLZ/Un+gzeEPj9xUSPvvnbA9UPIKV4AffgtT1y5gcSWuHaqRxpUTY204mh6kq0EdVN2UsiJTgX+xnJgnOrKg6G3dkM8LSi2QtbjYbRXcuDJ9YUbUFK8M5Vo7LhMsMFb1hPtY68kbDUqD01RuMD5KhGIngCRRBZJriRQclUCJS4D3jr/Frw9ruNGh+NTIvIwdv0Y2brU= opensource@scaleway.com"
-	sshKeyName := "packer-tests-windows"
-	sshKeyPreTask := pretasks.SSHKey(sshPublicKey, sshKeyName)
-	err := sshKeyPreTask.Create(t)
-	require.NoError(t, err)
 
 	tester.Test(t, &tester.TestConfig{
 		Config: fmt.Sprintf(`
@@ -44,7 +41,7 @@ func TestWindows(t *testing.T) {
 			build {
 			  sources = ["source.scaleway.basic"]
 			}
-			`, zone, imageName, tagDevtools, tagProvider, tagPacker, serverName, sshKeyPreTask.GetID()),
+			`, zone, imageName, tagDevtools, tagProvider, tagPacker, serverName, sshPublicKeyID),
 		Checks: []tester.PackerCheck{
 			checks.Image(zone, imageName).
 				Tags(e2eTagsDevtools).
@@ -53,13 +50,12 @@ func TestWindows(t *testing.T) {
 				),
 			checks.Server(zone, serverName).
 				Tags([]string{"with-ssh"}).
-				AdminPasswordEncryptionSSHKeyID(sshKeyPreTask.GetID()),
+				AdminPasswordEncryptionSSHKeyID(sshPublicKeyID),
 		},
 		Cleanup: []tester.PackerCleanup{
 			cleanup.Image(zone, imageName),
 			cleanup.BlockSnapshot(zone, apiGeneratedSnapshotNamePrefix),
 			cleanup.Server(zone, serverName),
-			cleanup.SSHKey(sshKeyPreTask.GetID()),
 		},
 	})
 }
