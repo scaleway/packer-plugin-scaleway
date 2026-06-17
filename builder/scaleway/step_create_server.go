@@ -68,6 +68,10 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		}
 	}
 
+	if c.AdminPasswordEncryptionSSHKeyID != "" {
+		createServerReq.AdminPasswordEncryptionSSHKeyID = &c.AdminPasswordEncryptionSSHKeyID
+	}
+
 	createServerResp, err := createServer(instanceAPI, createServerReq, scw.WithContext(ctx))
 	if err != nil {
 		return putErrorAndHalt(state, ui, fmt.Errorf("error creating server: %w", formatInstanceError(err)))
