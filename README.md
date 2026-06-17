@@ -1,4 +1,5 @@
 # Packer Plugin Scaleway
+
 The `Scaleway` multi-component plugin can be used with HashiCorp [Packer](https://www.packer.io)
 to create custom images. For the full list of available features for this plugin see [docs](docs).
 
@@ -26,26 +27,23 @@ packer {
 }
 ```
 
-
 #### Using the `packer plugins install` command
 
-```sh
-$ packer plugins install github.com/scaleway/scaleway v1.0.x
+```shell
+packer plugins install github.com/scaleway/scaleway v1.0.x
 ```
 
 This command will install the most recent compatible Scaleway Packer plugin matching
 version constraint. If the version constraint is omitted, the most recent
 version of the plugin will be installed.
 
-
 #### Manual installation
 
-You can find pre-built binary releases of the plugin [here](https://github.com/scaleway/packer-plugin-scaleway/releases).
+You can find pre-built binary releases of the plugin on [GitHub](https://github.com/scaleway/packer-plugin-scaleway/releases).
 Once you have downloaded the latest archive corresponding to your target OS,
 uncompress it to retrieve the plugin binary file corresponding to your platform.
 To install the plugin, please follow the Packer documentation on
 [installing a plugin](https://www.packer.io/docs/extending/plugins/#installing-plugins).
-
 
 ### From Sources
 
@@ -56,12 +54,10 @@ binary file can be found in the root directory.
 To install the compiled plugin, please follow the official Packer documentation
 on [installing a plugin](https://www.packer.io/docs/extending/plugins/#installing-plugins).
 
-
 ### Configuration
 
 For more information on how to configure the plugin, please read the
 documentation located in the [`docs/`](docs) directory.
-
 
 ## Contributing
 

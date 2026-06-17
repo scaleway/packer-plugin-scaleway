@@ -18,8 +18,8 @@ packer {
 
 Alternatively, you can use `packer plugins install` to manage installation of this plugin.
 
-```sh
-$ packer plugins install github.com/scaleway/scaleway v1.0.x
+```shell
+packer plugins install github.com/scaleway/scaleway v1.0.x
 ```
 
 This command will install the most recent compatible Scaleway Packer plugin matching
@@ -30,7 +30,6 @@ version of the plugin will be installed.
 
 #### Builders
 
-- [scaleway](/packer/integrations/scaleway/scaleway/latest/components/builder/scaleway) - The Scaleway Packer builder is able to create new images for use with Scaleway Compute Instance servers. 
-The builder takes a source image, runs any provisioning necessary on the image after launching it, then snapshots it into a reusable image. 
+- [scaleway](/packer/integrations/scaleway/scaleway/latest/components/builder/scaleway) - The Scaleway Packer builder is able to create new images for use with Scaleway Compute Instance servers.
+The builder takes a source image, runs any provisioning necessary on the image after launching it, then snapshots it into a reusable image.
 This reusable image can then be used as the foundation of new servers that are launched within Scaleway.
-
