@@ -1,4 +1,4 @@
-name: golangci-lint
+name: Lint
 on:
   pull_request:
   merge_group:
@@ -17,3 +17,11 @@ jobs:
           # Required: the version of golangci-lint is required and must be specified without patch version: we always use the latest patch version.
           version: latest
           args: --timeout 10m
+
+  rumdl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: rvben/rumdl@v0
+      - name: Run rumdl
+        uses: rvben/rumdl@v0

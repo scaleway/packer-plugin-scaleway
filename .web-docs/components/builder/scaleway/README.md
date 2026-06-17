@@ -26,7 +26,7 @@ can also be supplied to override the typical auto-generated key:
   of current user.
 
 
-### Required:
+### Required
 
 <!-- Code generated from the comments of the Config struct in builder/scaleway/config.go; DO NOT EDIT MANUALLY -->
 
@@ -62,16 +62,13 @@ can also be supplied to override the typical auto-generated key:
 <!-- End of code generated from the comments of the Config struct in builder/scaleway/config.go; -->
 
 
-### Optional:
+### Optional
 
 <!-- Code generated from the comments of the Config struct in builder/scaleway/config.go; DO NOT EDIT MANUALLY -->
 
 - `api_url` (string) - The Scaleway API URL to use
   Will be fetched first from the [scaleway configuration file](https://github.com/scaleway/scaleway-sdk-go/blob/master/scw/README.md).
   It can also be specified via the environment variable SCW_API_URL
-
-- `snapshot_name` (string) - The name of the resulting snapshot that will
-  appear in your account. Default packer-TIMESTAMP
 
 - `image_name` (string) - The name of the resulting image that will appear in
   your account. Default packer-TIMESTAMP
@@ -164,7 +161,7 @@ can also be supplied to override the typical auto-generated key:
 Here is a basic example. It is completely valid as soon as you enter your own
 access tokens:
 
-**HCL2**
+### HCL2
 
 ```hcl
 source "scaleway" "example" {
@@ -183,21 +180,21 @@ build {
 }
 ```
 
-**JSON**
+### JSON
 
-    ```json
-    {
-        "type": "scaleway",
-        "project_id": "YOUR PROJECT ID",
-        "access_key": "YOUR ACCESS KEY",
-        "secret_key": "YOUR SECRET KEY",
-        "image": "UUID OF THE BASE IMAGE",
-        "zone": "fr-par-1",
-        "commercial_type": "DEV1-S",
-        "ssh_username": "root",
-        "ssh_private_key_file": "~/.ssh/id_rsa"
-    }
-    ```
+```json
+{
+    "type": "scaleway",
+    "project_id": "YOUR PROJECT ID",
+    "access_key": "YOUR ACCESS KEY",
+    "secret_key": "YOUR SECRET KEY",
+    "image": "UUID OF THE BASE IMAGE",
+    "zone": "fr-par-1",
+    "commercial_type": "DEV1-S",
+    "ssh_username": "root",
+    "ssh_private_key_file": "~/.ssh/id_rsa"
+}
+```
 
 When you do not specify the `ssh_private_key_file`, a temporary SSH keypair
 is generated to connect the server. This key will only allow the `root` user to
@@ -208,7 +205,7 @@ connect the server.
 If you need to access internal resources (like a private package repository) during the build,
 you can attach the instance to one or more private networks:
 
-**HCL2**
+### HCL2
 
 ```hcl
 source "scaleway" "with_private_network" {

@@ -40,3 +40,15 @@ jobs:
 
       - name: Generate
         run: make generate
+
+      - name: Ensure that docs are compiled
+        shell: bash
+        run: |
+          if [[ -z "$(git status -s)" ]]; then
+            echo "OK"
+          else
+            echo "Docs have been updated, but the compiled docs have not been committed."
+            echo "Run 'make generate', and commit the result to resolve this error."
+            exit 1
+          fi
+

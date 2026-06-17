@@ -19,6 +19,6 @@ $ export SCW_SECRET_KEY=<your scaleway secret key>
 Then run the following commands to build a simple Scaleway image via Packer:
 
 ```sh
-$ packer init build_scaleway.pkr.hcl
-$ packer build build_scaleway.pkr.hcl
+packer init build_scaleway.pkr.hcl
+packer build build_scaleway.pkr.hcl
 ```

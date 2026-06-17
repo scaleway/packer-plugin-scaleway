@@ -41,11 +41,11 @@ can also be supplied to override the typical auto-generated key:
 
 @include 'packer-plugin-sdk/communicator/SSH-Private-Key-File-not-required.mdx'
 
-### Required:
+### Required
 
 @include 'builder/scaleway/Config-required.mdx'
 
-### Optional:
+### Optional
 
 @include 'builder/scaleway/Config-not-required.mdx'
 
@@ -62,7 +62,7 @@ can also be supplied to override the typical auto-generated key:
 Here is a basic example. It is completely valid as soon as you enter your own
 access tokens:
 
-**HCL2**
+### HCL2
 
 ```hcl
 source "scaleway" "example" {
@@ -81,21 +81,21 @@ build {
 }
 ```
 
-**JSON**
+### JSON
 
-    ```json
-    {
-        "type": "scaleway",
-        "project_id": "YOUR PROJECT ID",
-        "access_key": "YOUR ACCESS KEY",
-        "secret_key": "YOUR SECRET KEY",
-        "image": "UUID OF THE BASE IMAGE",
-        "zone": "fr-par-1",
-        "commercial_type": "DEV1-S",
-        "ssh_username": "root",
-        "ssh_private_key_file": "~/.ssh/id_rsa"
-    }
-    ```
+```json
+{
+    "type": "scaleway",
+    "project_id": "YOUR PROJECT ID",
+    "access_key": "YOUR ACCESS KEY",
+    "secret_key": "YOUR SECRET KEY",
+    "image": "UUID OF THE BASE IMAGE",
+    "zone": "fr-par-1",
+    "commercial_type": "DEV1-S",
+    "ssh_username": "root",
+    "ssh_private_key_file": "~/.ssh/id_rsa"
+}
+```
 
 When you do not specify the `ssh_private_key_file`, a temporary SSH keypair
 is generated to connect the server. This key will only allow the `root` user to
@@ -106,7 +106,7 @@ connect the server.
 If you need to access internal resources (like a private package repository) during the build,
 you can attach the instance to one or more private networks:
 
-**HCL2**
+### HCL2
 
 ```hcl
 source "scaleway" "with_private_network" {
