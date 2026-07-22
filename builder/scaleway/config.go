@@ -133,6 +133,9 @@ type Config struct {
 	// A list of private network IDs to attach to the instance during the build
 	PrivateNetworkIDs []string `mapstructure:"private_network_ids" required:"false"`
 
+	// disables the use of the public IP and use the first private network for Packer ssh communicator
+	DisablePublicIP bool `mapstructure:"disable_public_ip" required:"false"`
+
 	// The ID of the SSH Key used to encrypt the admin password on Windows instances
 	AdminPasswordEncryptionSSHKeyID string `mapstructure:"admin_password_encryption_ssh_key_id" required:"false"`
 
@@ -351,6 +354,10 @@ func (c *Config) Prepare(raws ...any) ([]string, error) { //nolint:gocyclo
 
 			break
 		}
+	}
+
+	if c.DisablePublicIP && len(c.PrivateNetworkIDs) == 0 {
+		errs = packersdk.MultiErrorAppend(errs, errors.New("At least one private network must be defined when using disable_public_ip"))
 	}
 
 	if errs != nil && len(errs.Errors) > 0 {

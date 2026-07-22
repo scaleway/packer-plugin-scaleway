@@ -94,6 +94,7 @@ type FlatConfig struct {
 	Tags                            []string                `mapstructure:"tags" required:"false" cty:"tags" hcl:"tags"`
 	ServerTags                      []string                `mapstructure:"server_tags" required:"false" cty:"server_tags" hcl:"server_tags"`
 	PrivateNetworkIDs               []string                `mapstructure:"private_network_ids" required:"false" cty:"private_network_ids" hcl:"private_network_ids"`
+	DisablePublicIP                 *bool                   `mapstructure:"disable_public_ip" required:"false" cty:"disable_public_ip" hcl:"disable_public_ip"`
 	AdminPasswordEncryptionSSHKeyID *string                 `mapstructure:"admin_password_encryption_ssh_key_id" required:"false" cty:"admin_password_encryption_ssh_key_id" hcl:"admin_password_encryption_ssh_key_id"`
 	Token                           *string                 `mapstructure:"api_token" required:"false" cty:"api_token" hcl:"api_token"`
 	Organization                    *string                 `mapstructure:"organization_id" required:"false" cty:"organization_id" hcl:"organization_id"`
@@ -196,6 +197,7 @@ func (*FlatConfig) HCL2Spec() map[string]hcldec.Spec {
 		"tags":                                 &hcldec.AttrSpec{Name: "tags", Type: cty.List(cty.String), Required: false},
 		"server_tags":                          &hcldec.AttrSpec{Name: "server_tags", Type: cty.List(cty.String), Required: false},
 		"private_network_ids":                  &hcldec.AttrSpec{Name: "private_network_ids", Type: cty.List(cty.String), Required: false},
+		"disable_public_ip":                    &hcldec.AttrSpec{Name: "disable_public_ip", Type: cty.Bool, Required: false},
 		"admin_password_encryption_ssh_key_id": &hcldec.AttrSpec{Name: "admin_password_encryption_ssh_key_id", Type: cty.String, Required: false},
 		"api_token":                            &hcldec.AttrSpec{Name: "api_token", Type: cty.String, Required: false},
 		"organization_id":                      &hcldec.AttrSpec{Name: "organization_id", Type: cty.String, Required: false},
