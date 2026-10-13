@@ -31,6 +31,15 @@ func setup(t *testing.T, fakeImgNames []string, fakeSnapNames []string) (*multis
 		enc := json.NewEncoder(w)
 
 		switch r.URL.Path {
+		case "/metadata":
+			// SDK >= 1.38 calls GetAPIMetadata after list responses to fill SRNs.
+			if err := enc.Encode(scw.ApiMetadata{
+				Platform:  "external",
+				Partition: "scw",
+				Domain:    "scw.eu",
+			}); err != nil {
+				t.Fatalf("fake server: encoding reply: %s", err)
+			}
 		case "/instance/v1/zones/fr-par-1/images":
 			var imgs instance.ListImagesResponse
 			for _, name := range fakeImgNames {
