@@ -41,6 +41,9 @@ func (s *stepCreateVolume) Run(ctx context.Context, state multistep.StateBag) mu
 
 		volume, err := blockAPI.CreateVolume(req, scw.WithContext(ctx))
 		if err != nil {
+			// Let Cleanup remove the volumes created so far.
+			state.Put(StateKeyCreatedVolumes, volumeTemplates)
+
 			return putErrorAndHalt(state, ui, err)
 		}
 
@@ -63,28 +66,35 @@ func (s *stepCreateVolume) Cleanup(state multistep.StateBag) {
 		return
 	}
 
+	if _, serverExists := state.GetOk("server_id"); serverExists {
+		// stepCreateServer.Cleanup removes server_id once the server is
+		// deleted: the server was kept, or could not be deleted, and still
+		// holds the volumes.
+		if !c.KeepServer {
+			ui.Error("The server was not destroyed, its volumes are kept and need manual removal")
+		}
+
+		return
+	}
+
 	blockAPI := block.NewAPI(state.Get("client").(*scw.Client))
 
-	_, serverWasCreated := state.GetOk("server_id")
-	createdVolumesI, createdVolumesExists := state.GetOk("created_volumes")
+	if _, imageCreated := state.GetOk("snapshots"); !imageCreated {
+		// The build failed before the image was created: wait for the volumes
+		// this step created to be detached from the deleted server, if any,
+		// then delete them.
+		createdVolumesI, createdVolumesExists := state.GetOk(StateKeyCreatedVolumes)
+		if !createdVolumesExists {
+			return
+		}
 
-	if !serverWasCreated && createdVolumesExists {
-		// If server was not created, we need to clean up manually created volumes
-		createdVolumes := createdVolumesI.([]*instance.VolumeServerTemplate)
-		for _, volume := range createdVolumes {
-			err := blockAPI.DeleteVolume(&block.DeleteVolumeRequest{
-				Zone:     scw.Zone(c.Zone),
-				VolumeID: *volume.ID,
-			})
-			if err != nil {
+		for _, volume := range createdVolumesI.([]*instance.VolumeServerTemplate) {
+			err := waitAndDeleteBlockVolume(blockAPI, scw.Zone(c.Zone), *volume.ID)
+			if err != nil && !httperrors.Is404(err) {
 				ui.Error(fmt.Sprintf("failed to cleanup block volume %s: %s", *volume.ID, err))
 			}
 		}
-	}
 
-	if _, ok := state.GetOk("snapshots"); !ok {
-		// volume will be detached from server only after snapshotting ... so we don't
-		// need to remove volume before snapshot step.
 		return
 	}
 
