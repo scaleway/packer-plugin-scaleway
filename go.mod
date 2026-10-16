@@ -6,7 +6,7 @@ require (
 	github.com/hashicorp/hcl/v2 v2.25.0
 	github.com/hashicorp/packer-plugin-sdk v0.6.12
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/scaleway/scaleway-sdk-go v1.38.0
+	github.com/scaleway/scaleway-sdk-go v1.39.0
 	github.com/stretchr/testify v1.12.1
 	github.com/zclconf/go-cty v1.19.0
 	golang.org/x/crypto v0.58.0
