@@ -305,3 +305,24 @@ func TestBuilderPrepare_PrivateNetworkIDsRejectsEmptyValues(t *testing.T) {
 		t.Fatal("should have error")
 	}
 }
+
+func TestBuilderPrepare_DisablePublicIP(t *testing.T) {
+	var b scaleway.Builder
+
+	config := testConfig()
+	expected := true
+	config["disable_public_ip"] = expected
+
+	_, warnings, err := b.Prepare(config)
+	if len(warnings) > 0 {
+		t.Fatalf("bad: %#v", warnings)
+	}
+
+	if err != nil {
+		t.Fatalf("should not have error: %s", err)
+	}
+
+	if b.Config.DisablePublicIP != expected {
+		t.Fatalf("disable_public_ip found %t, expected %t", b.Config.DisablePublicIP, expected)
+	}
+}
