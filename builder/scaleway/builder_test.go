@@ -313,6 +313,12 @@ func TestBuilderPrepare_DisablePublicIP(t *testing.T) {
 	expected := true
 	config["disable_public_ip"] = expected
 
+	pn := []string{
+		"11111111-1111-1111-1111-111111111111",
+		"22222222-2222-2222-2222-222222222222",
+	}
+	config["private_network_ids"] = pn
+
 	_, warnings, err := b.Prepare(config)
 	if len(warnings) > 0 {
 		t.Fatalf("bad: %#v", warnings)
