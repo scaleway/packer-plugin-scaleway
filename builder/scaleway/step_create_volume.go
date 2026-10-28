@@ -94,22 +94,18 @@ func (s *stepCreateVolume) Cleanup(state multistep.StateBag) {
 
 	volumes := state.Get("volumes").([]*instance.VolumeServer)
 	for _, volume := range volumes {
-		err := waitAndDeleteInstanceVolume(instanceAPI, scw.Zone(c.Zone), volume.ID)
+		var err error
+		if volume.VolumeType == instance.VolumeServerVolumeTypeSbsVolume {
+			err = waitAndDeleteBlockVolume(blockAPI, scw.Zone(c.Zone), volume.ID)
+		} else {
+			err = waitAndDeleteInstanceVolume(instanceAPI, scw.Zone(c.Zone), volume.ID)
+		}
+
+		// A 404 means the volume is already gone, for example a local volume
+		// deleted by terminate.
 		if err != nil && !httperrors.Is404(err) {
-			err := fmt.Errorf("error removing block volume %s: %w", volume.ID, err)
-			state.Put("error", err)
-			ui.Error(fmt.Sprintf("Error removing block volume %s: %s. (Ignored)", volume.ID, err))
-		}
-
-		if err == nil {
-			continue
-		}
-
-		err = waitAndDeleteBlockVolume(blockAPI, scw.Zone(c.Zone), volume.ID)
-		if err != nil {
-			err := fmt.Errorf("error removing block volume %s: %w", volume.ID, err)
-			state.Put("error", err)
-			ui.Error(fmt.Sprintf("Error removing block volume %s: %s. (Ignored)", volume.ID, err))
+			state.Put("error", fmt.Errorf("error removing volume %s: %w", volume.ID, err))
+			ui.Error(fmt.Sprintf("Error removing volume %s: %s", volume.ID, err))
 		}
 	}
 }
