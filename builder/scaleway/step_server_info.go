@@ -49,7 +49,7 @@ func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) mult
 		}
 
 		zone := scw.Zone(c.Zone)
-	
+
 		region, err := zone.Region()
 		if err != nil {
 			return putErrorAndHalt(state, ui, fmt.Errorf("getting region from zone %s: %w", zone, err))
