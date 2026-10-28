@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
 	"github.com/scaleway/scaleway-sdk-go/api/instance/v1"
+	"github.com/scaleway/scaleway-sdk-go/api/ipam/v1"
 	"github.com/scaleway/scaleway-sdk-go/scw"
 )
 
@@ -33,11 +34,59 @@ func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) mult
 		return putErrorAndHalt(state, ui, fmt.Errorf("server is in state %s", instanceResp.State.String()))
 	}
 
-	if instanceResp.PublicIP == nil {
+	if instanceResp.PublicIP == nil && !c.DisablePublicIP {
 		return putErrorAndHalt(state, ui, errors.New("server does not have a public IP"))
 	}
 
-	state.Put("server_ip", instanceResp.PublicIP.Address.String())
+	for _, pNIC := range instanceResp.PrivateNics {
+		ui.Say(fmt.Sprintf("PrivateNICs %s ", pNIC.ID))
+	}
+
+	if c.DisablePublicIP {
+		if len(instanceResp.PrivateNics) == 0 ||
+			len(instanceResp.PrivateNics[0].IpamIPIDs) == 0 {
+			return putErrorAndHalt(state, ui, errors.New("no private IP found for instance"))
+		}
+
+		zone := scw.Zone(c.Zone)
+
+		region, err := zone.Region()
+		if err != nil {
+			return putErrorAndHalt(state, ui, fmt.Errorf("getting region from zone %s: %w", zone, err))
+		}
+
+		ipamAPI := ipam.NewAPI(state.Get("client").(*scw.Client))
+
+		var firstPrivateIP string
+
+		for _, nic := range instanceResp.PrivateNics {
+			for _, ipID := range nic.IpamIPIDs {
+				ipResp, err := ipamAPI.GetIP(&ipam.GetIPRequest{
+					Region: region,
+					IPID:   ipID,
+				}, scw.WithContext(ctx))
+				if err != nil {
+					return putErrorAndHalt(state, ui, fmt.Errorf("error getting IP %s: %w", ipID, err))
+				}
+
+				ui.Say(fmt.Sprintf("NIC %s — IP %s", nic.ID, ipResp.Address))
+
+				// Mémoriser la première IP récupérée.
+				if firstPrivateIP == "" {
+					firstPrivateIP = ipResp.Address.IP.String()
+				}
+			}
+		}
+
+		if firstPrivateIP == "" {
+			return putErrorAndHalt(state, ui, errors.New("no private IP found for instance"))
+		}
+
+		state.Put("server_ip", firstPrivateIP)
+	} else {
+		state.Put("server_ip", instanceResp.PublicIP.Address.String())
+	}
+
 	state.Put("server", instanceResp)
 
 	volumes := []*instance.VolumeServer(nil)
