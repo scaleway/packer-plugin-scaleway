@@ -195,14 +195,6 @@ func (s *stepCreateServer) Cleanup(state multistep.StateBag) {
 	removeVolumesCreatedWithServer(ui, client, zone, serverVolumes, terminated)
 }
 
-// serverStillExists reports whether a server holds the build volumes. Only
-// meaningful in Cleanup: see StateKeyServerID.
-func serverStillExists(state multistep.StateBag) bool {
-	_, ok := state.GetOk(StateKeyServerID)
-
-	return ok
-}
-
 // destroyServer deletes the server, or terminates it when the delete is
 // refused. Terminate also deletes the local volumes of the server.
 func destroyServer(instanceAPI *instance.API, zone scw.Zone, serverID string) (terminated bool, err error) {
@@ -236,7 +228,9 @@ func removeVolumesCreatedWithServer(ui packersdk.Ui, client *scw.Client, zone sc
 	blockAPI := block.NewAPI(client)
 
 	for _, volume := range volumes {
-		if terminated && isLocalVolume(volume) {
+		// Terminate already deleted the local volumes with the server.
+		if terminated && (volume.VolumeType == instance.VolumeServerVolumeTypeLSSD ||
+			volume.VolumeType == instance.VolumeServerVolumeTypeScratch) {
 			continue
 		}
 
@@ -254,13 +248,6 @@ func removeVolumesCreatedWithServer(ui packersdk.Ui, client *scw.Client, zone sc
 			ui.Error(fmt.Sprintf("Error removing volume %s. Please remove it manually: %s", volume.ID, err))
 		}
 	}
-}
-
-// isLocalVolume reports whether terminate deletes the volume along with the
-// server.
-func isLocalVolume(volume *instance.VolumeServer) bool {
-	return volume.VolumeType == instance.VolumeServerVolumeTypeLSSD ||
-		volume.VolumeType == instance.VolumeServerVolumeTypeScratch
 }
 
 // volumesCreatedWithServer returns the server volumes, except the block

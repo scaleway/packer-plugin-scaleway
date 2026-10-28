@@ -66,7 +66,7 @@ func (s *stepCreateVolume) Cleanup(state multistep.StateBag) {
 		return
 	}
 
-	if serverStillExists(state) {
+	if _, serverKept := state.GetOk(StateKeyServerID); serverKept {
 		// The server was kept, or could not be destroyed, and still holds
 		// the volumes.
 		if !c.KeepServer {
