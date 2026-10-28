@@ -1,10 +1,10 @@
 module github.com/scaleway/packer-plugin-scaleway
 
-go 1.26.8
+go 1.26.10
 
 require (
 	github.com/hashicorp/hcl/v2 v2.25.0
-	github.com/hashicorp/packer-plugin-sdk v0.6.12
+	github.com/hashicorp/packer-plugin-sdk v0.6.13
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/scaleway/scaleway-sdk-go v1.39.0
 	github.com/stretchr/testify v1.12.1
@@ -15,7 +15,7 @@ require (
 
 require (
 	cel.dev/expr v0.25.2 // indirect
-	cloud.google.com/go v0.121.6 // indirect
+	cloud.google.com/go v0.123.0 // indirect
 	cloud.google.com/go/auth v0.18.2 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
@@ -86,9 +86,9 @@ require (
 	github.com/hashicorp/consul/api v1.25.1 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
-	github.com/hashicorp/go-getter/gcs/v2 v2.2.5 // indirect
-	github.com/hashicorp/go-getter/s3/v2 v2.2.5 // indirect
-	github.com/hashicorp/go-getter/v2 v2.2.5 // indirect
+	github.com/hashicorp/go-getter/gcs/v2 v2.2.6 // indirect
+	github.com/hashicorp/go-getter/s3/v2 v2.2.6 // indirect
+	github.com/hashicorp/go-getter/v2 v2.2.6 // indirect
 	github.com/hashicorp/go-hclog v1.6.3 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
