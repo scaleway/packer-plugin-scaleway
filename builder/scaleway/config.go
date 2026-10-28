@@ -357,7 +357,7 @@ func (c *Config) Prepare(raws ...any) ([]string, error) { //nolint:gocyclo
 	}
 
 	if c.DisablePublicIP && len(c.PrivateNetworkIDs) == 0 {
-		errs = packersdk.MultiErrorAppend(errs, errors.New("At least one private network must be defined when using disable_public_ip"))
+		errs = packersdk.MultiErrorAppend(errs, errors.New("at least one private network must be defined when using disable_public_ip"))
 	}
 
 	if errs != nil && len(errs.Errors) > 0 {

@@ -45,10 +45,11 @@ func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) mult
 	if c.DisablePublicIP {
 		if len(instanceResp.PrivateNics) == 0 ||
 			len(instanceResp.PrivateNics[0].IpamIPIDs) == 0 {
-			return putErrorAndHalt(state, ui, fmt.Errorf("no private IP found for instance"))
+			return putErrorAndHalt(state, ui, errors.New("no private IP found for instance"))
 		}
 
 		zone := scw.Zone(c.Zone)
+	
 		region, err := zone.Region()
 		if err != nil {
 			return putErrorAndHalt(state, ui, fmt.Errorf("getting region from zone %s: %w", zone, err))
@@ -64,7 +65,6 @@ func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) mult
 					Region: region,
 					IPID:   ipID,
 				}, scw.WithContext(ctx))
-
 				if err != nil {
 					return putErrorAndHalt(state, ui, fmt.Errorf("error getting IP %s: %w", ipID, err))
 				}
@@ -79,13 +79,14 @@ func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) mult
 		}
 
 		if firstPrivateIP == "" {
-			return putErrorAndHalt(state, ui, fmt.Errorf("no private IP found for instance"))
+			return putErrorAndHalt(state, ui, errors.New("no private IP found for instance"))
 		}
 
 		state.Put("server_ip", firstPrivateIP)
 	} else {
 		state.Put("server_ip", instanceResp.PublicIP.Address.String())
 	}
+
 	state.Put("server", instanceResp)
 
 	volumes := []*instance.VolumeServer(nil)
