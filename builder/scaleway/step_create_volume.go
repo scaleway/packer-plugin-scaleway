@@ -32,7 +32,9 @@ func (s *stepCreateVolume) Run(ctx context.Context, state multistep.StateBag) mu
 			ProjectID: c.ProjectID,
 		}
 		if requestedVolume.SnapshotID != "" {
-			req.FromSnapshot = &block.CreateVolumeRequestFromSnapshot{}
+			req.FromSnapshot = &block.CreateVolumeRequestFromSnapshot{
+				SnapshotID: requestedVolume.SnapshotID,
+			}
 		} else {
 			req.FromEmpty = &block.CreateVolumeRequestFromEmpty{
 				Size: scw.Size(requestedVolume.SizeInGB) * scw.GB,
