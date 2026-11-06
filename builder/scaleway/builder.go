@@ -128,10 +128,6 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		new(stepBackup),
 	}
 
-	if b.Config.PackerForce {
-		steps = append(steps, new(StepRemoveOldImages))
-	}
-
 	if *acceptanceTests {
 		steps = append(steps, new(stepSweep))
 	}
