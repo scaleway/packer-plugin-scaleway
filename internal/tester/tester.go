@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
+	"regexp"
 	"testing"
 
 	"github.com/scaleway/packer-plugin-scaleway/internal/vcr"
@@ -62,14 +64,30 @@ func ExtractCtx(ctx context.Context) *PackerCtx {
 	return ctx.Value(PackerCtxKey{}).(*PackerCtx)
 }
 
+type TestStep struct {
+	Config string
+	Args []string
+	ExpectError *regexp.Regexp
+	Checks      []PackerCheck
+}
+
 type TestConfig struct {
-	Config  string
-	Checks  []PackerCheck
+	Config string
+	Checks []PackerCheck
+
+	Steps   []TestStep
 	Cleanup []PackerCleanup
 }
 
 func Test(t *testing.T, config *TestConfig) {
-	httpClient, vcrCleanupFunc, err := vcr.GetHTTPRecorder(vcr.GetTestFilePath(t, "."), vcr.UpdateCassettes)
+	cassettesDir, err := vcr.GetTestDirPath(t, ".")
+	require.NoError(t, err)
+
+	if vcr.UpdateCassettes {
+		require.NoError(t, os.MkdirAll(cassettesDir, 0o750))
+	}
+
+	httpClient, vcrCleanupFunc, err := vcr.GetHTTPRecorder(filepath.Join(cassettesDir, "tester.cassette"), vcr.UpdateCassettes)
 	require.NoError(t, err)
 
 	defer vcrCleanupFunc()
@@ -78,33 +96,66 @@ func Test(t *testing.T, config *TestConfig) {
 	ctx, err = NewTestContext(ctx, httpClient)
 	require.NoError(t, err)
 
-	// Create TMP Dir
-	tmpDir := t.TempDir()
-	t.Logf("Created tmp dir: %s", tmpDir)
+	defer runCleanup(ctx, t, config.Cleanup)
 
-	err = packerExec(tmpDir, config.Config, !vcr.UpdateCassettes)
-	require.NoError(t, err, "error executing packer command: %s", err)
+	steps := config.Steps
+	if len(steps) == 0 {
+		steps = []TestStep{{Config: config.Config, Checks: config.Checks}}
+	}
 
-	for i, check := range config.Checks {
-		t.Logf("Running check %d/%d: %s", i+1, len(config.Checks), check.CheckName())
+	for i, step := range steps {
+		t.Logf("Running step %d/%d", i+1, len(steps))
+
+		cassettePath := filepath.Join(cassettesDir, fmt.Sprintf("step-%d.cassette", i+1))
+		if !runStep(ctx, t, step, cassettePath) {
+			t.Errorf("Step %d failed, skipping the next steps", i+1)
+
+			return
+		}
+	}
+}
+
+func runStep(ctx context.Context, t *testing.T, step TestStep, cassettePath string) bool {
+	t.Helper()
+
+	output, err := packerExec(ctx, t.TempDir(), step.Config, step.Args, cassettePath, !vcr.UpdateCassettes)
+
+	switch {
+	case step.ExpectError == nil && err != nil:
+		t.Errorf("error executing packer command: %s", err)
+
+		return false
+	case step.ExpectError != nil && err == nil:
+		t.Errorf("expected packer command to fail with an output matching %q", step.ExpectError)
+
+		return false
+	case step.ExpectError != nil && !step.ExpectError.MatchString(output):
+		t.Errorf("expected packer output to match %q", step.ExpectError)
+
+		return false
+	}
+
+	for i, check := range step.Checks {
+		t.Logf("Running check %d/%d: %s", i+1, len(step.Checks), check.CheckName())
 
 		err = check.Check(ctx)
 		if err != nil {
-			t.Fail()
 			t.Errorf("Packer check %d failed: %s", i+1, err.Error())
 		}
 	}
 
-	for i, cleanup := range config.Cleanup {
-		t.Logf("Running cleanup func %d/%d", i+1, len(config.Cleanup))
+	return true
+}
 
-		err = cleanup.Cleanup(ctx, t)
+func runCleanup(ctx context.Context, t *testing.T, cleanups []PackerCleanup) {
+	t.Helper()
+
+	for i, cleanup := range cleanups {
+		t.Logf("Running cleanup func %d/%d", i+1, len(cleanups))
+
+		err := cleanup.Cleanup(ctx, t)
 		if err != nil {
-			t.Fail()
 			t.Errorf("Packer cleanup %d failed: %s", i+1, err.Error())
 		}
 	}
-
-	t.Logf("Deleting tmp dir: %s", tmpDir)
-	require.NoError(t, os.RemoveAll(tmpDir), "failed to remote tmp dir %s", tmpDir)
 }

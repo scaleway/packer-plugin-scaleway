@@ -9,7 +9,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"path/filepath"
+	"time"
 
 	"github.com/hashicorp/hcl/v2/hcldec"
 	"github.com/hashicorp/packer-plugin-sdk/communicator"
@@ -60,10 +60,13 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 		clientOpts = append(clientOpts, scw.WithAPIURL(b.Config.APIURL))
 	}
 
-	// Only use cassette if vcr.UpdateCassettesEnvVariable env variable is used.
-	// It must at least be set to false when wanting to use local cassettes.
-	if _, isSet := os.LookupEnv(vcr.UpdateCassettesEnvVariable); isSet {
-		client, cleanup, err := vcr.GetHTTPRecorder(filepath.Join("testdata", b.Config.ImageName+".cassette"), vcr.UpdateCassettes)
+	// Only use cassette if vcr.CassettePathEnvVariable env variable is used
+	// vcr.UpdateCassettesEnvVariable must be set to true to record it
+	cassettePath, replayCassette := os.LookupEnv(vcr.CassettePathEnvVariable)
+	replayCassette = replayCassette && !vcr.UpdateCassettes
+
+	if cassettePath != "" {
+		client, cleanup, err := vcr.GetHTTPRecorder(cassettePath, vcr.UpdateCassettes)
 		if err != nil {
 			ui.Error(err.Error())
 
@@ -86,6 +89,10 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 	state.Put("client", client)
 	state.Put("hook", hook)
 	state.Put("ui", ui)
+
+	if replayCassette {
+		state.Put("wait_retry_interval", new(time.Duration(0)))
+	}
 
 	snapshotsNames := []string{b.Config.RootVolume.SnapshotName}
 	for _, blockVolumeConfig := range b.Config.BlockVolumes {
@@ -155,4 +162,14 @@ func (b *Builder) Run(ctx context.Context, ui packersdk.Ui, hook packersdk.Hook)
 	}
 
 	return artifact, nil
+}
+
+// waitRetryInterval returns the interval between two requests when waiting for a resource
+// It is nil, meaning the SDK default, unless cassettes are replayed
+func waitRetryInterval(state multistep.StateBag) *time.Duration {
+	if interval, ok := state.GetOk("wait_retry_interval"); ok {
+		return interval.(*time.Duration)
+	}
+
+	return nil
 }

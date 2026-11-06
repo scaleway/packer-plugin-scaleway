@@ -30,9 +30,10 @@ func (s *stepShutdown) Run(ctx context.Context, state multistep.StateBag) multis
 	}
 
 	waitRequest := &instance.WaitForServerRequest{
-		ServerID: serverID,
-		Zone:     scw.Zone(c.Zone),
-		Timeout:  &c.ServerShutdownTimeout,
+		ServerID:      serverID,
+		Zone:          scw.Zone(c.Zone),
+		Timeout:       &c.ServerShutdownTimeout,
+		RetryInterval: waitRetryInterval(state),
 	}
 
 	instanceResp, err := instanceAPI.WaitForServer(waitRequest, scw.WithContext(ctx))
