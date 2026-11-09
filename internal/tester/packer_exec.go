@@ -1,8 +1,10 @@
 package tester
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -64,29 +66,38 @@ func preparePackerEnv(currentEnv []string) []string {
 	return env
 }
 
-func packerExec(folder, packerConfig string, fakeEnv bool) error {
+// packerExec runs `packer build` with the given args on packerConfig, using cassettePath as the plugin's cassette
+// It returns the combined output of the command
+func packerExec(ctx context.Context, folder, packerConfig string, args []string, cassettePath string, fakeEnv bool) (string, error) {
 	// Create Packer file
 	packerFile := filepath.Join(folder, "build_scaleway.pkr.hcl")
 	packerFileContent := PackerFileHeader + packerConfig
 
 	err := os.WriteFile(packerFile, []byte(packerFileContent), 0o600)
 	if err != nil {
-		return fmt.Errorf("failed to create packer file: %w", err)
+		return "", fmt.Errorf("failed to create packer file: %w", err)
 	}
 
 	// Run Packer
-	cmd := exec.CommandContext(context.Background(), "packer", "build", packerFile) //nolint:gosec
+	cmdArgs := append(append([]string{"build"}, args...), packerFile)
+
+	cmd := exec.CommandContext(ctx, "packer", cmdArgs...) //nolint:gosec
+	cmd.Env = os.Environ()
+
 	if fakeEnv {
-		cmd.Env = preparePackerEnv(os.Environ())
+		cmd.Env = preparePackerEnv(cmd.Env)
 	}
 
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+	cmd.Env = append(cmd.Env, vcr.CassettePathEnvVariable+"="+cassettePath)
+
+	output := new(bytes.Buffer)
+	cmd.Stdout = io.MultiWriter(os.Stdout, output)
+	cmd.Stderr = io.MultiWriter(os.Stderr, output)
 
 	err = cmd.Run()
 	if err != nil {
-		return fmt.Errorf("failed to build image with packer: %w", err)
+		return output.String(), fmt.Errorf("failed to build image with packer: %w", err)
 	}
 
-	return nil
+	return output.String(), nil
 }
