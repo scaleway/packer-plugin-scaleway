@@ -47,6 +47,8 @@
 
 - `private_network_ids` ([]string) - A list of private network IDs to attach to the instance during the build
 
+- `disable_public_ip` (bool) - disables the use of the public IP and use the first private network for Packer ssh communicator
+
 - `admin_password_encryption_ssh_key_id` (string) - The ID of the SSH Key used to encrypt the admin password on Windows instances
 
 - `api_token` (string) - Deprecated: use SecretKey instead
