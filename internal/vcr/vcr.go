@@ -24,6 +24,9 @@ var QueryMatcherIgnore = []string{
 
 const UpdateCassettesEnvVariable = "PACKER_UPDATE_CASSETTES"
 
+// CassettePathEnvVariable is the path (without the .yaml extension) of the cassette the plugin records to or replays from
+const CassettePathEnvVariable = "PACKER_CASSETTE_PATH"
+
 var UpdateCassettes = os.Getenv(UpdateCassettesEnvVariable) == "true"
 
 // getTestFilePath returns a valid filename path based on the go test name and suffix. (Take care of non fs friendly char)
@@ -50,6 +53,13 @@ func GetTestFilePath(t *testing.T, pkgFolder string) string {
 	t.Helper()
 
 	return getTestFilePath(t, pkgFolder, ".cassette")
+}
+
+// GetTestDirPath returns the absolute path of the folder holding all the cassettes of the test
+func GetTestDirPath(t *testing.T, pkgFolder string) (string, error) {
+	t.Helper()
+
+	return filepath.Abs(getTestFilePath(t, pkgFolder, ""))
 }
 
 // recorderAuthHook is a hook that will clean authorization tokens from cassette during record.

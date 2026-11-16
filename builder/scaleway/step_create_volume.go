@@ -3,6 +3,7 @@ package scaleway
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/hashicorp/packer-plugin-sdk/multistep"
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
@@ -98,9 +99,9 @@ func (s *stepCreateVolume) Cleanup(state multistep.StateBag) {
 	for _, volume := range volumes {
 		var err error
 		if volume.VolumeType == instance.VolumeServerVolumeTypeSbsVolume {
-			err = waitAndDeleteBlockVolume(blockAPI, scw.Zone(c.Zone), volume.ID)
+			err = waitAndDeleteBlockVolume(blockAPI, scw.Zone(c.Zone), volume.ID, waitRetryInterval(state))
 		} else {
-			err = waitAndDeleteInstanceVolume(instanceAPI, scw.Zone(c.Zone), volume.ID)
+			err = waitAndDeleteInstanceVolume(instanceAPI, scw.Zone(c.Zone), volume.ID, waitRetryInterval(state))
 		}
 
 		// A 404 means the volume is already gone, for example a local volume
@@ -112,10 +113,11 @@ func (s *stepCreateVolume) Cleanup(state multistep.StateBag) {
 	}
 }
 
-func waitAndDeleteInstanceVolume(instanceAPI *instance.API, zone scw.Zone, volumeID string) error {
+func waitAndDeleteInstanceVolume(instanceAPI *instance.API, zone scw.Zone, volumeID string, retryInterval *time.Duration) error {
 	_, err := instanceAPI.WaitForVolume(&instance.WaitForVolumeRequest{
-		VolumeID: volumeID,
-		Zone:     zone,
+		VolumeID:      volumeID,
+		Zone:          zone,
+		RetryInterval: retryInterval,
 	})
 	if err != nil && !httperrors.Is404(err) {
 		return err
@@ -132,13 +134,14 @@ func waitAndDeleteInstanceVolume(instanceAPI *instance.API, zone scw.Zone, volum
 	return nil
 }
 
-func waitAndDeleteBlockVolume(blockAPI *block.API, zone scw.Zone, volumeID string) error {
+func waitAndDeleteBlockVolume(blockAPI *block.API, zone scw.Zone, volumeID string, retryInterval *time.Duration) error {
 	volumeTerminalStatus := block.VolumeStatusAvailable
 
 	_, err := blockAPI.WaitForVolumeAndReferences(&block.WaitForVolumeAndReferencesRequest{
 		VolumeID:             volumeID,
 		Zone:                 zone,
 		VolumeTerminalStatus: &volumeTerminalStatus,
+		RetryInterval:        retryInterval,
 	})
 	if err != nil {
 		return err

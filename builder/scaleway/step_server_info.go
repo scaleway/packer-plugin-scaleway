@@ -22,8 +22,9 @@ func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) mult
 	ui.Say("Waiting for server to become active...")
 
 	instanceResp, err := instanceAPI.WaitForServer(&instance.WaitForServerRequest{
-		ServerID: serverID,
-		Zone:     scw.Zone(c.Zone),
+		ServerID:      serverID,
+		Zone:          scw.Zone(c.Zone),
+		RetryInterval: waitRetryInterval(state),
 	}, scw.WithContext(ctx))
 	if err != nil {
 		return putErrorAndHalt(state, ui, fmt.Errorf("error waiting for server to become booted: %w", err))

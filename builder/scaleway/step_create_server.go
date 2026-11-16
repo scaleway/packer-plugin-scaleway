@@ -109,9 +109,10 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	}
 
 	waitServerRequest := &instance.WaitForServerRequest{
-		ServerID: createServerResp.Server.ID,
-		Zone:     scw.Zone(c.Zone),
-		Timeout:  &c.ServerCreationTimeout,
+		ServerID:      createServerResp.Server.ID,
+		Zone:          scw.Zone(c.Zone),
+		Timeout:       &c.ServerCreationTimeout,
+		RetryInterval: waitRetryInterval(state),
 	}
 
 	server, err := instanceAPI.WaitForServer(waitServerRequest)

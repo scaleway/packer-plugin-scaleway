@@ -35,9 +35,10 @@ func (s *stepCreatePrivateNICs) Run(ctx context.Context, state multistep.StateBa
 		}
 
 		_, err = instanceAPI.WaitForPrivateNIC(&instance.WaitForPrivateNICRequest{
-			ServerID:     serverID,
-			PrivateNicID: nicResp.PrivateNic.ID,
-			Zone:         scw.Zone(c.Zone),
+			ServerID:      serverID,
+			PrivateNicID:  nicResp.PrivateNic.ID,
+			Zone:          scw.Zone(c.Zone),
+			RetryInterval: waitRetryInterval(state),
 		}, scw.WithContext(ctx))
 		if err != nil {
 			return putErrorAndHalt(state, ui, fmt.Errorf("error waiting for private NIC %s: %w", nicResp.PrivateNic.ID, err))
