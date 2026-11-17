@@ -150,6 +150,15 @@ func (s *stepBackup) Cleanup(_ multistep.StateBag) {
 	// no cleanup
 }
 
+// imageCreated reports whether stepBackup created the image: it puts snapshots
+// in the state last. Until then each step's Cleanup removes the volumes it
+// created; after, stepCreateVolume.Cleanup removes every server volume.
+func imageCreated(state multistep.StateBag) bool {
+	_, ok := state.GetOk("snapshots")
+
+	return ok
+}
+
 func artifactSnapshotFromImage(image *instance.Image) []ArtifactSnapshot {
 	snapshots := make([]ArtifactSnapshot, 0, len(image.ExtraVolumes)+1)
 
