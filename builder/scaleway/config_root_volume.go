@@ -4,7 +4,10 @@
 package scaleway
 
 import (
+	"context"
 	"errors"
+	"fmt"
+	"time"
 
 	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"
 	block "github.com/scaleway/scaleway-sdk-go/api/block/v1alpha1"
@@ -56,18 +59,27 @@ func (c *ConfigRootVolume) VolumeServerTemplate() *instance.VolumeServerTemplate
 	return tmpl
 }
 
-func (c *ConfigRootVolume) PostServerCreationSetup(blockAPI *block.API, server *instance.Server) error {
+func (c *ConfigRootVolume) PostServerCreationSetup(ctx context.Context, blockAPI *block.API, server *instance.Server, timeout time.Duration) error {
 	if c.IOPS != nil {
 		rootVolume, exists := server.Volumes["0"]
 		if !exists {
 			return errors.New("root volume not found")
 		}
 
-		_, err := blockAPI.UpdateVolume(&block.UpdateVolumeRequest{
+		_, err := blockAPI.WaitForVolume(&block.WaitForVolumeRequest{
+			VolumeID: rootVolume.ID,
+			Zone:     rootVolume.Zone,
+			Timeout:  &timeout,
+		}, scw.WithContext(ctx))
+		if err != nil {
+			return fmt.Errorf("failed to wait for root volume: %w", err)
+		}
+
+		_, err = blockAPI.UpdateVolume(&block.UpdateVolumeRequest{
 			Zone:     rootVolume.Zone,
 			VolumeID: rootVolume.ID,
 			PerfIops: c.IOPS,
-		})
+		}, scw.WithContext(ctx))
 
 		return err
 	}
