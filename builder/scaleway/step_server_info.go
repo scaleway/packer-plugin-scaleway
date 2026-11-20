@@ -71,7 +71,6 @@ func (s *stepServerInfo) Run(ctx context.Context, state multistep.StateBag) mult
 
 				ui.Say(fmt.Sprintf("NIC %s — IP %s", nic.ID, ipResp.Address))
 
-				// Mémoriser la première IP récupérée.
 				if firstPrivateIP == "" {
 					firstPrivateIP = ipResp.Address.IP.String()
 				}
