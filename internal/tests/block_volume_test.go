@@ -43,7 +43,7 @@ func TestLocalWithSBSVolume(t *testing.T) {
 			}
 			`, zone, imageName, rootVolumeSize, blockVolumeSize),
 		Checks: []tester.PackerCheck{
-			checks.InstanceVolume(zone, rootVolumeNamePrefix).
+			checks.InstanceVolume(zone, packerGeneratedResourceNamePrefix).
 				SizeInGB(uint64(rootVolumeSize)),
 			checks.BlockVolume(zone, packerGeneratedResourceNamePrefix).
 				IOPS(15000).
@@ -60,7 +60,7 @@ func TestLocalWithSBSVolume(t *testing.T) {
 		Cleanup: []tester.PackerCleanup{
 			cleanup.Image(zone, imageName),
 			cleanup.InstanceSnapshot(zone, packerGeneratedResourceNamePrefix),
-			cleanup.InstanceVolume(zone, rootVolumeNamePrefix),
+			cleanup.InstanceVolume(zone, packerGeneratedResourceNamePrefix),
 			cleanup.BlockSnapshot(zone, packerGeneratedResourceNamePrefix),
 			cleanup.BlockVolume(zone, packerGeneratedResourceNamePrefix),
 		},
@@ -96,7 +96,7 @@ func TestBlockOnly(t *testing.T) {
 			}
 			`, zone, imageName, volumeName, volumeSize),
 		Checks: []tester.PackerCheck{
-			checks.BlockVolume(zone, rootVolumeNamePrefix).
+			checks.BlockVolume(zone, packerGeneratedResourceNamePrefix).
 				SizeInGB(uint64(10)),
 			checks.BlockVolume(zone, volumeName).
 				Name(volumeName).
@@ -104,7 +104,7 @@ func TestBlockOnly(t *testing.T) {
 				SizeInGB(uint64(volumeSize)),
 			checks.Image(zone, imageName).
 				SizeInGB(uint64(30)).
-				RootVolumeSnapshot(checks.BlockSnapshot(zone, apiGeneratedSnapshotNamePrefix).
+				RootVolumeSnapshot(checks.BlockSnapshot(zone, packerGeneratedResourceNamePrefix).
 					SizeInGB(uint64(10))).
 				ExtraVolumeSnapshot("1", checks.BlockSnapshot(zone, packerGeneratedResourceNamePrefix).
 					SizeInGB(uint64(volumeSize)),
@@ -112,9 +112,8 @@ func TestBlockOnly(t *testing.T) {
 		},
 		Cleanup: []tester.PackerCleanup{
 			cleanup.Image(zone, imageName),
-			cleanup.BlockSnapshot(zone, apiGeneratedSnapshotNamePrefix),
-			cleanup.BlockVolume(zone, rootVolumeNamePrefix),
 			cleanup.BlockSnapshot(zone, packerGeneratedResourceNamePrefix),
+			cleanup.BlockVolume(zone, packerGeneratedResourceNamePrefix),
 			cleanup.BlockVolume(zone, volumeName),
 		},
 	})

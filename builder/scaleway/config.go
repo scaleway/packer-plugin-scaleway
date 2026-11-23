@@ -32,7 +32,7 @@ const (
 )
 
 type ConfigBlockVolume struct {
-	// The name of the created volume
+	// The name of the created volume. Default packer-UUID
 	Name string `mapstructure:"name"`
 	// ID of the snapshot to create the volume from
 	SnapshotID string `mapstructure:"snapshot_id"`
@@ -261,7 +261,7 @@ func (c *Config) Prepare(raws ...any) ([]string, error) { //nolint:gocyclo
 	}
 
 	if c.ImageName == "" {
-		def, err := interpolate.Render("image-packer-{{timestamp}}", nil)
+		def, err := interpolate.Render("packer-{{timestamp}}", nil)
 		if err != nil {
 			panic(err)
 		}
@@ -336,6 +336,8 @@ func (c *Config) Prepare(raws ...any) ([]string, error) { //nolint:gocyclo
 	if c.CleanupMachineRelatedData == "" {
 		c.CleanupMachineRelatedData = defaultCleanupMachineRelatedDataStatus
 	}
+
+	c.RootVolume.Prepare()
 
 	if len(c.BlockVolumes) > 0 {
 		blockErrors := prepareBlockVolumes(c.BlockVolumes)

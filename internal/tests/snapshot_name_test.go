@@ -36,7 +36,7 @@ func TestSnapshotNameBlock(t *testing.T) {
 			build {
 			  sources = ["source.scaleway.basic"]
 			}
-			`, zone, imageName, snapshotName, tagTest, tagSnapshotName, tagBlock),
+			`, zone, imageName, tagTest, tagSnapshotName, tagBlock, snapshotName),
 		Checks: []tester.PackerCheck{
 			checks.Image(zone, imageName).
 				Tags(e2eTagsSnapshotNameBlock).
@@ -45,14 +45,13 @@ func TestSnapshotNameBlock(t *testing.T) {
 						Name(snapshotName).
 						Tags(e2eTagsSnapshotNameBlock),
 				),
-			checks.BlockVolume(zone, rootVolumeNamePrefix).
-				Tags(e2eTagsSnapshotNameBlock).
-				Name(rootVolumeFromUbuntuJammyNamePrefix + "_sbs_volume_0"),
+			checks.BlockVolume(zone, packerGeneratedResourceNamePrefix).
+				Tags(e2eTagsSnapshotNameBlock),
 		},
 		Cleanup: []tester.PackerCleanup{
 			cleanup.Image(zone, imageName),
 			cleanup.BlockSnapshot(zone, snapshotName),
-			cleanup.BlockVolume(zone, rootVolumeNamePrefix),
+			cleanup.BlockVolume(zone, packerGeneratedResourceNamePrefix),
 		},
 	})
 }
@@ -83,7 +82,7 @@ func TestSnapshotNameLocal(t *testing.T) {
 			build {
 			  sources = ["source.scaleway.basic"]
 			}
-			`, zone, imageName, snapshotName, tagTest, tagSnapshotName, tagLocal),
+			`, zone, imageName, tagTest, tagSnapshotName, tagLocal, snapshotName),
 		Checks: []tester.PackerCheck{
 			checks.Image(zone, imageName).
 				Tags(e2eTagsSnapshotNameLocal).
@@ -92,14 +91,13 @@ func TestSnapshotNameLocal(t *testing.T) {
 						Name(snapshotName).
 						Tags(e2eTagsSnapshotNameLocal),
 				),
-			checks.InstanceVolume(zone, rootVolumeNamePrefix).
-				Tags(e2eTagsSnapshotNameLocal).
-				Name(rootVolumeFromUbuntuJammyNamePrefix),
+			checks.InstanceVolume(zone, packerGeneratedResourceNamePrefix).
+				Tags(e2eTagsSnapshotNameLocal),
 		},
 		Cleanup: []tester.PackerCleanup{
 			cleanup.Image(zone, imageName),
 			cleanup.InstanceSnapshot(zone, snapshotName),
-			cleanup.InstanceVolume(zone, rootVolumeNamePrefix),
+			cleanup.InstanceVolume(zone, packerGeneratedResourceNamePrefix),
 		},
 	})
 }

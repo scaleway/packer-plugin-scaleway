@@ -2,6 +2,8 @@ package scaleway_test
 
 import (
 	"errors"
+	"regexp"
+	"strings"
 	"testing"
 
 	packersdk "github.com/hashicorp/packer-plugin-sdk/packer"
@@ -303,5 +305,40 @@ func TestBuilderPrepare_PrivateNetworkIDsRejectsEmptyValues(t *testing.T) {
 
 	if err == nil {
 		t.Fatal("should have error")
+	}
+}
+
+func TestBuilderPrepare_DefaultNames(t *testing.T) {
+	var b scaleway.Builder
+
+	_, warnings, err := b.Prepare(testConfig())
+	if len(warnings) > 0 {
+		t.Fatalf("bad: %#v", warnings)
+	}
+
+	if err != nil {
+		t.Fatalf("should not have error: %s", err)
+	}
+
+	timestampName := regexp.MustCompile(`^packer-\d+$`)
+
+	if !timestampName.MatchString(b.Config.ImageName) {
+		t.Errorf("invalid default image name: %s", b.Config.ImageName)
+	}
+
+	if !timestampName.MatchString(b.Config.RootVolume.SnapshotName) {
+		t.Errorf("invalid default root volume snapshot name: %s", b.Config.RootVolume.SnapshotName)
+	}
+
+	if !strings.HasPrefix(b.Config.RootVolume.Name, "packer-") {
+		t.Errorf("invalid default root volume name: %s", b.Config.RootVolume.Name)
+	}
+
+	if !strings.HasPrefix(b.Config.ServerName, "packer-") {
+		t.Errorf("invalid default server name: %s", b.Config.ServerName)
+	}
+
+	if b.Config.RootVolume.IsConfigured() {
+		t.Error("root volume should not be configured by default names")
 	}
 }

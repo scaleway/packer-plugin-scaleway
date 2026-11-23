@@ -128,7 +128,7 @@ can also be supplied to override the typical auto-generated key:
 
 <!-- Code generated from the comments of the ConfigBlockVolume struct in builder/scaleway/config.go; DO NOT EDIT MANUALLY -->
 
-- `name` (string) - The name of the created volume
+- `name` (string) - The name of the created volume. Default packer-UUID
 
 - `snapshot_id` (string) - ID of the snapshot to create the volume from
 
@@ -144,6 +144,8 @@ can also be supplied to override the typical auto-generated key:
 ### Root volume configuration
 
 <!-- Code generated from the comments of the ConfigRootVolume struct in builder/scaleway/config_root_volume.go; DO NOT EDIT MANUALLY -->
+
+- `name` (string) - The name of the root volume. Default packer-UUID
 
 - `type` (string) - The type of the root volume
 

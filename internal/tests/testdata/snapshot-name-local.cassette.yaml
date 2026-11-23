@@ -14,18 +14,18 @@ interactions:
             page:
                 - "1"
             project:
-                - 19a4819b-24bf-4d44-969f-935ef0061b71
+                - 564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
         headers:
             User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.25.1; linux; amd64)
-        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/images?name=packer-e2e-snap-name-local&page=1&project=19a4819b-24bf-4d44-969f-935ef0061b71
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/images?name=packer-e2e-snap-name-local&page=1&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
         method: GET
       response:
         proto: HTTP/2.0
         proto_major: 2
         proto_minor: 0
         content_length: 644
-        body: '{"images": [{"id": "e824b36f-f6fe-467c-a8c7-27093145ab29", "name": "packer-e2e-snap-name-local", "organization": "fa1e3217-dc80-42ac-85c3-3f034b78b552", "project": "19a4819b-24bf-4d44-969f-935ef0061b71", "root_volume": {"id": "ed2c8cbb-7e7b-4f52-bfd0-a70d6b5b2b5a", "name": "named-local-snapshot", "volume_type": "l_ssd", "size": 10000000000}, "extra_volumes": {}, "public": false, "arch": "x86_64", "creation_date": "2025-11-27T19:59:27.839952+00:00", "modification_date": "2025-11-27T19:59:27.839952+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": ["test", "snapshot-name", "local"], "zone": "fr-par-2"}]}'
+        body: '{"images": [{"id": "2cf62979-478e-4cec-b656-00afe9a9302a", "name": "packer-e2e-snap-name-local", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "root_volume": {"id": "77ea9344-26e3-4527-a1e6-8f8719c118f1", "name": "named-local-snapshot", "volume_type": "l_ssd", "size": 10000000000}, "extra_volumes": {}, "public": false, "arch": "x86_64", "creation_date": "2026-11-23T08:56:18.248085+00:00", "modification_date": "2026-11-23T08:56:18.248085+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": ["test", "snapshot-name", "local"], "zone": "fr-par-2"}]}'
         headers:
             Content-Length:
                 - "644"
@@ -34,24 +34,30 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Thu, 27 Nov 2025 19:59:28 GMT
+                - Mon, 23 Nov 2026 08:56:19 GMT
             Link:
-                - </images?page=1&per_page=50&name=packer-e2e-snap-name-local&project=19a4819b-24bf-4d44-969f-935ef0061b71>; rel="last"
+                - </images?page=1&per_page=50&name=packer-e2e-snap-name-local&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
             Server:
-                - Scaleway API Gateway (fr-par-2;edge02)
+                - Scaleway API Gateway (fr-par-3;edge03)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
                 - nosniff
             X-Frame-Options:
                 - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "49"
+            X-Ratelimit-Reset:
+                - "1"
             X-Request-Id:
-                - fb60100d-6184-473b-93b5-f4783852d126
+                - 266a155d-10b7-47f0-853c-85226a4d3fd0
             X-Total-Count:
                 - "1"
         status: 200 OK
         code: 200
-        duration: 207.062371ms
+        duration: 187.121292ms
     - id: 1
       request:
         proto: HTTP/1.1
@@ -63,45 +69,97 @@ interactions:
             name:
                 - named-local-snapshot
             project:
-                - 19a4819b-24bf-4d44-969f-935ef0061b71
+                - 564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
         headers:
             User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.25.1; linux; amd64)
-        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/snapshots?name=named-local-snapshot&project=19a4819b-24bf-4d44-969f-935ef0061b71
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/snapshots?name=named-local-snapshot&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
         method: GET
       response:
         proto: HTTP/2.0
         proto_major: 2
         proto_minor: 0
-        content_length: 569
-        body: '{"snapshots": [{"id": "ed2c8cbb-7e7b-4f52-bfd0-a70d6b5b2b5a", "name": "named-local-snapshot", "volume_type": "l_ssd", "creation_date": "2025-11-27T19:59:27.428655+00:00", "modification_date": "2025-11-27T19:59:27.428655+00:00", "organization": "fa1e3217-dc80-42ac-85c3-3f034b78b552", "project": "19a4819b-24bf-4d44-969f-935ef0061b71", "size": 10000000000, "state": "available", "base_volume": {"id": "7e06109d-46fe-42c9-b1df-de95386898cf", "name": "Ubuntu 22.04 Jammy Jellyfish"}, "tags": ["test", "snapshot-name", "local"], "zone": "fr-par-2", "error_details": null}]}'
+        content_length: 584
+        body: '{"snapshots": [{"id": "77ea9344-26e3-4527-a1e6-8f8719c118f1", "name": "named-local-snapshot", "volume_type": "l_ssd", "creation_date": "2026-11-23T08:56:17.948340+00:00", "modification_date": "2026-11-23T08:56:17.948340+00:00", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "size": 10000000000, "state": "available", "base_volume": {"id": "66fbfe9a-a2f3-4131-bc1a-0c4b95840f3b", "name": "packer-6b03ff67-77c3-4902-d49d-1979fa77f655"}, "tags": ["test", "snapshot-name", "local"], "zone": "fr-par-2", "error_details": null}]}'
         headers:
             Content-Length:
-                - "569"
+                - "584"
             Content-Security-Policy:
                 - default-src 'none'; frame-ancestors 'none'
             Content-Type:
                 - application/json
             Date:
-                - Thu, 27 Nov 2025 19:59:28 GMT
+                - Mon, 23 Nov 2026 08:56:20 GMT
             Link:
-                - </snapshots?page=1&per_page=50&name=named-local-snapshot&project=19a4819b-24bf-4d44-969f-935ef0061b71>; rel="last"
+                - </snapshots?page=1&per_page=50&name=named-local-snapshot&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
             Server:
-                - Scaleway API Gateway (fr-par-2;edge02)
+                - Scaleway API Gateway (fr-par-3;edge03)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
                 - nosniff
             X-Frame-Options:
                 - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "49"
+            X-Ratelimit-Reset:
+                - "1"
             X-Request-Id:
-                - db262151-cfa6-4fcc-9e0d-78e7e8ebf921
+                - 3ace6140-aad5-4b22-b431-fb7af99230c9
             X-Total-Count:
                 - "1"
         status: 200 OK
         code: 200
-        duration: 122.303706ms
+        duration: 138.165875ms
     - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.scaleway.com
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/metadata
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: 59
+        body: '{"platform":"external","partition":"scw","domain":"scw.eu"}'
+        headers:
+            Content-Length:
+                - "59"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Mon, 23 Nov 2026 08:56:20 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-3;edge03)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "48"
+            X-Ratelimit-Reset:
+                - "1"
+            X-Request-Id:
+                - f981c4bb-1423-4699-9590-80e6250e2eca
+        status: 200 OK
+        code: 200
+        duration: 11.841292ms
+    - id: 3
       request:
         proto: HTTP/1.1
         proto_major: 1
@@ -110,47 +168,53 @@ interactions:
         host: api.scaleway.com
         form:
             name:
-                - Ubuntu
+                - packer-
             project:
-                - 19a4819b-24bf-4d44-969f-935ef0061b71
+                - 564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
         headers:
             User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.25.1; linux; amd64)
-        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/volumes?name=Ubuntu&project=19a4819b-24bf-4d44-969f-935ef0061b71
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/volumes?name=packer-&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
         method: GET
       response:
         proto: HTTP/2.0
         proto_major: 2
         proto_minor: 0
-        content_length: 465
-        body: '{"volumes": [{"id": "7e06109d-46fe-42c9-b1df-de95386898cf", "name": "Ubuntu 22.04 Jammy Jellyfish", "volume_type": "l_ssd", "organization": "fa1e3217-dc80-42ac-85c3-3f034b78b552", "project": "19a4819b-24bf-4d44-969f-935ef0061b71", "server": null, "size": 10000000000, "state": "available", "creation_date": "2025-11-27T19:57:59.389506+00:00", "modification_date": "2025-11-27T19:59:28.143507+00:00", "tags": ["test", "snapshot-name", "local"], "zone": "fr-par-2"}]}'
+        content_length: 500
+        body: '{"volumes": [{"id": "66fbfe9a-a2f3-4131-bc1a-0c4b95840f3b", "name": "packer-6b03ff67-77c3-4902-d49d-1979fa77f655", "volume_type": "l_ssd", "export_uri": null, "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "server": null, "size": 10000000000, "state": "available", "creation_date": "2026-11-23T08:55:04.995507+00:00", "modification_date": "2026-11-23T08:56:18.530329+00:00", "tags": ["test", "snapshot-name", "local"], "zone": "fr-par-2"}]}'
         headers:
             Content-Length:
-                - "465"
+                - "500"
             Content-Security-Policy:
                 - default-src 'none'; frame-ancestors 'none'
             Content-Type:
                 - application/json
             Date:
-                - Thu, 27 Nov 2025 19:59:28 GMT
+                - Mon, 23 Nov 2026 08:56:20 GMT
             Link:
-                - </volumes?page=1&per_page=100&name=Ubuntu&project=19a4819b-24bf-4d44-969f-935ef0061b71>; rel="last"
+                - </volumes?page=1&per_page=100&name=packer-&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
             Server:
-                - Scaleway API Gateway (fr-par-2;edge02)
+                - Scaleway API Gateway (fr-par-3;edge03)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
                 - nosniff
             X-Frame-Options:
                 - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "47"
+            X-Ratelimit-Reset:
+                - "1"
             X-Request-Id:
-                - 3ff3dbb9-85ad-417a-8c42-678bf2ec0813
+                - 75a0364d-8520-4321-92f8-d66df3bc2505
             X-Total-Count:
                 - "1"
         status: 200 OK
         code: 200
-        duration: 74.206523ms
-    - id: 3
+        duration: 171.422292ms
+    - id: 4
       request:
         proto: HTTP/1.1
         proto_major: 1
@@ -163,18 +227,18 @@ interactions:
             page:
                 - "1"
             project:
-                - 19a4819b-24bf-4d44-969f-935ef0061b71
+                - 564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
         headers:
             User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.25.1; linux; amd64)
-        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/images?name=packer-e2e-snap-name-local&page=1&project=19a4819b-24bf-4d44-969f-935ef0061b71
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/images?name=packer-e2e-snap-name-local&page=1&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
         method: GET
       response:
         proto: HTTP/2.0
         proto_major: 2
         proto_minor: 0
         content_length: 644
-        body: '{"images": [{"id": "e824b36f-f6fe-467c-a8c7-27093145ab29", "name": "packer-e2e-snap-name-local", "organization": "fa1e3217-dc80-42ac-85c3-3f034b78b552", "project": "19a4819b-24bf-4d44-969f-935ef0061b71", "root_volume": {"id": "ed2c8cbb-7e7b-4f52-bfd0-a70d6b5b2b5a", "name": "named-local-snapshot", "volume_type": "l_ssd", "size": 10000000000}, "extra_volumes": {}, "public": false, "arch": "x86_64", "creation_date": "2025-11-27T19:59:27.839952+00:00", "modification_date": "2025-11-27T19:59:27.839952+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": ["test", "snapshot-name", "local"], "zone": "fr-par-2"}]}'
+        body: '{"images": [{"id": "2cf62979-478e-4cec-b656-00afe9a9302a", "name": "packer-e2e-snap-name-local", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "root_volume": {"id": "77ea9344-26e3-4527-a1e6-8f8719c118f1", "name": "named-local-snapshot", "volume_type": "l_ssd", "size": 10000000000}, "extra_volumes": {}, "public": false, "arch": "x86_64", "creation_date": "2026-11-23T08:56:18.248085+00:00", "modification_date": "2026-11-23T08:56:18.248085+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": ["test", "snapshot-name", "local"], "zone": "fr-par-2"}]}'
         headers:
             Content-Length:
                 - "644"
@@ -183,25 +247,31 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Thu, 27 Nov 2025 19:59:29 GMT
+                - Mon, 23 Nov 2026 08:56:20 GMT
             Link:
-                - </images?page=1&per_page=50&name=packer-e2e-snap-name-local&project=19a4819b-24bf-4d44-969f-935ef0061b71>; rel="last"
+                - </images?page=1&per_page=50&name=packer-e2e-snap-name-local&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
             Server:
-                - Scaleway API Gateway (fr-par-2;edge02)
+                - Scaleway API Gateway (fr-par-3;edge03)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
                 - nosniff
             X-Frame-Options:
                 - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "48"
+            X-Ratelimit-Reset:
+                - "1"
             X-Request-Id:
-                - aed476a2-6af4-439f-be14-1799971694a4
+                - 7fbcc4f7-75f1-4761-b03b-c742e927d8be
             X-Total-Count:
                 - "1"
         status: 200 OK
         code: 200
-        duration: 158.141771ms
-    - id: 4
+        duration: 138.814416ms
+    - id: 5
       request:
         proto: HTTP/1.1
         proto_major: 1
@@ -210,8 +280,8 @@ interactions:
         host: api.scaleway.com
         headers:
             User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.25.1; linux; amd64)
-        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/images/e824b36f-f6fe-467c-a8c7-27093145ab29
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/images/2cf62979-478e-4cec-b656-00afe9a9302a
         method: DELETE
       response:
         proto: HTTP/2.0
@@ -225,21 +295,27 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Thu, 27 Nov 2025 19:59:29 GMT
+                - Mon, 23 Nov 2026 08:56:20 GMT
             Server:
-                - Scaleway API Gateway (fr-par-2;edge02)
+                - Scaleway API Gateway (fr-par-3;edge03)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
                 - nosniff
             X-Frame-Options:
                 - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "47"
+            X-Ratelimit-Reset:
+                - "1"
             X-Request-Id:
-                - 1935c7a7-1e19-4f33-b59a-8de540d61b68
+                - b95e34dd-9b75-43ce-9c77-79b799729200
         status: 204 No Content
         code: 204
-        duration: 215.022666ms
-    - id: 5
+        duration: 182.319333ms
+    - id: 6
       request:
         proto: HTTP/1.1
         proto_major: 1
@@ -252,45 +328,51 @@ interactions:
             page:
                 - "1"
             project:
-                - 19a4819b-24bf-4d44-969f-935ef0061b71
+                - 564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
         headers:
             User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.25.1; linux; amd64)
-        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/snapshots?name=named-local-snapshot&page=1&project=19a4819b-24bf-4d44-969f-935ef0061b71
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/snapshots?name=named-local-snapshot&page=1&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
         method: GET
       response:
         proto: HTTP/2.0
         proto_major: 2
         proto_minor: 0
-        content_length: 569
-        body: '{"snapshots": [{"id": "ed2c8cbb-7e7b-4f52-bfd0-a70d6b5b2b5a", "name": "named-local-snapshot", "volume_type": "l_ssd", "creation_date": "2025-11-27T19:59:27.428655+00:00", "modification_date": "2025-11-27T19:59:27.428655+00:00", "organization": "fa1e3217-dc80-42ac-85c3-3f034b78b552", "project": "19a4819b-24bf-4d44-969f-935ef0061b71", "size": 10000000000, "state": "available", "base_volume": {"id": "7e06109d-46fe-42c9-b1df-de95386898cf", "name": "Ubuntu 22.04 Jammy Jellyfish"}, "tags": ["test", "snapshot-name", "local"], "zone": "fr-par-2", "error_details": null}]}'
+        content_length: 584
+        body: '{"snapshots": [{"id": "77ea9344-26e3-4527-a1e6-8f8719c118f1", "name": "named-local-snapshot", "volume_type": "l_ssd", "creation_date": "2026-11-23T08:56:17.948340+00:00", "modification_date": "2026-11-23T08:56:17.948340+00:00", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "size": 10000000000, "state": "available", "base_volume": {"id": "66fbfe9a-a2f3-4131-bc1a-0c4b95840f3b", "name": "packer-6b03ff67-77c3-4902-d49d-1979fa77f655"}, "tags": ["test", "snapshot-name", "local"], "zone": "fr-par-2", "error_details": null}]}'
         headers:
             Content-Length:
-                - "569"
+                - "584"
             Content-Security-Policy:
                 - default-src 'none'; frame-ancestors 'none'
             Content-Type:
                 - application/json
             Date:
-                - Thu, 27 Nov 2025 19:59:29 GMT
+                - Mon, 23 Nov 2026 08:56:20 GMT
             Link:
-                - </snapshots?page=1&per_page=50&name=named-local-snapshot&project=19a4819b-24bf-4d44-969f-935ef0061b71>; rel="last"
+                - </snapshots?page=1&per_page=50&name=named-local-snapshot&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
             Server:
-                - Scaleway API Gateway (fr-par-2;edge02)
+                - Scaleway API Gateway (fr-par-3;edge03)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
                 - nosniff
             X-Frame-Options:
                 - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "49"
+            X-Ratelimit-Reset:
+                - "1"
             X-Request-Id:
-                - dbb405f8-5923-42ef-b1ce-67af3f9d2384
+                - 85a2c5b9-9c80-4722-94bb-2051be91c0a3
             X-Total-Count:
                 - "1"
         status: 200 OK
         code: 200
-        duration: 131.114017ms
-    - id: 6
+        duration: 199.917958ms
+    - id: 7
       request:
         proto: HTTP/1.1
         proto_major: 1
@@ -299,8 +381,8 @@ interactions:
         host: api.scaleway.com
         headers:
             User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.25.1; linux; amd64)
-        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/snapshots/ed2c8cbb-7e7b-4f52-bfd0-a70d6b5b2b5a
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/snapshots/77ea9344-26e3-4527-a1e6-8f8719c118f1
         method: DELETE
       response:
         proto: HTTP/2.0
@@ -314,21 +396,27 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Thu, 27 Nov 2025 19:59:29 GMT
+                - Mon, 23 Nov 2026 08:56:20 GMT
             Server:
-                - Scaleway API Gateway (fr-par-2;edge02)
+                - Scaleway API Gateway (fr-par-3;edge03)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
                 - nosniff
             X-Frame-Options:
                 - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "49"
+            X-Ratelimit-Reset:
+                - "1"
             X-Request-Id:
-                - 0de61237-3cdd-4bd3-8580-4a142757a581
+                - 5299a504-3905-4bee-b220-4b87dae52c65
         status: 204 No Content
         code: 204
-        duration: 147.413179ms
-    - id: 7
+        duration: 115.419709ms
+    - id: 8
       request:
         proto: HTTP/1.1
         proto_major: 1
@@ -337,49 +425,55 @@ interactions:
         host: api.scaleway.com
         form:
             name:
-                - Ubuntu
+                - packer-
             page:
                 - "1"
             project:
-                - 19a4819b-24bf-4d44-969f-935ef0061b71
+                - 564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
         headers:
             User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.25.1; linux; amd64)
-        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/volumes?name=Ubuntu&page=1&project=19a4819b-24bf-4d44-969f-935ef0061b71
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/volumes?name=packer-&page=1&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
         method: GET
       response:
         proto: HTTP/2.0
         proto_major: 2
         proto_minor: 0
-        content_length: 465
-        body: '{"volumes": [{"id": "7e06109d-46fe-42c9-b1df-de95386898cf", "name": "Ubuntu 22.04 Jammy Jellyfish", "volume_type": "l_ssd", "organization": "fa1e3217-dc80-42ac-85c3-3f034b78b552", "project": "19a4819b-24bf-4d44-969f-935ef0061b71", "server": null, "size": 10000000000, "state": "available", "creation_date": "2025-11-27T19:57:59.389506+00:00", "modification_date": "2025-11-27T19:59:28.143507+00:00", "tags": ["test", "snapshot-name", "local"], "zone": "fr-par-2"}]}'
+        content_length: 500
+        body: '{"volumes": [{"id": "66fbfe9a-a2f3-4131-bc1a-0c4b95840f3b", "name": "packer-6b03ff67-77c3-4902-d49d-1979fa77f655", "volume_type": "l_ssd", "export_uri": null, "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "server": null, "size": 10000000000, "state": "available", "creation_date": "2026-11-23T08:55:04.995507+00:00", "modification_date": "2026-11-23T08:56:18.530329+00:00", "tags": ["test", "snapshot-name", "local"], "zone": "fr-par-2"}]}'
         headers:
             Content-Length:
-                - "465"
+                - "500"
             Content-Security-Policy:
                 - default-src 'none'; frame-ancestors 'none'
             Content-Type:
                 - application/json
             Date:
-                - Thu, 27 Nov 2025 19:59:29 GMT
+                - Mon, 23 Nov 2026 08:56:20 GMT
             Link:
-                - </volumes?page=1&per_page=100&name=Ubuntu&project=19a4819b-24bf-4d44-969f-935ef0061b71>; rel="last"
+                - </volumes?page=1&per_page=100&name=packer-&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
             Server:
-                - Scaleway API Gateway (fr-par-2;edge02)
+                - Scaleway API Gateway (fr-par-3;edge03)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
                 - nosniff
             X-Frame-Options:
                 - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "49"
+            X-Ratelimit-Reset:
+                - "1"
             X-Request-Id:
-                - 54fd1688-5f91-4b7d-8c52-44c4a5340c61
+                - 4e68bf18-d4e7-4673-bd30-3ad52fdebde6
             X-Total-Count:
                 - "1"
         status: 200 OK
         code: 200
-        duration: 75.899963ms
-    - id: 8
+        duration: 90.935208ms
+    - id: 9
       request:
         proto: HTTP/1.1
         proto_major: 1
@@ -388,8 +482,8 @@ interactions:
         host: api.scaleway.com
         headers:
             User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.25.1; linux; amd64)
-        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/volumes/7e06109d-46fe-42c9-b1df-de95386898cf
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/volumes/66fbfe9a-a2f3-4131-bc1a-0c4b95840f3b
         method: DELETE
       response:
         proto: HTTP/2.0
@@ -403,17 +497,23 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Thu, 27 Nov 2025 19:59:29 GMT
+                - Mon, 23 Nov 2026 08:56:21 GMT
             Server:
-                - Scaleway API Gateway (fr-par-2;edge02)
+                - Scaleway API Gateway (fr-par-3;edge03)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
                 - nosniff
             X-Frame-Options:
                 - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "48"
+            X-Ratelimit-Reset:
+                - "1"
             X-Request-Id:
-                - 9c85a7ec-6ad3-4bcc-8d57-2a6d90206a0a
+                - 3365ccbe-5ac4-4a37-9171-003360c0c95e
         status: 204 No Content
         code: 204
-        duration: 107.368154ms
+        duration: 121.256917ms
