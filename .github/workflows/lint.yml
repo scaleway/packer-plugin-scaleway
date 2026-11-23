@@ -24,6 +24,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: rvben/rumdl@0d3d6e4f07c585a9433df162949ca0fe280a40dd # v0.3.4
+      - uses: rvben/rumdl@ba563d6780c6119bd526c869a730b492c1ad54e5 # v0.3.5
       - name: Run rumdl
-        uses: rvben/rumdl@0d3d6e4f07c585a9433df162949ca0fe280a40dd # v0.3.4
+        uses: rvben/rumdl@ba563d6780c6119bd526c869a730b492c1ad54e5 # v0.3.5
