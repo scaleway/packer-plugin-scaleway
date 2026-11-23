@@ -28,6 +28,12 @@ of new servers that are launched within Scaleway.
 The builder does _not_ manage snapshots. Once it creates an image, it is up to
 you to use it or delete it.
 
+By default, the build fails early if an image or snapshot with the same name
+already exists. When `packer build -force` is used, this check is skipped and,
+once the new image is created, the existing private images of the project with
+the same `image_name` in the same zone are deleted, so that only the new image
+remains. The snapshots of the deleted images are kept.
+
 ## Configuration Reference
 
 There are many configuration options available for the builder. They are
