@@ -25,7 +25,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 621
-        body: '{"images": [{"id": "5a3a22e9-1182-4bfe-9482-a6ef331a983f", "name": "packer-e2e-snap-name-block", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "root_volume": {"volume_type": "sbs_snapshot", "id": "fb4466ad-f605-4b26-8670-c42640cc79b1", "size": 0, "name": ""}, "extra_volumes": {}, "public": false, "arch": "x86_64", "creation_date": "2026-11-23T08:55:00.198674+00:00", "modification_date": "2026-11-23T08:55:00.198674+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": ["test", "snapshot-name", "block"], "zone": "fr-par-2"}]}'
+        body: '{"images": [{"id": "28082423-dcd7-4ffc-8d16-3a65be20af62", "name": "packer-e2e-snap-name-block", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "root_volume": {"volume_type": "sbs_snapshot", "id": "a4540255-37f6-41fd-8ad2-78fd899747f1", "size": 0, "name": ""}, "extra_volumes": {}, "public": false, "arch": "x86_64", "creation_date": "2026-11-23T15:37:39.347515+00:00", "modification_date": "2026-11-23T15:37:39.347515+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": ["test", "snapshot-name", "block"], "zone": "fr-par-2"}]}'
         headers:
             Content-Length:
                 - "621"
@@ -34,11 +34,11 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Mon, 23 Nov 2026 08:55:02 GMT
+                - Mon, 23 Nov 2026 15:37:41 GMT
             Link:
                 - </images?page=1&per_page=50&name=packer-e2e-snap-name-block&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
             Server:
-                - Scaleway API Gateway (fr-par-3;edge03)
+                - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
@@ -52,12 +52,12 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - bf6492e4-6254-4efa-9c4e-298f9f3c919c
+                - 57baa5f7-e6f3-425b-a5ad-274032282c73
             X-Total-Count:
                 - "1"
         status: 200 OK
         code: 200
-        duration: 293.636042ms
+        duration: 219.657083ms
     - id: 1
       request:
         proto: HTTP/1.1
@@ -68,14 +68,14 @@ interactions:
         headers:
             User-Agent:
                 - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/block/v1/zones/fr-par-2/snapshots/fb4466ad-f605-4b26-8670-c42640cc79b1
+        url: https://api.scaleway.com/block/v1/zones/fr-par-2/snapshots/a4540255-37f6-41fd-8ad2-78fd899747f1
         method: GET
       response:
         proto: HTTP/2.0
         proto_major: 2
         proto_minor: 0
         content_length: 836
-        body: '{"srn":"srn://block.scw.eu/zones/fr-par-2/snapshots/fb4466ad-f605-4b26-8670-c42640cc79b1","id":"fb4466ad-f605-4b26-8670-c42640cc79b1","name":"named-block-snapshot","parent_volume":{"id":"10021da2-a6e5-4e6f-9549-cb3bfa446a86","name":"packer-6b03ff17-9cc6-7f6a-b061-92a22a0fd67a","type":"sbs_5k","status":"available"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-23T08:54:54.890918Z","updated_at":"2026-11-23T08:55:00.234326Z","references":[{"id":"ae91a47a-ae59-44d7-b572-edaf9ed6dfef","product_resource_type":"instance_image","product_resource_id":"5a3a22e9-1182-4bfe-9482-a6ef331a983f","created_at":"2026-11-23T08:55:00.234326Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","snapshot-name","block"],"class":"sbs","zone":"fr-par-2","public":false,"kms_key_id":null}'
+        body: '{"srn":"srn://block.scw.eu/zones/fr-par-2/snapshots/a4540255-37f6-41fd-8ad2-78fd899747f1","id":"a4540255-37f6-41fd-8ad2-78fd899747f1","name":"named-block-snapshot","parent_volume":{"id":"d00d3a59-88c1-4f61-ba5a-d2606d256607","name":"packer-6b045d87-3138-20bf-cd80-72f2cac0de2c","type":"sbs_5k","status":"available"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-23T15:37:34.091954Z","updated_at":"2026-11-23T15:37:39.382330Z","references":[{"id":"13e9fce5-5e3b-4bb3-9313-de43adad9b2b","product_resource_type":"instance_image","product_resource_id":"28082423-dcd7-4ffc-8d16-3a65be20af62","created_at":"2026-11-23T15:37:39.382330Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","snapshot-name","block"],"class":"sbs","zone":"fr-par-2","public":false,"kms_key_id":null}'
         headers:
             Content-Length:
                 - "836"
@@ -84,9 +84,9 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Mon, 23 Nov 2026 08:55:02 GMT
+                - Mon, 23 Nov 2026 15:37:41 GMT
             Server:
-                - Scaleway API Gateway (fr-par-3;edge03)
+                - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
@@ -100,10 +100,10 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - a6a8e05d-5d9e-4206-b6c0-c1c77c68223f
+                - 0ca7b27e-b38b-422a-bc88-f822e94090fe
         status: 200 OK
         code: 200
-        duration: 56.578083ms
+        duration: 58.404542ms
     - id: 2
       request:
         proto: HTTP/1.1
@@ -130,9 +130,9 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Mon, 23 Nov 2026 08:55:02 GMT
+                - Mon, 23 Nov 2026 15:37:41 GMT
             Server:
-                - Scaleway API Gateway (fr-par-3;edge03)
+                - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
@@ -146,10 +146,10 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 21c1fbb9-c54b-484d-ba95-581df65df1d0
+                - aaff5ca7-c854-474c-95e4-4e8ca5afeaa7
         status: 200 OK
         code: 200
-        duration: 12.708666ms
+        duration: 15.395959ms
     - id: 3
       request:
         proto: HTTP/1.1
@@ -176,7 +176,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 868
-        body: '{"snapshots":[{"srn":"srn://block.scw.eu/zones/fr-par-2/snapshots/fb4466ad-f605-4b26-8670-c42640cc79b1","id":"fb4466ad-f605-4b26-8670-c42640cc79b1","name":"named-block-snapshot","parent_volume":{"id":"10021da2-a6e5-4e6f-9549-cb3bfa446a86","name":"packer-6b03ff17-9cc6-7f6a-b061-92a22a0fd67a","type":"sbs_5k","status":"available"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-23T08:54:54.890918Z","updated_at":"2026-11-23T08:55:00.234326Z","references":[{"id":"ae91a47a-ae59-44d7-b572-edaf9ed6dfef","product_resource_type":"instance_image","product_resource_id":"5a3a22e9-1182-4bfe-9482-a6ef331a983f","created_at":"2026-11-23T08:55:00.234326Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","snapshot-name","block"],"class":"sbs","zone":"fr-par-2","public":false,"kms_key_id":null}],"total_count":1}'
+        body: '{"snapshots":[{"srn":"srn://block.scw.eu/zones/fr-par-2/snapshots/a4540255-37f6-41fd-8ad2-78fd899747f1","id":"a4540255-37f6-41fd-8ad2-78fd899747f1","name":"named-block-snapshot","parent_volume":{"id":"d00d3a59-88c1-4f61-ba5a-d2606d256607","name":"packer-6b045d87-3138-20bf-cd80-72f2cac0de2c","type":"sbs_5k","status":"available"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-23T15:37:34.091954Z","updated_at":"2026-11-23T15:37:39.382330Z","references":[{"id":"13e9fce5-5e3b-4bb3-9313-de43adad9b2b","product_resource_type":"instance_image","product_resource_id":"28082423-dcd7-4ffc-8d16-3a65be20af62","created_at":"2026-11-23T15:37:39.382330Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","snapshot-name","block"],"class":"sbs","zone":"fr-par-2","public":false,"kms_key_id":null}],"total_count":1}'
         headers:
             Content-Length:
                 - "868"
@@ -185,9 +185,9 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Mon, 23 Nov 2026 08:55:02 GMT
+                - Mon, 23 Nov 2026 15:37:41 GMT
             Server:
-                - Scaleway API Gateway (fr-par-3;edge03)
+                - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
@@ -201,10 +201,10 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 3c0792fc-ccec-44b0-a397-d8e9b421a2e1
+                - 4cf1ddf0-eb11-4e6b-a9d3-0c38cfd20ec0
         status: 200 OK
         code: 200
-        duration: 132.773208ms
+        duration: 51.242792ms
     - id: 4
       request:
         proto: HTTP/1.1
@@ -231,7 +231,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 651
-        body: '{"volumes":[{"srn":"srn://block.scw.eu/zones/fr-par-2/volumes/10021da2-a6e5-4e6f-9549-cb3bfa446a86","id":"10021da2-a6e5-4e6f-9549-cb3bfa446a86","name":"packer-6b03ff17-9cc6-7f6a-b061-92a22a0fd67a","type":"sbs_5k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-23T08:53:46.327736Z","updated_at":"2026-11-23T08:55:00.893683Z","references":[],"parent_snapshot_id":"b5e3b6ec-0bb0-4031-804d-5b49978b4201","status":"available","tags":["test","snapshot-name","block"],"specs":{"perf_iops":5000,"class":"sbs"},"last_detached_at":"2026-11-23T08:55:00.893683Z","kms_key_id":null,"zone":"fr-par-2"}],"total_count":1}'
+        body: '{"volumes":[{"srn":"srn://block.scw.eu/zones/fr-par-2/volumes/d00d3a59-88c1-4f61-ba5a-d2606d256607","id":"d00d3a59-88c1-4f61-ba5a-d2606d256607","name":"packer-6b045d87-3138-20bf-cd80-72f2cac0de2c","type":"sbs_5k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-23T15:36:41.106045Z","updated_at":"2026-11-23T15:37:39.853628Z","references":[],"parent_snapshot_id":"b5e3b6ec-0bb0-4031-804d-5b49978b4201","status":"available","tags":["test","snapshot-name","block"],"specs":{"perf_iops":5000,"class":"sbs"},"last_detached_at":"2026-11-23T15:37:39.853628Z","kms_key_id":null,"zone":"fr-par-2"}],"total_count":1}'
         headers:
             Content-Length:
                 - "651"
@@ -240,9 +240,9 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Mon, 23 Nov 2026 08:55:02 GMT
+                - Mon, 23 Nov 2026 15:37:41 GMT
             Server:
-                - Scaleway API Gateway (fr-par-3;edge03)
+                - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
@@ -256,10 +256,10 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 703d13f0-8dc9-4686-9850-7082974fe89e
+                - 1da5cf5a-0aef-4c93-9f5a-b8e7ea0b3729
         status: 200 OK
         code: 200
-        duration: 58.615958ms
+        duration: 57.638ms
     - id: 5
       request:
         proto: HTTP/1.1
@@ -284,7 +284,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 621
-        body: '{"images": [{"id": "5a3a22e9-1182-4bfe-9482-a6ef331a983f", "name": "packer-e2e-snap-name-block", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "root_volume": {"volume_type": "sbs_snapshot", "id": "fb4466ad-f605-4b26-8670-c42640cc79b1", "size": 0, "name": ""}, "extra_volumes": {}, "public": false, "arch": "x86_64", "creation_date": "2026-11-23T08:55:00.198674+00:00", "modification_date": "2026-11-23T08:55:00.198674+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": ["test", "snapshot-name", "block"], "zone": "fr-par-2"}]}'
+        body: '{"images": [{"id": "28082423-dcd7-4ffc-8d16-3a65be20af62", "name": "packer-e2e-snap-name-block", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "root_volume": {"volume_type": "sbs_snapshot", "id": "a4540255-37f6-41fd-8ad2-78fd899747f1", "size": 0, "name": ""}, "extra_volumes": {}, "public": false, "arch": "x86_64", "creation_date": "2026-11-23T15:37:39.347515+00:00", "modification_date": "2026-11-23T15:37:39.347515+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": ["test", "snapshot-name", "block"], "zone": "fr-par-2"}]}'
         headers:
             Content-Length:
                 - "621"
@@ -293,11 +293,11 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Mon, 23 Nov 2026 08:55:02 GMT
+                - Mon, 23 Nov 2026 15:37:41 GMT
             Link:
                 - </images?page=1&per_page=50&name=packer-e2e-snap-name-block&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
             Server:
-                - Scaleway API Gateway (fr-par-3;edge03)
+                - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
@@ -311,12 +311,12 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - b0093930-b8d7-48b6-9150-af522b1a7969
+                - d8041a98-86d1-44b3-9786-3e83475c3b5e
             X-Total-Count:
                 - "1"
         status: 200 OK
         code: 200
-        duration: 162.221458ms
+        duration: 177.957458ms
     - id: 6
       request:
         proto: HTTP/1.1
@@ -327,7 +327,7 @@ interactions:
         headers:
             User-Agent:
                 - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/images/5a3a22e9-1182-4bfe-9482-a6ef331a983f
+        url: https://api.scaleway.com/instance/v1/zones/fr-par-2/images/28082423-dcd7-4ffc-8d16-3a65be20af62
         method: DELETE
       response:
         proto: HTTP/2.0
@@ -341,9 +341,9 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Mon, 23 Nov 2026 08:55:03 GMT
+                - Mon, 23 Nov 2026 15:37:41 GMT
             Server:
-                - Scaleway API Gateway (fr-par-3;edge03)
+                - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
@@ -357,10 +357,10 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 9c95aef5-4c05-4dd8-b1c5-c21e5a6bf0e4
+                - 8b9e5039-fdf5-45d8-908b-6b82ac589d52
         status: 204 No Content
         code: 204
-        duration: 193.127084ms
+        duration: 205.007ms
     - id: 7
       request:
         proto: HTTP/1.1
@@ -389,7 +389,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 868
-        body: '{"snapshots":[{"srn":"srn://block.scw.eu/zones/fr-par-2/snapshots/fb4466ad-f605-4b26-8670-c42640cc79b1","id":"fb4466ad-f605-4b26-8670-c42640cc79b1","name":"named-block-snapshot","parent_volume":{"id":"10021da2-a6e5-4e6f-9549-cb3bfa446a86","name":"packer-6b03ff17-9cc6-7f6a-b061-92a22a0fd67a","type":"sbs_5k","status":"available"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-23T08:54:54.890918Z","updated_at":"2026-11-23T08:55:00.234326Z","references":[{"id":"ae91a47a-ae59-44d7-b572-edaf9ed6dfef","product_resource_type":"instance_image","product_resource_id":"5a3a22e9-1182-4bfe-9482-a6ef331a983f","created_at":"2026-11-23T08:55:00.234326Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","snapshot-name","block"],"class":"sbs","zone":"fr-par-2","public":false,"kms_key_id":null}],"total_count":1}'
+        body: '{"snapshots":[{"srn":"srn://block.scw.eu/zones/fr-par-2/snapshots/a4540255-37f6-41fd-8ad2-78fd899747f1","id":"a4540255-37f6-41fd-8ad2-78fd899747f1","name":"named-block-snapshot","parent_volume":{"id":"d00d3a59-88c1-4f61-ba5a-d2606d256607","name":"packer-6b045d87-3138-20bf-cd80-72f2cac0de2c","type":"sbs_5k","status":"available"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-23T15:37:34.091954Z","updated_at":"2026-11-23T15:37:39.382330Z","references":[{"id":"13e9fce5-5e3b-4bb3-9313-de43adad9b2b","product_resource_type":"instance_image","product_resource_id":"28082423-dcd7-4ffc-8d16-3a65be20af62","created_at":"2026-11-23T15:37:39.382330Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","snapshot-name","block"],"class":"sbs","zone":"fr-par-2","public":false,"kms_key_id":null}],"total_count":1}'
         headers:
             Content-Length:
                 - "868"
@@ -398,9 +398,9 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Mon, 23 Nov 2026 08:55:03 GMT
+                - Mon, 23 Nov 2026 15:37:41 GMT
             Server:
-                - Scaleway API Gateway (fr-par-3;edge03)
+                - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
@@ -414,10 +414,10 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 1e0ad90a-6f2b-4e3d-86c4-679667da4c13
+                - 9a5cfc7e-9509-4dc9-a61a-df6aec1d5442
         status: 200 OK
         code: 200
-        duration: 105.385041ms
+        duration: 53.435292ms
     - id: 8
       request:
         proto: HTTP/1.1
@@ -428,7 +428,7 @@ interactions:
         headers:
             User-Agent:
                 - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/block/v1/zones/fr-par-2/snapshots/fb4466ad-f605-4b26-8670-c42640cc79b1
+        url: https://api.scaleway.com/block/v1/zones/fr-par-2/snapshots/a4540255-37f6-41fd-8ad2-78fd899747f1
         method: DELETE
       response:
         proto: HTTP/2.0
@@ -442,9 +442,9 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Mon, 23 Nov 2026 08:55:03 GMT
+                - Mon, 23 Nov 2026 15:37:42 GMT
             Server:
-                - Scaleway API Gateway (fr-par-3;edge03)
+                - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
@@ -454,14 +454,14 @@ interactions:
             X-Ratelimit-Limit:
                 - 50, 50;w=1
             X-Ratelimit-Remaining:
-                - "46"
+                - "49"
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 8aa09c8b-cb1d-4c3c-9e0b-cca04ba9dcd9
+                - 54f28eab-632c-437b-850f-527a73583ec6
         status: 204 No Content
         code: 204
-        duration: 104.015333ms
+        duration: 85.224333ms
     - id: 9
       request:
         proto: HTTP/1.1
@@ -490,7 +490,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 651
-        body: '{"volumes":[{"srn":"srn://block.scw.eu/zones/fr-par-2/volumes/10021da2-a6e5-4e6f-9549-cb3bfa446a86","id":"10021da2-a6e5-4e6f-9549-cb3bfa446a86","name":"packer-6b03ff17-9cc6-7f6a-b061-92a22a0fd67a","type":"sbs_5k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-23T08:53:46.327736Z","updated_at":"2026-11-23T08:55:00.893683Z","references":[],"parent_snapshot_id":"b5e3b6ec-0bb0-4031-804d-5b49978b4201","status":"available","tags":["test","snapshot-name","block"],"specs":{"perf_iops":5000,"class":"sbs"},"last_detached_at":"2026-11-23T08:55:00.893683Z","kms_key_id":null,"zone":"fr-par-2"}],"total_count":1}'
+        body: '{"volumes":[{"srn":"srn://block.scw.eu/zones/fr-par-2/volumes/d00d3a59-88c1-4f61-ba5a-d2606d256607","id":"d00d3a59-88c1-4f61-ba5a-d2606d256607","name":"packer-6b045d87-3138-20bf-cd80-72f2cac0de2c","type":"sbs_5k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-23T15:36:41.106045Z","updated_at":"2026-11-23T15:37:39.853628Z","references":[],"parent_snapshot_id":"b5e3b6ec-0bb0-4031-804d-5b49978b4201","status":"available","tags":["test","snapshot-name","block"],"specs":{"perf_iops":5000,"class":"sbs"},"last_detached_at":"2026-11-23T15:37:39.853628Z","kms_key_id":null,"zone":"fr-par-2"}],"total_count":1}'
         headers:
             Content-Length:
                 - "651"
@@ -499,9 +499,9 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Mon, 23 Nov 2026 08:55:03 GMT
+                - Mon, 23 Nov 2026 15:37:42 GMT
             Server:
-                - Scaleway API Gateway (fr-par-3;edge03)
+                - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
@@ -511,14 +511,14 @@ interactions:
             X-Ratelimit-Limit:
                 - 50, 50;w=1
             X-Ratelimit-Remaining:
-                - "49"
+                - "46"
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - bfce0b4e-f56b-43f4-8bf6-5df680df034b
+                - 6c0d68ff-22c9-40fa-a9b8-d4d03e2ff235
         status: 200 OK
         code: 200
-        duration: 54.087542ms
+        duration: 61.474709ms
     - id: 10
       request:
         proto: HTTP/1.1
@@ -529,7 +529,7 @@ interactions:
         headers:
             User-Agent:
                 - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/block/v1/zones/fr-par-2/volumes/10021da2-a6e5-4e6f-9549-cb3bfa446a86
+        url: https://api.scaleway.com/block/v1/zones/fr-par-2/volumes/d00d3a59-88c1-4f61-ba5a-d2606d256607
         method: DELETE
       response:
         proto: HTTP/2.0
@@ -543,9 +543,9 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Mon, 23 Nov 2026 08:55:03 GMT
+                - Mon, 23 Nov 2026 15:37:42 GMT
             Server:
-                - Scaleway API Gateway (fr-par-3;edge03)
+                - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
                 - max-age=63072000
             X-Content-Type-Options:
@@ -555,11 +555,11 @@ interactions:
             X-Ratelimit-Limit:
                 - 50, 50;w=1
             X-Ratelimit-Remaining:
-                - "47"
+                - "45"
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 95a0f6c2-095f-4a7a-85d3-85ada92f6451
+                - 92585a5c-3952-4f2f-82c1-73fbb28e824d
         status: 204 No Content
         code: 204
-        duration: 89.419625ms
+        duration: 79.830083ms
