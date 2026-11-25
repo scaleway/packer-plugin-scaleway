@@ -40,12 +40,13 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	bootType := instance.BootType(c.BootType)
 
 	createServerReq := &instance.CreateServerRequest{
-		BootType:       &bootType,
-		CommercialType: c.CommercialType,
-		Name:           c.ServerName,
-		Image:          scw.StringPtr(c.Image),
-		Tags:           tags,
-		Zone:           scw.Zone(c.Zone),
+		BootType:          &bootType,
+		CommercialType:    c.CommercialType,
+		Name:              c.ServerName,
+		Image:             scw.StringPtr(c.Image),
+		Tags:              tags,
+		Zone:              scw.Zone(c.Zone),
+		DynamicIPRequired: scw.BoolPtr(!c.DisablePublicIP),
 	}
 
 	if c.RootVolume.IsConfigured() {
