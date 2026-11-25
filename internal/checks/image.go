@@ -84,15 +84,15 @@ func findImage(ctx context.Context, zone scw.Zone, imageName string) (*instance.
 		}
 	}
 
-	if len(resp.Images) == 0 {
+	if len(images) == 0 {
 		return nil, fmt.Errorf("image %s not found, no images found", imageName)
 	}
 
-	if len(resp.Images) > 1 {
+	if len(images) > 1 {
 		return nil, fmt.Errorf("multiple images found with name %s", imageName)
 	}
 
-	return resp.Images[0], nil
+	return images[0], nil
 }
 
 func computeImageSize(ctx context.Context, image *instance.Image) (scw.Size, error) {
