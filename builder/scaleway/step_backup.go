@@ -76,6 +76,7 @@ func (s *stepBackup) Run(ctx context.Context, state multistep.StateBag) multiste
 				SnapshotID:     snap.ID,
 				Zone:           zone,
 				TerminalStatus: &availableStatus,
+				RetryInterval:  waitRetryInterval(state),
 			}, scw.WithContext(ctx))
 			if err != nil {
 				return putErrorAndHalt(state, ui, fmt.Errorf("failed to wait for block snapshot: %w", err))
@@ -119,9 +120,10 @@ func (s *stepBackup) Run(ctx context.Context, state multistep.StateBag) multiste
 	}
 
 	image, err := instanceAPI.WaitForImage(&instance.WaitForImageRequest{
-		ImageID: imageResp.Image.ID,
-		Zone:    zone,
-		Timeout: &c.ImageCreationTimeout,
+		ImageID:       imageResp.Image.ID,
+		Zone:          zone,
+		Timeout:       &c.ImageCreationTimeout,
+		RetryInterval: waitRetryInterval(state),
 	}, scw.WithContext(ctx))
 	if err != nil {
 		return putErrorAndHalt(state, ui, fmt.Errorf("failed to fetch generated image: %w", err))

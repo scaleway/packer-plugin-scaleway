@@ -72,7 +72,7 @@ func (c *ConfigRootVolume) VolumeServerTemplate() *instance.VolumeServerTemplate
 }
 
 // PostServerCreationSetup renames the root volume and applies its IOPS once the server is created
-func (c *ConfigRootVolume) PostServerCreationSetup(ctx context.Context, instanceAPI *instance.API, blockAPI *block.API, server *instance.Server, timeout time.Duration) error {
+func (c *ConfigRootVolume) PostServerCreationSetup(ctx context.Context, instanceAPI *instance.API, blockAPI *block.API, server *instance.Server, timeout time.Duration, retryInterval *time.Duration) error {
 	rootVolume, exists := server.Volumes["0"]
 	if !exists {
 		return errors.New("root volume not found")
@@ -102,9 +102,10 @@ func (c *ConfigRootVolume) PostServerCreationSetup(ctx context.Context, instance
 	}
 
 	_, err := blockAPI.WaitForVolume(&block.WaitForVolumeRequest{
-		VolumeID: rootVolume.ID,
-		Zone:     rootVolume.Zone,
-		Timeout:  &timeout,
+		VolumeID:      rootVolume.ID,
+		Zone:          rootVolume.Zone,
+		Timeout:       &timeout,
+		RetryInterval: retryInterval,
 	}, scw.WithContext(ctx))
 	if err != nil {
 		return fmt.Errorf("failed to wait for root volume: %w", err)

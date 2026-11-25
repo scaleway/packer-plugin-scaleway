@@ -25,7 +25,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 956
-        body: '{"images": [{"id": "3693fb4c-d3e3-4430-95e9-2c4af502d980", "name": "packer-e2e-complete", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "root_volume": {"id": "42a3b417-57eb-4e9f-a6ad-0332f5aa4484", "name": "named-snap-root-volume-0", "volume_type": "l_ssd", "size": 12000000000}, "extra_volumes": {"1": {"volume_type": "sbs_snapshot", "id": "05051a9f-72af-4408-9cfa-07835756d3d0", "size": 0, "name": ""}, "3": {"volume_type": "sbs_snapshot", "id": "c134d10a-0107-4587-bb35-799a5cc19019", "size": 0, "name": ""}, "2": {"volume_type": "sbs_snapshot", "id": "5a72ac18-cedc-4aae-8a8d-0c189e3e90dc", "size": 0, "name": ""}}, "public": false, "arch": "x86_64", "creation_date": "2026-11-24T08:10:17.582452+00:00", "modification_date": "2026-11-24T08:10:17.582452+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": ["test", "packer", "complete"], "zone": "nl-ams-1"}]}'
+        body: '{"images": [{"id": "e1994997-7ad2-4faa-a774-0ee84c121741", "name": "packer-e2e-complete", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "root_volume": {"id": "039964ea-5845-414b-ae95-1bed542be14f", "name": "named-snap-root-volume-0", "volume_type": "l_ssd", "size": 12000000000}, "extra_volumes": {"1": {"volume_type": "sbs_snapshot", "id": "68d78024-38aa-4fa2-b058-c58493a13d4a", "size": 0, "name": ""}, "3": {"volume_type": "sbs_snapshot", "id": "636856e4-dce6-4b99-98fd-9b1ab51c4e22", "size": 0, "name": ""}, "2": {"volume_type": "sbs_snapshot", "id": "da270915-8566-485e-8b46-c21001889f02", "size": 0, "name": ""}}, "public": false, "arch": "x86_64", "creation_date": "2026-11-25T14:34:08.238425+00:00", "modification_date": "2026-11-25T14:34:08.238425+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": ["test", "packer", "complete"], "zone": "nl-ams-1"}]}'
         headers:
             Content-Length:
                 - "956"
@@ -34,7 +34,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:19 GMT
+                - Wed, 25 Nov 2026 14:34:10 GMT
             Link:
                 - </images?page=1&per_page=50&name=packer-e2e-complete&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
             Server:
@@ -52,12 +52,12 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - b44de3ec-4ce1-4491-bfd0-13355c0be135
+                - 69df9212-2012-480a-971e-4bb7ae704f02
             X-Total-Count:
                 - "1"
         status: 200 OK
         code: 200
-        duration: 268.80625ms
+        duration: 265.209166ms
     - id: 1
       request:
         proto: HTTP/1.1
@@ -68,14 +68,14 @@ interactions:
         headers:
             User-Agent:
                 - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots/05051a9f-72af-4408-9cfa-07835756d3d0
+        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots/68d78024-38aa-4fa2-b058-c58493a13d4a
         method: GET
       response:
         proto: HTTP/2.0
         proto_major: 2
         proto_minor: 0
         content_length: 803
-        body: '{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/05051a9f-72af-4408-9cfa-07835756d3d0","id":"05051a9f-72af-4408-9cfa-07835756d3d0","name":"packer-1795507724","parent_volume":{"id":"c13fc87b-d43c-4fed-b875-d3e5b66d7c4e","name":"named-extra-volume-1","type":"sbs_5k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:10:01.528720Z","updated_at":"2026-11-24T08:10:17.656379Z","references":[{"id":"1f92db5e-c655-4cf8-a1ba-b56dae100fa0","product_resource_type":"instance_image","product_resource_id":"3693fb4c-d3e3-4430-95e9-2c4af502d980","created_at":"2026-11-24T08:10:17.656379Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}'
+        body: '{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/68d78024-38aa-4fa2-b058-c58493a13d4a","id":"68d78024-38aa-4fa2-b058-c58493a13d4a","name":"packer-1795617144","parent_volume":{"id":"71c6cf96-03c6-43a1-82e3-c06843e822c9","name":"named-extra-volume-1","type":"sbs_5k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:33:52.235270Z","updated_at":"2026-11-25T14:34:08.323606Z","references":[{"id":"2cc45921-4849-4939-af47-d76a4f9f0b77","product_resource_type":"instance_image","product_resource_id":"e1994997-7ad2-4faa-a774-0ee84c121741","created_at":"2026-11-25T14:34:08.323606Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}'
         headers:
             Content-Length:
                 - "803"
@@ -84,7 +84,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:19 GMT
+                - Wed, 25 Nov 2026 14:34:10 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -96,14 +96,14 @@ interactions:
             X-Ratelimit-Limit:
                 - 50, 50;w=1
             X-Ratelimit-Remaining:
-                - "48"
+                - "49"
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - ea3e8bee-bcd8-45ce-9f25-c70e26daff1c
+                - 0bae83f7-48d3-445e-b40c-d74f4726e99b
         status: 200 OK
         code: 200
-        duration: 86.550375ms
+        duration: 56.45325ms
     - id: 2
       request:
         proto: HTTP/1.1
@@ -130,7 +130,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:19 GMT
+                - Wed, 25 Nov 2026 14:34:10 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -146,10 +146,10 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 5232dfad-85f3-4151-95ae-dfec1ffd6aca
+                - 417dd397-7074-49f1-86c4-3197e3357f36
         status: 200 OK
         code: 200
-        duration: 10.190834ms
+        duration: 110.139875ms
     - id: 3
       request:
         proto: HTTP/1.1
@@ -160,14 +160,14 @@ interactions:
         headers:
             User-Agent:
                 - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots/c134d10a-0107-4587-bb35-799a5cc19019
+        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots/636856e4-dce6-4b99-98fd-9b1ab51c4e22
         method: GET
       response:
         proto: HTTP/2.0
         proto_major: 2
         proto_minor: 0
         content_length: 834
-        body: '{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/c134d10a-0107-4587-bb35-799a5cc19019","id":"c134d10a-0107-4587-bb35-799a5cc19019","name":"named-snap-extra-volume-3","parent_volume":{"id":"3d7da61a-1447-4c20-9952-edd41ea314a9","name":"packer-6b05460c-8168-253e-4006-8029734d64d2","type":"sbs_5k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:10:12.186660Z","updated_at":"2026-11-24T08:10:17.794061Z","references":[{"id":"16133c76-3b79-4102-a783-8cf92d61c180","product_resource_type":"instance_image","product_resource_id":"3693fb4c-d3e3-4430-95e9-2c4af502d980","created_at":"2026-11-24T08:10:17.794061Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}'
+        body: '{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/636856e4-dce6-4b99-98fd-9b1ab51c4e22","id":"636856e4-dce6-4b99-98fd-9b1ab51c4e22","name":"named-snap-extra-volume-3","parent_volume":{"id":"68dbe45f-f307-4638-a5b7-ec60d0329ce8","name":"packer-6b06f178-2e33-bb9d-11a4-d675014d2557","type":"sbs_5k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:34:02.902644Z","updated_at":"2026-11-25T14:34:08.479609Z","references":[{"id":"417b1001-0239-42ee-90eb-a1bfa48f6c18","product_resource_type":"instance_image","product_resource_id":"e1994997-7ad2-4faa-a774-0ee84c121741","created_at":"2026-11-25T14:34:08.479609Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}'
         headers:
             Content-Length:
                 - "834"
@@ -176,7 +176,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:19 GMT
+                - Wed, 25 Nov 2026 14:34:10 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -188,14 +188,14 @@ interactions:
             X-Ratelimit-Limit:
                 - 50, 50;w=1
             X-Ratelimit-Remaining:
-                - "47"
+                - "48"
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 560d3e61-0bea-4541-ba3f-d17ba84a73a3
+                - 1125ba27-aa7f-46d2-a10d-3a9439f5dd27
         status: 200 OK
         code: 200
-        duration: 131.63925ms
+        duration: 54.587417ms
     - id: 4
       request:
         proto: HTTP/1.1
@@ -206,14 +206,14 @@ interactions:
         headers:
             User-Agent:
                 - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots/5a72ac18-cedc-4aae-8a8d-0c189e3e90dc
+        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots/da270915-8566-485e-8b46-c21001889f02
         method: GET
       response:
         proto: HTTP/2.0
         proto_major: 2
         proto_minor: 0
         content_length: 827
-        body: '{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/5a72ac18-cedc-4aae-8a8d-0c189e3e90dc","id":"5a72ac18-cedc-4aae-8a8d-0c189e3e90dc","name":"packer-1795507724","parent_volume":{"id":"70b3606b-f36f-42ce-9acf-058a99217f1e","name":"packer-6b05460c-f95c-8377-1c16-d39f228ae4ac","type":"sbs_15k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:10:06.839775Z","updated_at":"2026-11-24T08:10:17.738376Z","references":[{"id":"8d16fbd4-f586-4d39-b303-48dc3759ed7c","product_resource_type":"instance_image","product_resource_id":"3693fb4c-d3e3-4430-95e9-2c4af502d980","created_at":"2026-11-24T08:10:17.738376Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}'
+        body: '{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/da270915-8566-485e-8b46-c21001889f02","id":"da270915-8566-485e-8b46-c21001889f02","name":"packer-1795617144","parent_volume":{"id":"b6b673cc-9116-4a28-854b-b9645189eda6","name":"packer-6b06f178-749a-33e6-361b-6838cb6d5207","type":"sbs_15k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:33:57.590693Z","updated_at":"2026-11-25T14:34:08.409647Z","references":[{"id":"f9676dc5-fe75-44bd-844e-5487b839a009","product_resource_type":"instance_image","product_resource_id":"e1994997-7ad2-4faa-a774-0ee84c121741","created_at":"2026-11-25T14:34:08.409647Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}'
         headers:
             Content-Length:
                 - "827"
@@ -222,7 +222,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:19 GMT
+                - Wed, 25 Nov 2026 14:34:10 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -234,14 +234,14 @@ interactions:
             X-Ratelimit-Limit:
                 - 50, 50;w=1
             X-Ratelimit-Remaining:
-                - "49"
+                - "48"
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 0d500aab-3f9e-4b00-9052-1cbf6c6ff86e
+                - 27e1e4e0-8cc4-46fb-922b-df1684126733
         status: 200 OK
         code: 200
-        duration: 45.195459ms
+        duration: 68.606625ms
     - id: 5
       request:
         proto: HTTP/1.1
@@ -264,7 +264,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 560
-        body: '{"snapshots": [{"id": "42a3b417-57eb-4e9f-a6ad-0332f5aa4484", "name": "named-snap-root-volume-0", "volume_type": "l_ssd", "creation_date": "2026-11-24T08:10:01.195858+00:00", "modification_date": "2026-11-24T08:10:01.195858+00:00", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "size": 12000000000, "state": "available", "base_volume": {"id": "21086b63-4a17-459b-9af9-17aaa453736b", "name": "named-root-volume-0"}, "tags": ["test", "packer", "complete"], "zone": "nl-ams-1", "error_details": null}]}'
+        body: '{"snapshots": [{"id": "039964ea-5845-414b-ae95-1bed542be14f", "name": "named-snap-root-volume-0", "volume_type": "l_ssd", "creation_date": "2026-11-25T14:33:51.857779+00:00", "modification_date": "2026-11-25T14:33:51.857779+00:00", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "size": 12000000000, "state": "available", "base_volume": {"id": "aaf39145-b554-428e-a0d2-619df91fac21", "name": "named-root-volume-0"}, "tags": ["test", "packer", "complete"], "zone": "nl-ams-1", "error_details": null}]}'
         headers:
             Content-Length:
                 - "560"
@@ -273,9 +273,66 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:19 GMT
+                - Wed, 25 Nov 2026 14:34:10 GMT
             Link:
                 - </snapshots?page=1&per_page=50&name=named-snap-root&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
+            Server:
+                - Scaleway API Gateway (fr-par-3;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "47"
+            X-Ratelimit-Reset:
+                - "1"
+            X-Request-Id:
+                - 2fb0adae-04e6-4802-864d-8944b6164139
+            X-Total-Count:
+                - "1"
+        status: 200 OK
+        code: 200
+        duration: 145.009083ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.scaleway.com
+        form:
+            include_deleted:
+                - "false"
+            name:
+                - packer-
+            order_by:
+                - created_at_asc
+            project_id:
+                - 564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots?include_deleted=false&name=packer-&order_by=created_at_asc&project_id=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: 1663
+        body: '{"snapshots":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/68d78024-38aa-4fa2-b058-c58493a13d4a","id":"68d78024-38aa-4fa2-b058-c58493a13d4a","name":"packer-1795617144","parent_volume":{"id":"71c6cf96-03c6-43a1-82e3-c06843e822c9","name":"named-extra-volume-1","type":"sbs_5k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:33:52.235270Z","updated_at":"2026-11-25T14:34:08.323606Z","references":[{"id":"2cc45921-4849-4939-af47-d76a4f9f0b77","product_resource_type":"instance_image","product_resource_id":"e1994997-7ad2-4faa-a774-0ee84c121741","created_at":"2026-11-25T14:34:08.323606Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null},{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/da270915-8566-485e-8b46-c21001889f02","id":"da270915-8566-485e-8b46-c21001889f02","name":"packer-1795617144","parent_volume":{"id":"b6b673cc-9116-4a28-854b-b9645189eda6","name":"packer-6b06f178-749a-33e6-361b-6838cb6d5207","type":"sbs_15k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:33:57.590693Z","updated_at":"2026-11-25T14:34:08.409647Z","references":[{"id":"f9676dc5-fe75-44bd-844e-5487b839a009","product_resource_type":"instance_image","product_resource_id":"e1994997-7ad2-4faa-a774-0ee84c121741","created_at":"2026-11-25T14:34:08.409647Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}],"total_count":2}'
+        headers:
+            Content-Length:
+                - "1663"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 25 Nov 2026 14:34:10 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -291,67 +348,10 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 6d16a24c-43ba-407c-9a5b-87a235397b2b
-            X-Total-Count:
-                - "1"
+                - 1f96bf19-6df8-4042-bd4d-d1f58cfa6c67
         status: 200 OK
         code: 200
-        duration: 132.848917ms
-    - id: 6
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        host: api.scaleway.com
-        form:
-            include_deleted:
-                - "false"
-            name:
-                - named-snap-extra
-            order_by:
-                - created_at_asc
-            project_id:
-                - 564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
-        headers:
-            User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots?include_deleted=false&name=named-snap-extra&order_by=created_at_asc&project_id=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        content_length: 866
-        body: '{"snapshots":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/c134d10a-0107-4587-bb35-799a5cc19019","id":"c134d10a-0107-4587-bb35-799a5cc19019","name":"named-snap-extra-volume-3","parent_volume":{"id":"3d7da61a-1447-4c20-9952-edd41ea314a9","name":"packer-6b05460c-8168-253e-4006-8029734d64d2","type":"sbs_5k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:10:12.186660Z","updated_at":"2026-11-24T08:10:17.794061Z","references":[{"id":"16133c76-3b79-4102-a783-8cf92d61c180","product_resource_type":"instance_image","product_resource_id":"3693fb4c-d3e3-4430-95e9-2c4af502d980","created_at":"2026-11-24T08:10:17.794061Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}],"total_count":1}'
-        headers:
-            Content-Length:
-                - "866"
-            Content-Security-Policy:
-                - default-src 'none'; frame-ancestors 'none'
-            Content-Type:
-                - application/json
-            Date:
-                - Tue, 24 Nov 2026 08:10:19 GMT
-            Server:
-                - Scaleway API Gateway (fr-par-3;edge02)
-            Strict-Transport-Security:
-                - max-age=63072000
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - DENY
-            X-Ratelimit-Limit:
-                - 50, 50;w=1
-            X-Ratelimit-Remaining:
-                - "46"
-            X-Ratelimit-Reset:
-                - "1"
-            X-Request-Id:
-                - cc05f4e3-997e-45b7-9206-a441b4126ec8
-        status: 200 OK
-        code: 200
-        duration: 67.720834ms
+        duration: 46.413042ms
     - id: 7
       request:
         proto: HTTP/1.1
@@ -378,7 +378,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 1663
-        body: '{"snapshots":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/05051a9f-72af-4408-9cfa-07835756d3d0","id":"05051a9f-72af-4408-9cfa-07835756d3d0","name":"packer-1795507724","parent_volume":{"id":"c13fc87b-d43c-4fed-b875-d3e5b66d7c4e","name":"named-extra-volume-1","type":"sbs_5k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:10:01.528720Z","updated_at":"2026-11-24T08:10:17.656379Z","references":[{"id":"1f92db5e-c655-4cf8-a1ba-b56dae100fa0","product_resource_type":"instance_image","product_resource_id":"3693fb4c-d3e3-4430-95e9-2c4af502d980","created_at":"2026-11-24T08:10:17.656379Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null},{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/5a72ac18-cedc-4aae-8a8d-0c189e3e90dc","id":"5a72ac18-cedc-4aae-8a8d-0c189e3e90dc","name":"packer-1795507724","parent_volume":{"id":"70b3606b-f36f-42ce-9acf-058a99217f1e","name":"packer-6b05460c-f95c-8377-1c16-d39f228ae4ac","type":"sbs_15k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:10:06.839775Z","updated_at":"2026-11-24T08:10:17.738376Z","references":[{"id":"8d16fbd4-f586-4d39-b303-48dc3759ed7c","product_resource_type":"instance_image","product_resource_id":"3693fb4c-d3e3-4430-95e9-2c4af502d980","created_at":"2026-11-24T08:10:17.738376Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}],"total_count":2}'
+        body: '{"snapshots":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/68d78024-38aa-4fa2-b058-c58493a13d4a","id":"68d78024-38aa-4fa2-b058-c58493a13d4a","name":"packer-1795617144","parent_volume":{"id":"71c6cf96-03c6-43a1-82e3-c06843e822c9","name":"named-extra-volume-1","type":"sbs_5k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:33:52.235270Z","updated_at":"2026-11-25T14:34:08.323606Z","references":[{"id":"2cc45921-4849-4939-af47-d76a4f9f0b77","product_resource_type":"instance_image","product_resource_id":"e1994997-7ad2-4faa-a774-0ee84c121741","created_at":"2026-11-25T14:34:08.323606Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null},{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/da270915-8566-485e-8b46-c21001889f02","id":"da270915-8566-485e-8b46-c21001889f02","name":"packer-1795617144","parent_volume":{"id":"b6b673cc-9116-4a28-854b-b9645189eda6","name":"packer-6b06f178-749a-33e6-361b-6838cb6d5207","type":"sbs_15k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:33:57.590693Z","updated_at":"2026-11-25T14:34:08.409647Z","references":[{"id":"f9676dc5-fe75-44bd-844e-5487b839a009","product_resource_type":"instance_image","product_resource_id":"e1994997-7ad2-4faa-a774-0ee84c121741","created_at":"2026-11-25T14:34:08.409647Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}],"total_count":2}'
         headers:
             Content-Length:
                 - "1663"
@@ -387,62 +387,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:20 GMT
-            Server:
-                - Scaleway API Gateway (fr-par-3;edge02)
-            Strict-Transport-Security:
-                - max-age=63072000
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - DENY
-            X-Ratelimit-Limit:
-                - 50, 50;w=1
-            X-Ratelimit-Remaining:
-                - "48"
-            X-Ratelimit-Reset:
-                - "1"
-            X-Request-Id:
-                - 7e184c2f-baa2-460f-8fb9-6770a25e8792
-        status: 200 OK
-        code: 200
-        duration: 80.536041ms
-    - id: 8
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        host: api.scaleway.com
-        form:
-            include_deleted:
-                - "false"
-            name:
-                - packer-
-            order_by:
-                - created_at_asc
-            project_id:
-                - 564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
-        headers:
-            User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots?include_deleted=false&name=packer-&order_by=created_at_asc&project_id=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
-        method: GET
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        content_length: 1663
-        body: '{"snapshots":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/05051a9f-72af-4408-9cfa-07835756d3d0","id":"05051a9f-72af-4408-9cfa-07835756d3d0","name":"packer-1795507724","parent_volume":{"id":"c13fc87b-d43c-4fed-b875-d3e5b66d7c4e","name":"named-extra-volume-1","type":"sbs_5k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:10:01.528720Z","updated_at":"2026-11-24T08:10:17.656379Z","references":[{"id":"1f92db5e-c655-4cf8-a1ba-b56dae100fa0","product_resource_type":"instance_image","product_resource_id":"3693fb4c-d3e3-4430-95e9-2c4af502d980","created_at":"2026-11-24T08:10:17.656379Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null},{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/5a72ac18-cedc-4aae-8a8d-0c189e3e90dc","id":"5a72ac18-cedc-4aae-8a8d-0c189e3e90dc","name":"packer-1795507724","parent_volume":{"id":"70b3606b-f36f-42ce-9acf-058a99217f1e","name":"packer-6b05460c-f95c-8377-1c16-d39f228ae4ac","type":"sbs_15k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:10:06.839775Z","updated_at":"2026-11-24T08:10:17.738376Z","references":[{"id":"8d16fbd4-f586-4d39-b303-48dc3759ed7c","product_resource_type":"instance_image","product_resource_id":"3693fb4c-d3e3-4430-95e9-2c4af502d980","created_at":"2026-11-24T08:10:17.738376Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}],"total_count":2}'
-        headers:
-            Content-Length:
-                - "1663"
-            Content-Security-Policy:
-                - default-src 'none'; frame-ancestors 'none'
-            Content-Type:
-                - application/json
-            Date:
-                - Tue, 24 Nov 2026 08:10:20 GMT
+                - Wed, 25 Nov 2026 14:34:10 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -458,10 +403,65 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 556b3966-b703-4adf-b598-16e2d9d7e3ad
+                - cb537fca-fd43-4a80-aa61-e38cb5425eeb
         status: 200 OK
         code: 200
-        duration: 87.719333ms
+        duration: 65.223375ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.scaleway.com
+        form:
+            include_deleted:
+                - "false"
+            name:
+                - named-snap-extra
+            order_by:
+                - created_at_asc
+            project_id:
+                - 564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots?include_deleted=false&name=named-snap-extra&order_by=created_at_asc&project_id=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: 866
+        body: '{"snapshots":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/636856e4-dce6-4b99-98fd-9b1ab51c4e22","id":"636856e4-dce6-4b99-98fd-9b1ab51c4e22","name":"named-snap-extra-volume-3","parent_volume":{"id":"68dbe45f-f307-4638-a5b7-ec60d0329ce8","name":"packer-6b06f178-2e33-bb9d-11a4-d675014d2557","type":"sbs_5k","status":"in_use"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:34:02.902644Z","updated_at":"2026-11-25T14:34:08.479609Z","references":[{"id":"417b1001-0239-42ee-90eb-a1bfa48f6c18","product_resource_type":"instance_image","product_resource_id":"e1994997-7ad2-4faa-a774-0ee84c121741","created_at":"2026-11-25T14:34:08.479609Z","type":"link","status":"attached"}],"status":"in_use","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}],"total_count":1}'
+        headers:
+            Content-Length:
+                - "866"
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 25 Nov 2026 14:34:10 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-3;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "46"
+            X-Ratelimit-Reset:
+                - "1"
+            X-Request-Id:
+                - cb4cf39b-a4f5-41bb-b4b8-bcaa7f20b1f6
+        status: 200 OK
+        code: 200
+        duration: 123.06225ms
     - id: 9
       request:
         proto: HTTP/1.1
@@ -484,7 +484,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 543
-        body: '{"volumes": [{"id": "21086b63-4a17-459b-9af9-17aaa453736b", "name": "named-root-volume-0", "volume_type": "l_ssd", "export_uri": null, "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "server": {"id": "7934ddd2-0910-4b3e-a485-f26d4b2942a6", "name": "packer-tmp-server"}, "size": 12000000000, "state": "available", "creation_date": "2026-11-24T08:08:46.882071+00:00", "modification_date": "2026-11-24T08:10:18.580952+00:00", "tags": ["test", "packer", "complete"], "zone": "nl-ams-1"}]}'
+        body: '{"volumes": [{"id": "aaf39145-b554-428e-a0d2-619df91fac21", "name": "named-root-volume-0", "volume_type": "l_ssd", "export_uri": null, "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "server": {"id": "5104b386-6e5a-4ac3-abc8-558df355d543", "name": "packer-tmp-server"}, "size": 12000000000, "state": "available", "creation_date": "2026-11-25T14:32:27.143832+00:00", "modification_date": "2026-11-25T14:34:08.857254+00:00", "tags": ["test", "packer", "complete"], "zone": "nl-ams-1"}]}'
         headers:
             Content-Length:
                 - "543"
@@ -493,7 +493,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:20 GMT
+                - Wed, 25 Nov 2026 14:34:10 GMT
             Link:
                 - </volumes?page=1&per_page=100&name=named-root-volume&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
             Server:
@@ -507,16 +507,16 @@ interactions:
             X-Ratelimit-Limit:
                 - 50, 50;w=1
             X-Ratelimit-Remaining:
-                - "49"
+                - "47"
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - c034b05c-8dba-4d72-832d-17699fa234e4
+                - b6bbfb90-6dac-49fb-ac75-00d21ef7ba6c
             X-Total-Count:
                 - "1"
         status: 200 OK
         code: 200
-        duration: 108.831875ms
+        duration: 97.700959ms
     - id: 10
       request:
         proto: HTTP/1.1
@@ -543,7 +543,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 792
-        body: '{"volumes":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/c13fc87b-d43c-4fed-b875-d3e5b66d7c4e","id":"c13fc87b-d43c-4fed-b875-d3e5b66d7c4e","name":"named-extra-volume-1","type":"sbs_5k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:08:46.336137Z","updated_at":"2026-11-24T08:10:18.235631Z","references":[{"id":"54660751-53e6-4862-b87b-b6026ce4e026","product_resource_type":"instance_server","product_resource_id":"7934ddd2-0910-4b3e-a485-f26d4b2942a6","created_at":"2026-11-24T08:08:47.300373Z","type":"exclusive","status":"attached"}],"parent_snapshot_id":null,"status":"in_use","tags":["test","packer","complete"],"specs":{"perf_iops":5000,"class":"sbs"},"last_detached_at":null,"kms_key_id":null,"zone":"nl-ams-1"}],"total_count":1}'
+        body: '{"volumes":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/71c6cf96-03c6-43a1-82e3-c06843e822c9","id":"71c6cf96-03c6-43a1-82e3-c06843e822c9","name":"named-extra-volume-1","type":"sbs_5k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:32:26.547794Z","updated_at":"2026-11-25T14:34:08.996456Z","references":[{"id":"bb8be2ba-9e24-40e1-8c1e-eeb93a2a0d09","product_resource_type":"instance_server","product_resource_id":"5104b386-6e5a-4ac3-abc8-558df355d543","created_at":"2026-11-25T14:32:27.213245Z","type":"exclusive","status":"attached"}],"parent_snapshot_id":null,"status":"in_use","tags":["test","packer","complete"],"specs":{"perf_iops":5000,"class":"sbs"},"last_detached_at":null,"kms_key_id":null,"zone":"nl-ams-1"}],"total_count":1}'
         headers:
             Content-Length:
                 - "792"
@@ -552,7 +552,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:20 GMT
+                - Wed, 25 Nov 2026 14:34:10 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -568,10 +568,10 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 40ae268d-6aaa-43fd-ac54-453f427b06be
+                - 02d0b1f4-6625-418f-9014-24e63374d726
         status: 200 OK
         code: 200
-        duration: 64.683ms
+        duration: 84.69575ms
     - id: 11
       request:
         proto: HTTP/1.1
@@ -598,7 +598,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 1603
-        body: '{"volumes":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/70b3606b-f36f-42ce-9acf-058a99217f1e","id":"70b3606b-f36f-42ce-9acf-058a99217f1e","name":"packer-6b05460c-f95c-8377-1c16-d39f228ae4ac","type":"sbs_15k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:08:46.507472Z","updated_at":"2026-11-24T08:10:18.341963Z","references":[{"id":"ef658960-3426-4832-88bb-6f38189bc5db","product_resource_type":"instance_server","product_resource_id":"7934ddd2-0910-4b3e-a485-f26d4b2942a6","created_at":"2026-11-24T08:08:47.356780Z","type":"exclusive","status":"attached"}],"parent_snapshot_id":null,"status":"in_use","tags":["test","packer","complete"],"specs":{"perf_iops":15000,"class":"sbs"},"last_detached_at":null,"kms_key_id":null,"zone":"nl-ams-1"},{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/3d7da61a-1447-4c20-9952-edd41ea314a9","id":"3d7da61a-1447-4c20-9952-edd41ea314a9","name":"packer-6b05460c-8168-253e-4006-8029734d64d2","type":"sbs_5k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:08:46.656832Z","updated_at":"2026-11-24T08:10:18.441491Z","references":[{"id":"1ce5c268-dba8-450f-bcd7-fbbe4638a252","product_resource_type":"instance_server","product_resource_id":"7934ddd2-0910-4b3e-a485-f26d4b2942a6","created_at":"2026-11-24T08:08:47.419072Z","type":"exclusive","status":"attached"}],"parent_snapshot_id":null,"status":"in_use","tags":["test","packer","complete"],"specs":{"perf_iops":5000,"class":"sbs"},"last_detached_at":null,"kms_key_id":null,"zone":"nl-ams-1"}],"total_count":2}'
+        body: '{"volumes":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/b6b673cc-9116-4a28-854b-b9645189eda6","id":"b6b673cc-9116-4a28-854b-b9645189eda6","name":"packer-6b06f178-749a-33e6-361b-6838cb6d5207","type":"sbs_15k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:32:26.702406Z","updated_at":"2026-11-25T14:34:09.095030Z","references":[{"id":"8a70a4ed-d826-4e08-9ff7-c852c41b368b","product_resource_type":"instance_server","product_resource_id":"5104b386-6e5a-4ac3-abc8-558df355d543","created_at":"2026-11-25T14:32:27.298228Z","type":"exclusive","status":"attached"}],"parent_snapshot_id":null,"status":"in_use","tags":["test","packer","complete"],"specs":{"perf_iops":15000,"class":"sbs"},"last_detached_at":null,"kms_key_id":null,"zone":"nl-ams-1"},{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/68dbe45f-f307-4638-a5b7-ec60d0329ce8","id":"68dbe45f-f307-4638-a5b7-ec60d0329ce8","name":"packer-6b06f178-2e33-bb9d-11a4-d675014d2557","type":"sbs_5k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:32:26.838978Z","updated_at":"2026-11-25T14:34:09.242597Z","references":[{"id":"31e3c152-0a44-47ef-b17e-9085563b2def","product_resource_type":"instance_server","product_resource_id":"5104b386-6e5a-4ac3-abc8-558df355d543","created_at":"2026-11-25T14:32:27.379345Z","type":"exclusive","status":"attached"}],"parent_snapshot_id":null,"status":"in_use","tags":["test","packer","complete"],"specs":{"perf_iops":5000,"class":"sbs"},"last_detached_at":null,"kms_key_id":null,"zone":"nl-ams-1"}],"total_count":2}'
         headers:
             Content-Length:
                 - "1603"
@@ -607,7 +607,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:20 GMT
+                - Wed, 25 Nov 2026 14:34:10 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -623,10 +623,10 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - b09977d5-301b-4b82-a21d-85077e6cfe5b
+                - 092f17bc-3998-4a95-86e8-fa9269e8b72d
         status: 200 OK
         code: 200
-        duration: 73.301708ms
+        duration: 47.400167ms
     - id: 12
       request:
         proto: HTTP/1.1
@@ -653,7 +653,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 1603
-        body: '{"volumes":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/70b3606b-f36f-42ce-9acf-058a99217f1e","id":"70b3606b-f36f-42ce-9acf-058a99217f1e","name":"packer-6b05460c-f95c-8377-1c16-d39f228ae4ac","type":"sbs_15k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:08:46.507472Z","updated_at":"2026-11-24T08:10:18.341963Z","references":[{"id":"ef658960-3426-4832-88bb-6f38189bc5db","product_resource_type":"instance_server","product_resource_id":"7934ddd2-0910-4b3e-a485-f26d4b2942a6","created_at":"2026-11-24T08:08:47.356780Z","type":"exclusive","status":"attached"}],"parent_snapshot_id":null,"status":"in_use","tags":["test","packer","complete"],"specs":{"perf_iops":15000,"class":"sbs"},"last_detached_at":null,"kms_key_id":null,"zone":"nl-ams-1"},{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/3d7da61a-1447-4c20-9952-edd41ea314a9","id":"3d7da61a-1447-4c20-9952-edd41ea314a9","name":"packer-6b05460c-8168-253e-4006-8029734d64d2","type":"sbs_5k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:08:46.656832Z","updated_at":"2026-11-24T08:10:18.441491Z","references":[{"id":"1ce5c268-dba8-450f-bcd7-fbbe4638a252","product_resource_type":"instance_server","product_resource_id":"7934ddd2-0910-4b3e-a485-f26d4b2942a6","created_at":"2026-11-24T08:08:47.419072Z","type":"exclusive","status":"attached"}],"parent_snapshot_id":null,"status":"in_use","tags":["test","packer","complete"],"specs":{"perf_iops":5000,"class":"sbs"},"last_detached_at":null,"kms_key_id":null,"zone":"nl-ams-1"}],"total_count":2}'
+        body: '{"volumes":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/b6b673cc-9116-4a28-854b-b9645189eda6","id":"b6b673cc-9116-4a28-854b-b9645189eda6","name":"packer-6b06f178-749a-33e6-361b-6838cb6d5207","type":"sbs_15k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:32:26.702406Z","updated_at":"2026-11-25T14:34:09.095030Z","references":[{"id":"8a70a4ed-d826-4e08-9ff7-c852c41b368b","product_resource_type":"instance_server","product_resource_id":"5104b386-6e5a-4ac3-abc8-558df355d543","created_at":"2026-11-25T14:32:27.298228Z","type":"exclusive","status":"attached"}],"parent_snapshot_id":null,"status":"in_use","tags":["test","packer","complete"],"specs":{"perf_iops":15000,"class":"sbs"},"last_detached_at":null,"kms_key_id":null,"zone":"nl-ams-1"},{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/68dbe45f-f307-4638-a5b7-ec60d0329ce8","id":"68dbe45f-f307-4638-a5b7-ec60d0329ce8","name":"packer-6b06f178-2e33-bb9d-11a4-d675014d2557","type":"sbs_5k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:32:26.838978Z","updated_at":"2026-11-25T14:34:09.242597Z","references":[{"id":"31e3c152-0a44-47ef-b17e-9085563b2def","product_resource_type":"instance_server","product_resource_id":"5104b386-6e5a-4ac3-abc8-558df355d543","created_at":"2026-11-25T14:32:27.379345Z","type":"exclusive","status":"attached"}],"parent_snapshot_id":null,"status":"in_use","tags":["test","packer","complete"],"specs":{"perf_iops":5000,"class":"sbs"},"last_detached_at":null,"kms_key_id":null,"zone":"nl-ams-1"}],"total_count":2}'
         headers:
             Content-Length:
                 - "1603"
@@ -662,7 +662,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:20 GMT
+                - Wed, 25 Nov 2026 14:34:11 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -678,10 +678,10 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - ad89340d-c48b-4801-b6f2-22c09a7ba44c
+                - 7c60de7c-46d5-43ac-ba69-7ff0a3c43087
         status: 200 OK
         code: 200
-        duration: 68.132041ms
+        duration: 61.726208ms
     - id: 13
       request:
         proto: HTTP/1.1
@@ -706,7 +706,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 3437
-        body: '{"servers": [{"id": "7934ddd2-0910-4b3e-a485-f26d4b2942a6", "name": "packer-tmp-server", "arch": "x86_64", "commercial_type": "DEV1-M", "boot_type": "local", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "hostname": "packer-tmp-server", "image": {"id": "3c33733d-e153-484c-8678-7cde324d9163", "name": "Ubuntu 22.04 Jammy Jellyfish", "organization": "51b656e3-4865-41e8-adbc-0c45bdd780db", "project": "51b656e3-4865-41e8-adbc-0c45bdd780db", "root_volume": {"id": "57c76d65-b08d-48a9-914c-7cf7de800d8f", "name": "Ubuntu 22.04 Jammy Jellyfish", "volume_type": "l_ssd", "size": 10000000000}, "extra_volumes": {}, "public": true, "arch": "x86_64", "creation_date": "2026-11-16T09:14:21.987712+00:00", "modification_date": "2026-11-16T09:14:21.987712+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": [], "zone": "nl-ams-1"}, "volumes": {"0": {"boot": false, "id": "21086b63-4a17-459b-9af9-17aaa453736b", "name": "named-root-volume-0", "volume_type": "l_ssd", "export_uri": null, "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "server": {"id": "7934ddd2-0910-4b3e-a485-f26d4b2942a6", "name": "packer-tmp-server"}, "size": 12000000000, "state": "available", "creation_date": "2026-11-24T08:08:46.882071+00:00", "modification_date": "2026-11-24T08:10:18.580952+00:00", "tags": ["test", "packer", "complete"], "zone": "nl-ams-1"}, "1": {"boot": false, "volume_type": "sbs_volume", "id": "c13fc87b-d43c-4fed-b875-d3e5b66d7c4e", "state": "available", "zone": "nl-ams-1"}, "2": {"boot": false, "volume_type": "sbs_volume", "id": "70b3606b-f36f-42ce-9acf-058a99217f1e", "state": "available", "zone": "nl-ams-1"}, "3": {"boot": false, "volume_type": "sbs_volume", "id": "3d7da61a-1447-4c20-9952-edd41ea314a9", "state": "available", "zone": "nl-ams-1"}}, "tags": ["packer-build", "tmp-server", "AUTHORIZED_KEY=ssh-rsa_AAAAB3NzaC1yc2EAAAADAQABAAACAQDGpyo7ESqizjNcnO55h0gs6+olXOSuFNZx041n39Rq4oga+dEOhhygZC/XVK29AIGqM/eaeDE6wghEja+OB7absd4wCCW3KJc6eqmrgqyei8d9BHWAKY6Vt4UPPqPpZTQzw4n8cQD6hWNvto0f+Jwe3zOhtH1eeeCaOCBSK+4A9U0rGcl5QjActZJ233f154aNyCUqEjOCJCZ1VEE6VXrOu79N61jLi6ghW37E46T2IKw7w4osoRyoZqqnUjBF7WlTcenOvmFJZPlxhZ+0Hwnx5W7eTv0LicBhPgSDMROKKEAbJrOPeWh70+0KowvaICwuRj0kOnwEGBrftkcFQH2cFy4x5a3x95UW5KxcazR1iKQ5bAGzzNzoCi/hTVRQueYO0a/ZCoTe5/tYurAbbGYHG02JBLMU0K1wXQO5TCxrUjN47zFJlU89FT6OoimXU+aWkXCJVPSnJLMRM7MSIWEJf+cJ91t898lqPGMRHjRqPPM7dsyrrhQgGlHp90t2o1AY1d+ctccw0+UuJ9MRh0WjJGbWAnTb56Bw10BWJdIfcjFET1Z5Uld2DtxmC+/tBgb2x+eW1JRaAJEaKffkDAxRVz0Za81JJyqTkq29ZmmSElWD1CHs32kmdzvJobmFv/qzJPVerTE6v7wwjUFv2XtffBUTfiHA2N33Ub8+NpznjQ=="], "state": "stopped", "protected": false, "state_detail": "", "public_ip": null, "public_ips": [], "mac_address": "de:00:00:ba:5c:60", "routed_ip_enabled": true, "ipv6": null, "extra_networks": [], "dynamic_ip_required": true, "enable_ipv6": false, "private_ip": null, "creation_date": "2026-11-24T08:08:46.882071+00:00", "modification_date": "2026-11-24T08:09:56.398421+00:00", "bootscript": null, "security_group": {"id": "de775c00-9268-41a4-bcfc-339501f1579a", "name": "Default security group"}, "location": null, "maintenances": [], "allowed_actions": ["poweron", "backup"], "placement_group": null, "private_nics": [], "zone": "nl-ams-1", "filesystems": [], "end_of_service": false, "dns": "7934ddd2-0910-4b3e-a485-f26d4b2942a6.pub.instances.scw.cloud"}]}'
+        body: '{"servers": [{"id": "5104b386-6e5a-4ac3-abc8-558df355d543", "name": "packer-tmp-server", "arch": "x86_64", "commercial_type": "DEV1-M", "boot_type": "local", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "hostname": "packer-tmp-server", "image": {"id": "3c33733d-e153-484c-8678-7cde324d9163", "name": "Ubuntu 22.04 Jammy Jellyfish", "organization": "51b656e3-4865-41e8-adbc-0c45bdd780db", "project": "51b656e3-4865-41e8-adbc-0c45bdd780db", "root_volume": {"id": "57c76d65-b08d-48a9-914c-7cf7de800d8f", "name": "Ubuntu 22.04 Jammy Jellyfish", "volume_type": "l_ssd", "size": 10000000000}, "extra_volumes": {}, "public": true, "arch": "x86_64", "creation_date": "2026-11-16T09:14:21.987712+00:00", "modification_date": "2026-11-16T09:14:21.987712+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": [], "zone": "nl-ams-1"}, "volumes": {"0": {"boot": false, "id": "aaf39145-b554-428e-a0d2-619df91fac21", "name": "named-root-volume-0", "volume_type": "l_ssd", "export_uri": null, "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "server": {"id": "5104b386-6e5a-4ac3-abc8-558df355d543", "name": "packer-tmp-server"}, "size": 12000000000, "state": "available", "creation_date": "2026-11-25T14:32:27.143832+00:00", "modification_date": "2026-11-25T14:34:08.857254+00:00", "tags": ["test", "packer", "complete"], "zone": "nl-ams-1"}, "1": {"boot": false, "volume_type": "sbs_volume", "id": "71c6cf96-03c6-43a1-82e3-c06843e822c9", "state": "available", "zone": "nl-ams-1"}, "2": {"boot": false, "volume_type": "sbs_volume", "id": "b6b673cc-9116-4a28-854b-b9645189eda6", "state": "available", "zone": "nl-ams-1"}, "3": {"boot": false, "volume_type": "sbs_volume", "id": "68dbe45f-f307-4638-a5b7-ec60d0329ce8", "state": "available", "zone": "nl-ams-1"}}, "tags": ["packer-build", "tmp-server", "AUTHORIZED_KEY=ssh-rsa_AAAAB3NzaC1yc2EAAAADAQABAAACAQDU/xOXfS/vtUKnibpDoipSPZJ2qyDdHnZaYg0/msHlJOChL8qm/XmifxahkaqpMLKPZzO1Bnj+V95iRsN8/ssmIegeEkkRrGeHgWRN0UBq1RFPiXmmniLDpL5BnIAx7NLSYuORtaHb8l/2i1xnvd/NNINZayfnsNfBPQyjWkXZZBH3+VGiUuudKy2sq4gzYFKNGUKhwTi87woYna6QPQpQdFFXePrHr1mvOCZ/OIW76zA/+s5yNDlDWNJFlrah0UlUYD7eTUsviEI3RT5zqrBIrmsyrZIK4JFAf7aIAGQvf2uHhwRhX/MfCzcZbyac15NR47Q5Rq4Ab5qY0hw4w3+0I9Ma87zE36CCMQinsNIBufqNbShg5iABNJCvNDcZNpstcsiZVjAsjvp8T9v+2RRWFG6fNbMbTXLwhZ5PS+MQC1jn/lVF4II1O1vH/YQ9CodaV84hWLl1lJduqvcbdQ7AzgoFaaa0SudLSiNde446XitJhhRV2wAdUkD9/g6YM/0ldKCn+BTHlIVdwqs7IFpicG2lM5bE+2DyJk1Am4hlPCsk6Nq8M0MTQdo8OpJeZMPfrmy7McxkV8S9AS2JaNTLypkR3DPR4brhad/l6c4EkbonTYMIW3VFsKAT7Ww7IZW+n6skDzNKVB/dC387GMaz2CFA4WTXHGxl1yVUDz1smw=="], "state": "stopped", "protected": false, "state_detail": "", "public_ip": null, "public_ips": [], "mac_address": "de:00:00:2a:e1:a8", "routed_ip_enabled": true, "ipv6": null, "extra_networks": [], "dynamic_ip_required": true, "enable_ipv6": false, "private_ip": null, "creation_date": "2026-11-25T14:32:27.143832+00:00", "modification_date": "2026-11-25T14:33:49.897781+00:00", "bootscript": null, "security_group": {"id": "de775c00-9268-41a4-bcfc-339501f1579a", "name": "Default security group"}, "location": null, "maintenances": [], "allowed_actions": ["poweron", "backup"], "placement_group": null, "private_nics": [], "zone": "nl-ams-1", "filesystems": [], "end_of_service": false, "dns": "5104b386-6e5a-4ac3-abc8-558df355d543.pub.instances.scw.cloud"}]}'
         headers:
             Content-Length:
                 - "3437"
@@ -715,7 +715,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:20 GMT
+                - Wed, 25 Nov 2026 14:34:11 GMT
             Link:
                 - </servers?page=1&per_page=50&name=packer-tmp-server&order=creation_date_desc&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
             Server:
@@ -733,12 +733,12 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - f595ff57-3408-4482-942c-aab44d4611da
+                - 4e83355e-e104-49ff-be0c-4fd12d33b550
             X-Total-Count:
                 - "1"
         status: 200 OK
         code: 200
-        duration: 142.051958ms
+        duration: 236.120583ms
     - id: 14
       request:
         proto: HTTP/1.1
@@ -765,7 +765,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 3437
-        body: '{"servers": [{"id": "7934ddd2-0910-4b3e-a485-f26d4b2942a6", "name": "packer-tmp-server", "arch": "x86_64", "commercial_type": "DEV1-M", "boot_type": "local", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "hostname": "packer-tmp-server", "image": {"id": "3c33733d-e153-484c-8678-7cde324d9163", "name": "Ubuntu 22.04 Jammy Jellyfish", "organization": "51b656e3-4865-41e8-adbc-0c45bdd780db", "project": "51b656e3-4865-41e8-adbc-0c45bdd780db", "root_volume": {"id": "57c76d65-b08d-48a9-914c-7cf7de800d8f", "name": "Ubuntu 22.04 Jammy Jellyfish", "volume_type": "l_ssd", "size": 10000000000}, "extra_volumes": {}, "public": true, "arch": "x86_64", "creation_date": "2026-11-16T09:14:21.987712+00:00", "modification_date": "2026-11-16T09:14:21.987712+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": [], "zone": "nl-ams-1"}, "volumes": {"0": {"boot": false, "id": "21086b63-4a17-459b-9af9-17aaa453736b", "name": "named-root-volume-0", "volume_type": "l_ssd", "export_uri": null, "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "server": {"id": "7934ddd2-0910-4b3e-a485-f26d4b2942a6", "name": "packer-tmp-server"}, "size": 12000000000, "state": "available", "creation_date": "2026-11-24T08:08:46.882071+00:00", "modification_date": "2026-11-24T08:10:18.580952+00:00", "tags": ["test", "packer", "complete"], "zone": "nl-ams-1"}, "1": {"boot": false, "volume_type": "sbs_volume", "id": "c13fc87b-d43c-4fed-b875-d3e5b66d7c4e", "state": "available", "zone": "nl-ams-1"}, "2": {"boot": false, "volume_type": "sbs_volume", "id": "70b3606b-f36f-42ce-9acf-058a99217f1e", "state": "available", "zone": "nl-ams-1"}, "3": {"boot": false, "volume_type": "sbs_volume", "id": "3d7da61a-1447-4c20-9952-edd41ea314a9", "state": "available", "zone": "nl-ams-1"}}, "tags": ["packer-build", "tmp-server", "AUTHORIZED_KEY=ssh-rsa_AAAAB3NzaC1yc2EAAAADAQABAAACAQDGpyo7ESqizjNcnO55h0gs6+olXOSuFNZx041n39Rq4oga+dEOhhygZC/XVK29AIGqM/eaeDE6wghEja+OB7absd4wCCW3KJc6eqmrgqyei8d9BHWAKY6Vt4UPPqPpZTQzw4n8cQD6hWNvto0f+Jwe3zOhtH1eeeCaOCBSK+4A9U0rGcl5QjActZJ233f154aNyCUqEjOCJCZ1VEE6VXrOu79N61jLi6ghW37E46T2IKw7w4osoRyoZqqnUjBF7WlTcenOvmFJZPlxhZ+0Hwnx5W7eTv0LicBhPgSDMROKKEAbJrOPeWh70+0KowvaICwuRj0kOnwEGBrftkcFQH2cFy4x5a3x95UW5KxcazR1iKQ5bAGzzNzoCi/hTVRQueYO0a/ZCoTe5/tYurAbbGYHG02JBLMU0K1wXQO5TCxrUjN47zFJlU89FT6OoimXU+aWkXCJVPSnJLMRM7MSIWEJf+cJ91t898lqPGMRHjRqPPM7dsyrrhQgGlHp90t2o1AY1d+ctccw0+UuJ9MRh0WjJGbWAnTb56Bw10BWJdIfcjFET1Z5Uld2DtxmC+/tBgb2x+eW1JRaAJEaKffkDAxRVz0Za81JJyqTkq29ZmmSElWD1CHs32kmdzvJobmFv/qzJPVerTE6v7wwjUFv2XtffBUTfiHA2N33Ub8+NpznjQ=="], "state": "stopped", "protected": false, "state_detail": "", "public_ip": null, "public_ips": [], "mac_address": "de:00:00:ba:5c:60", "routed_ip_enabled": true, "ipv6": null, "extra_networks": [], "dynamic_ip_required": true, "enable_ipv6": false, "private_ip": null, "creation_date": "2026-11-24T08:08:46.882071+00:00", "modification_date": "2026-11-24T08:09:56.398421+00:00", "bootscript": null, "security_group": {"id": "de775c00-9268-41a4-bcfc-339501f1579a", "name": "Default security group"}, "location": null, "maintenances": [], "allowed_actions": ["poweron", "backup"], "placement_group": null, "private_nics": [], "zone": "nl-ams-1", "filesystems": [], "end_of_service": false, "dns": "7934ddd2-0910-4b3e-a485-f26d4b2942a6.pub.instances.scw.cloud"}]}'
+        body: '{"servers": [{"id": "5104b386-6e5a-4ac3-abc8-558df355d543", "name": "packer-tmp-server", "arch": "x86_64", "commercial_type": "DEV1-M", "boot_type": "local", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "hostname": "packer-tmp-server", "image": {"id": "3c33733d-e153-484c-8678-7cde324d9163", "name": "Ubuntu 22.04 Jammy Jellyfish", "organization": "51b656e3-4865-41e8-adbc-0c45bdd780db", "project": "51b656e3-4865-41e8-adbc-0c45bdd780db", "root_volume": {"id": "57c76d65-b08d-48a9-914c-7cf7de800d8f", "name": "Ubuntu 22.04 Jammy Jellyfish", "volume_type": "l_ssd", "size": 10000000000}, "extra_volumes": {}, "public": true, "arch": "x86_64", "creation_date": "2026-11-16T09:14:21.987712+00:00", "modification_date": "2026-11-16T09:14:21.987712+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": [], "zone": "nl-ams-1"}, "volumes": {"0": {"boot": false, "id": "aaf39145-b554-428e-a0d2-619df91fac21", "name": "named-root-volume-0", "volume_type": "l_ssd", "export_uri": null, "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "server": {"id": "5104b386-6e5a-4ac3-abc8-558df355d543", "name": "packer-tmp-server"}, "size": 12000000000, "state": "available", "creation_date": "2026-11-25T14:32:27.143832+00:00", "modification_date": "2026-11-25T14:34:08.857254+00:00", "tags": ["test", "packer", "complete"], "zone": "nl-ams-1"}, "1": {"boot": false, "volume_type": "sbs_volume", "id": "71c6cf96-03c6-43a1-82e3-c06843e822c9", "state": "available", "zone": "nl-ams-1"}, "2": {"boot": false, "volume_type": "sbs_volume", "id": "b6b673cc-9116-4a28-854b-b9645189eda6", "state": "available", "zone": "nl-ams-1"}, "3": {"boot": false, "volume_type": "sbs_volume", "id": "68dbe45f-f307-4638-a5b7-ec60d0329ce8", "state": "available", "zone": "nl-ams-1"}}, "tags": ["packer-build", "tmp-server", "AUTHORIZED_KEY=ssh-rsa_AAAAB3NzaC1yc2EAAAADAQABAAACAQDU/xOXfS/vtUKnibpDoipSPZJ2qyDdHnZaYg0/msHlJOChL8qm/XmifxahkaqpMLKPZzO1Bnj+V95iRsN8/ssmIegeEkkRrGeHgWRN0UBq1RFPiXmmniLDpL5BnIAx7NLSYuORtaHb8l/2i1xnvd/NNINZayfnsNfBPQyjWkXZZBH3+VGiUuudKy2sq4gzYFKNGUKhwTi87woYna6QPQpQdFFXePrHr1mvOCZ/OIW76zA/+s5yNDlDWNJFlrah0UlUYD7eTUsviEI3RT5zqrBIrmsyrZIK4JFAf7aIAGQvf2uHhwRhX/MfCzcZbyac15NR47Q5Rq4Ab5qY0hw4w3+0I9Ma87zE36CCMQinsNIBufqNbShg5iABNJCvNDcZNpstcsiZVjAsjvp8T9v+2RRWFG6fNbMbTXLwhZ5PS+MQC1jn/lVF4II1O1vH/YQ9CodaV84hWLl1lJduqvcbdQ7AzgoFaaa0SudLSiNde446XitJhhRV2wAdUkD9/g6YM/0ldKCn+BTHlIVdwqs7IFpicG2lM5bE+2DyJk1Am4hlPCsk6Nq8M0MTQdo8OpJeZMPfrmy7McxkV8S9AS2JaNTLypkR3DPR4brhad/l6c4EkbonTYMIW3VFsKAT7Ww7IZW+n6skDzNKVB/dC387GMaz2CFA4WTXHGxl1yVUDz1smw=="], "state": "stopped", "protected": false, "state_detail": "", "public_ip": null, "public_ips": [], "mac_address": "de:00:00:2a:e1:a8", "routed_ip_enabled": true, "ipv6": null, "extra_networks": [], "dynamic_ip_required": true, "enable_ipv6": false, "private_ip": null, "creation_date": "2026-11-25T14:32:27.143832+00:00", "modification_date": "2026-11-25T14:33:49.897781+00:00", "bootscript": null, "security_group": {"id": "de775c00-9268-41a4-bcfc-339501f1579a", "name": "Default security group"}, "location": null, "maintenances": [], "allowed_actions": ["poweron", "backup"], "placement_group": null, "private_nics": [], "zone": "nl-ams-1", "filesystems": [], "end_of_service": false, "dns": "5104b386-6e5a-4ac3-abc8-558df355d543.pub.instances.scw.cloud"}]}'
         headers:
             Content-Length:
                 - "3437"
@@ -774,7 +774,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:20 GMT
+                - Wed, 25 Nov 2026 14:34:11 GMT
             Link:
                 - </servers?page=1&per_page=50&name=packer-tmp-server&order=creation_date_desc&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
             Server:
@@ -792,12 +792,12 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - a95ffc80-9fc7-4746-a78d-dc1099210836
+                - 37ccc11e-a7d4-4f06-909b-56c675254326
             X-Total-Count:
                 - "1"
         status: 200 OK
         code: 200
-        duration: 166.461ms
+        duration: 142.655292ms
     - id: 15
       request:
         proto: HTTP/1.1
@@ -808,7 +808,7 @@ interactions:
         headers:
             User-Agent:
                 - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/instance/v1/zones/nl-ams-1/servers/7934ddd2-0910-4b3e-a485-f26d4b2942a6
+        url: https://api.scaleway.com/instance/v1/zones/nl-ams-1/servers/5104b386-6e5a-4ac3-abc8-558df355d543
         method: DELETE
       response:
         proto: HTTP/2.0
@@ -822,7 +822,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:21 GMT
+                - Wed, 25 Nov 2026 14:34:11 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -834,14 +834,14 @@ interactions:
             X-Ratelimit-Limit:
                 - 50, 50;w=1
             X-Ratelimit-Remaining:
-                - "47"
+                - "49"
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 604c3de8-4a72-4584-8ffc-bf69a46b3755
+                - 8318d590-68d8-4e12-9f21-fd32e4051ea4
         status: 204 No Content
         code: 204
-        duration: 416.678167ms
+        duration: 425.444375ms
     - id: 16
       request:
         proto: HTTP/1.1
@@ -866,7 +866,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 956
-        body: '{"images": [{"id": "3693fb4c-d3e3-4430-95e9-2c4af502d980", "name": "packer-e2e-complete", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "root_volume": {"id": "42a3b417-57eb-4e9f-a6ad-0332f5aa4484", "name": "named-snap-root-volume-0", "volume_type": "l_ssd", "size": 12000000000}, "extra_volumes": {"1": {"volume_type": "sbs_snapshot", "id": "05051a9f-72af-4408-9cfa-07835756d3d0", "size": 0, "name": ""}, "3": {"volume_type": "sbs_snapshot", "id": "c134d10a-0107-4587-bb35-799a5cc19019", "size": 0, "name": ""}, "2": {"volume_type": "sbs_snapshot", "id": "5a72ac18-cedc-4aae-8a8d-0c189e3e90dc", "size": 0, "name": ""}}, "public": false, "arch": "x86_64", "creation_date": "2026-11-24T08:10:17.582452+00:00", "modification_date": "2026-11-24T08:10:17.582452+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": ["test", "packer", "complete"], "zone": "nl-ams-1"}]}'
+        body: '{"images": [{"id": "e1994997-7ad2-4faa-a774-0ee84c121741", "name": "packer-e2e-complete", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "root_volume": {"id": "039964ea-5845-414b-ae95-1bed542be14f", "name": "named-snap-root-volume-0", "volume_type": "l_ssd", "size": 12000000000}, "extra_volumes": {"1": {"volume_type": "sbs_snapshot", "id": "68d78024-38aa-4fa2-b058-c58493a13d4a", "size": 0, "name": ""}, "3": {"volume_type": "sbs_snapshot", "id": "636856e4-dce6-4b99-98fd-9b1ab51c4e22", "size": 0, "name": ""}, "2": {"volume_type": "sbs_snapshot", "id": "da270915-8566-485e-8b46-c21001889f02", "size": 0, "name": ""}}, "public": false, "arch": "x86_64", "creation_date": "2026-11-25T14:34:08.238425+00:00", "modification_date": "2026-11-25T14:34:08.238425+00:00", "default_bootscript": null, "from_server": "", "state": "available", "tags": ["test", "packer", "complete"], "zone": "nl-ams-1"}]}'
         headers:
             Content-Length:
                 - "956"
@@ -875,55 +875,9 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:21 GMT
+                - Wed, 25 Nov 2026 14:34:12 GMT
             Link:
                 - </images?page=1&per_page=50&name=packer-e2e-complete&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
-            Server:
-                - Scaleway API Gateway (fr-par-3;edge02)
-            Strict-Transport-Security:
-                - max-age=63072000
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - DENY
-            X-Ratelimit-Limit:
-                - 50, 50;w=1
-            X-Ratelimit-Remaining:
-                - "46"
-            X-Ratelimit-Reset:
-                - "1"
-            X-Request-Id:
-                - bfc87958-5abf-4fd7-8110-3d8a967f37b3
-            X-Total-Count:
-                - "1"
-        status: 200 OK
-        code: 200
-        duration: 186.240916ms
-    - id: 17
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        host: api.scaleway.com
-        headers:
-            User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/instance/v1/zones/nl-ams-1/images/3693fb4c-d3e3-4430-95e9-2c4af502d980
-        method: DELETE
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        content_length: 0
-        body: ""
-        headers:
-            Content-Security-Policy:
-                - default-src 'none'; frame-ancestors 'none'
-            Content-Type:
-                - application/json
-            Date:
-                - Tue, 24 Nov 2026 08:10:21 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -939,10 +893,56 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 8c61d2fb-13c7-4c9e-b7af-29e42cd485b2
+                - 71b8aadb-eb49-413d-9934-802a63569205
+            X-Total-Count:
+                - "1"
+        status: 200 OK
+        code: 200
+        duration: 173.130292ms
+    - id: 17
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.scaleway.com
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/instance/v1/zones/nl-ams-1/images/e1994997-7ad2-4faa-a774-0ee84c121741
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: 0
+        body: ""
+        headers:
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 25 Nov 2026 14:34:12 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-3;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "49"
+            X-Ratelimit-Reset:
+                - "1"
+            X-Request-Id:
+                - ca5770cc-a957-4094-b3dc-477ff931cb6f
         status: 204 No Content
         code: 204
-        duration: 329.063958ms
+        duration: 318.34675ms
     - id: 18
       request:
         proto: HTTP/1.1
@@ -967,7 +967,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 560
-        body: '{"snapshots": [{"id": "42a3b417-57eb-4e9f-a6ad-0332f5aa4484", "name": "named-snap-root-volume-0", "volume_type": "l_ssd", "creation_date": "2026-11-24T08:10:01.195858+00:00", "modification_date": "2026-11-24T08:10:01.195858+00:00", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "size": 12000000000, "state": "available", "base_volume": {"id": "21086b63-4a17-459b-9af9-17aaa453736b", "name": "named-root-volume-0"}, "tags": ["test", "packer", "complete"], "zone": "nl-ams-1", "error_details": null}]}'
+        body: '{"snapshots": [{"id": "039964ea-5845-414b-ae95-1bed542be14f", "name": "named-snap-root-volume-0", "volume_type": "l_ssd", "creation_date": "2026-11-25T14:33:51.857779+00:00", "modification_date": "2026-11-25T14:33:51.857779+00:00", "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "size": 12000000000, "state": "available", "base_volume": {"id": "aaf39145-b554-428e-a0d2-619df91fac21", "name": "named-root-volume-0"}, "tags": ["test", "packer", "complete"], "zone": "nl-ams-1", "error_details": null}]}'
         headers:
             Content-Length:
                 - "560"
@@ -976,7 +976,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:22 GMT
+                - Wed, 25 Nov 2026 14:34:12 GMT
             Link:
                 - </snapshots?page=1&per_page=50&name=named&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
             Server:
@@ -994,12 +994,12 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 8e2b1a1d-81d2-4839-9b4f-d2f35298a4dc
+                - 9dc86810-26c9-4642-8c18-a9a5dc7a2a84
             X-Total-Count:
                 - "1"
         status: 200 OK
         code: 200
-        duration: 346.6145ms
+        duration: 127.461125ms
     - id: 19
       request:
         proto: HTTP/1.1
@@ -1010,7 +1010,7 @@ interactions:
         headers:
             User-Agent:
                 - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/instance/v1/zones/nl-ams-1/snapshots/42a3b417-57eb-4e9f-a6ad-0332f5aa4484
+        url: https://api.scaleway.com/instance/v1/zones/nl-ams-1/snapshots/039964ea-5845-414b-ae95-1bed542be14f
         method: DELETE
       response:
         proto: HTTP/2.0
@@ -1024,7 +1024,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:22 GMT
+                - Wed, 25 Nov 2026 14:34:12 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -1040,10 +1040,10 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - eb5c8780-92ce-401c-89bc-ce3e84a65ca7
+                - d6a2564f-60fb-48ad-bda9-50cc02e54f59
         status: 204 No Content
         code: 204
-        duration: 169.129417ms
+        duration: 157.07275ms
     - id: 20
       request:
         proto: HTTP/1.1
@@ -1068,7 +1068,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 472
-        body: '{"volumes": [{"id": "21086b63-4a17-459b-9af9-17aaa453736b", "name": "named-root-volume-0", "volume_type": "l_ssd", "export_uri": null, "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "server": null, "size": 12000000000, "state": "available", "creation_date": "2026-11-24T08:08:46.882071+00:00", "modification_date": "2026-11-24T08:10:20.804666+00:00", "tags": ["test", "packer", "complete"], "zone": "nl-ams-1"}]}'
+        body: '{"volumes": [{"id": "aaf39145-b554-428e-a0d2-619df91fac21", "name": "named-root-volume-0", "volume_type": "l_ssd", "export_uri": null, "organization": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "project": "564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5", "server": null, "size": 12000000000, "state": "available", "creation_date": "2026-11-25T14:32:27.143832+00:00", "modification_date": "2026-11-25T14:34:11.471183+00:00", "tags": ["test", "packer", "complete"], "zone": "nl-ams-1"}]}'
         headers:
             Content-Length:
                 - "472"
@@ -1077,55 +1077,9 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:22 GMT
+                - Wed, 25 Nov 2026 14:34:12 GMT
             Link:
                 - </volumes?page=1&per_page=100&name=named-root-volume&project=564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5>; rel="last"
-            Server:
-                - Scaleway API Gateway (fr-par-3;edge02)
-            Strict-Transport-Security:
-                - max-age=63072000
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - DENY
-            X-Ratelimit-Limit:
-                - 50, 50;w=1
-            X-Ratelimit-Remaining:
-                - "48"
-            X-Ratelimit-Reset:
-                - "1"
-            X-Request-Id:
-                - 61220c95-9898-447b-a5f0-c6d26c8fb81c
-            X-Total-Count:
-                - "1"
-        status: 200 OK
-        code: 200
-        duration: 119.633791ms
-    - id: 21
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        host: api.scaleway.com
-        headers:
-            User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/instance/v1/zones/nl-ams-1/volumes/21086b63-4a17-459b-9af9-17aaa453736b
-        method: DELETE
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        content_length: 0
-        body: ""
-        headers:
-            Content-Security-Policy:
-                - default-src 'none'; frame-ancestors 'none'
-            Content-Type:
-                - application/json
-            Date:
-                - Tue, 24 Nov 2026 08:10:22 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -1141,10 +1095,56 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - a693b862-a82e-4160-a3b0-1111f8a3349d
+                - 47af6f72-84f1-42a4-87b9-93f685afbe47
+            X-Total-Count:
+                - "1"
+        status: 200 OK
+        code: 200
+        duration: 88.463125ms
+    - id: 21
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.scaleway.com
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/instance/v1/zones/nl-ams-1/volumes/aaf39145-b554-428e-a0d2-619df91fac21
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: 0
+        body: ""
+        headers:
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 25 Nov 2026 14:34:12 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-3;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "48"
+            X-Ratelimit-Reset:
+                - "1"
+            X-Request-Id:
+                - a79aaba8-90b9-4ba3-bbd3-0156265ad23f
         status: 204 No Content
         code: 204
-        duration: 127.914334ms
+        duration: 131.495833ms
     - id: 22
       request:
         proto: HTTP/1.1
@@ -1173,7 +1173,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 1227
-        body: '{"snapshots":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/05051a9f-72af-4408-9cfa-07835756d3d0","id":"05051a9f-72af-4408-9cfa-07835756d3d0","name":"packer-1795507724","parent_volume":{"id":"c13fc87b-d43c-4fed-b875-d3e5b66d7c4e","name":"named-extra-volume-1","type":"sbs_5k","status":"available"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:10:01.528720Z","updated_at":"2026-11-24T08:10:21.672849Z","references":[],"status":"available","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null},{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/5a72ac18-cedc-4aae-8a8d-0c189e3e90dc","id":"5a72ac18-cedc-4aae-8a8d-0c189e3e90dc","name":"packer-1795507724","parent_volume":{"id":"70b3606b-f36f-42ce-9acf-058a99217f1e","name":"packer-6b05460c-f95c-8377-1c16-d39f228ae4ac","type":"sbs_15k","status":"available"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:10:06.839775Z","updated_at":"2026-11-24T08:10:21.715982Z","references":[],"status":"available","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}],"total_count":2}'
+        body: '{"snapshots":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/68d78024-38aa-4fa2-b058-c58493a13d4a","id":"68d78024-38aa-4fa2-b058-c58493a13d4a","name":"packer-1795617144","parent_volume":{"id":"71c6cf96-03c6-43a1-82e3-c06843e822c9","name":"named-extra-volume-1","type":"sbs_5k","status":"available"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:33:52.235270Z","updated_at":"2026-11-25T14:34:12.354357Z","references":[],"status":"available","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null},{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/da270915-8566-485e-8b46-c21001889f02","id":"da270915-8566-485e-8b46-c21001889f02","name":"packer-1795617144","parent_volume":{"id":"b6b673cc-9116-4a28-854b-b9645189eda6","name":"packer-6b06f178-749a-33e6-361b-6838cb6d5207","type":"sbs_15k","status":"available"},"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:33:57.590693Z","updated_at":"2026-11-25T14:34:12.370724Z","references":[],"status":"available","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}],"total_count":2}'
         headers:
             Content-Length:
                 - "1227"
@@ -1182,95 +1182,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:22 GMT
-            Server:
-                - Scaleway API Gateway (fr-par-3;edge02)
-            Strict-Transport-Security:
-                - max-age=63072000
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - DENY
-            X-Ratelimit-Limit:
-                - 50, 50;w=1
-            X-Ratelimit-Remaining:
-                - "47"
-            X-Ratelimit-Reset:
-                - "1"
-            X-Request-Id:
-                - 1f0bdf24-b98f-426b-abf3-2be901285701
-        status: 200 OK
-        code: 200
-        duration: 58.999542ms
-    - id: 23
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        host: api.scaleway.com
-        headers:
-            User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots/05051a9f-72af-4408-9cfa-07835756d3d0
-        method: DELETE
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        content_length: 0
-        body: ""
-        headers:
-            Content-Security-Policy:
-                - default-src 'none'; frame-ancestors 'none'
-            Content-Type:
-                - application/json
-            Date:
-                - Tue, 24 Nov 2026 08:10:22 GMT
-            Server:
-                - Scaleway API Gateway (fr-par-3;edge02)
-            Strict-Transport-Security:
-                - max-age=63072000
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - DENY
-            X-Ratelimit-Limit:
-                - 50, 50;w=1
-            X-Ratelimit-Remaining:
-                - "48"
-            X-Ratelimit-Reset:
-                - "1"
-            X-Request-Id:
-                - 7f288f29-8f41-4897-a151-653f8d329bcd
-        status: 204 No Content
-        code: 204
-        duration: 107.474333ms
-    - id: 24
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        host: api.scaleway.com
-        headers:
-            User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots/5a72ac18-cedc-4aae-8a8d-0c189e3e90dc
-        method: DELETE
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        content_length: 0
-        body: ""
-        headers:
-            Content-Security-Policy:
-                - default-src 'none'; frame-ancestors 'none'
-            Content-Type:
-                - application/json
-            Date:
-                - Tue, 24 Nov 2026 08:10:22 GMT
+                - Wed, 25 Nov 2026 14:34:12 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -1286,10 +1198,98 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 723f6d4e-4d25-4552-87d0-5ca2dc321d6b
+                - 10bffc19-9a18-452b-aa25-aff87de7f96d
+        status: 200 OK
+        code: 200
+        duration: 93.489625ms
+    - id: 23
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.scaleway.com
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots/68d78024-38aa-4fa2-b058-c58493a13d4a
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: 0
+        body: ""
+        headers:
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 25 Nov 2026 14:34:13 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-3;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "48"
+            X-Ratelimit-Reset:
+                - "1"
+            X-Request-Id:
+                - 227ce021-dbde-44aa-a398-83603e85e392
         status: 204 No Content
         code: 204
-        duration: 99.158666ms
+        duration: 75.915166ms
+    - id: 24
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.scaleway.com
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots/da270915-8566-485e-8b46-c21001889f02
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: 0
+        body: ""
+        headers:
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 25 Nov 2026 14:34:13 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-3;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "48"
+            X-Ratelimit-Reset:
+                - "1"
+            X-Request-Id:
+                - 8c38c42a-75bc-4d8c-9da5-6943dd1e62ca
+        status: 204 No Content
+        code: 204
+        duration: 84.253334ms
     - id: 25
       request:
         proto: HTTP/1.1
@@ -1318,7 +1318,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 1199
-        body: '{"volumes":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/70b3606b-f36f-42ce-9acf-058a99217f1e","id":"70b3606b-f36f-42ce-9acf-058a99217f1e","name":"packer-6b05460c-f95c-8377-1c16-d39f228ae4ac","type":"sbs_15k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:08:46.507472Z","updated_at":"2026-11-24T08:10:20.991637Z","references":[],"parent_snapshot_id":null,"status":"available","tags":["test","packer","complete"],"specs":{"perf_iops":15000,"class":"sbs"},"last_detached_at":"2026-11-24T08:10:20.991637Z","kms_key_id":null,"zone":"nl-ams-1"},{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/3d7da61a-1447-4c20-9952-edd41ea314a9","id":"3d7da61a-1447-4c20-9952-edd41ea314a9","name":"packer-6b05460c-8168-253e-4006-8029734d64d2","type":"sbs_5k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:08:46.656832Z","updated_at":"2026-11-24T08:10:21.041343Z","references":[],"parent_snapshot_id":null,"status":"available","tags":["test","packer","complete"],"specs":{"perf_iops":5000,"class":"sbs"},"last_detached_at":"2026-11-24T08:10:21.041343Z","kms_key_id":null,"zone":"nl-ams-1"}],"total_count":2}'
+        body: '{"volumes":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/b6b673cc-9116-4a28-854b-b9645189eda6","id":"b6b673cc-9116-4a28-854b-b9645189eda6","name":"packer-6b06f178-749a-33e6-361b-6838cb6d5207","type":"sbs_15k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:32:26.702406Z","updated_at":"2026-11-25T14:34:11.664984Z","references":[],"parent_snapshot_id":null,"status":"available","tags":["test","packer","complete"],"specs":{"perf_iops":15000,"class":"sbs"},"last_detached_at":"2026-11-25T14:34:11.664984Z","kms_key_id":null,"zone":"nl-ams-1"},{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/68dbe45f-f307-4638-a5b7-ec60d0329ce8","id":"68dbe45f-f307-4638-a5b7-ec60d0329ce8","name":"packer-6b06f178-2e33-bb9d-11a4-d675014d2557","type":"sbs_5k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:32:26.838978Z","updated_at":"2026-11-25T14:34:11.712147Z","references":[],"parent_snapshot_id":null,"status":"available","tags":["test","packer","complete"],"specs":{"perf_iops":5000,"class":"sbs"},"last_detached_at":"2026-11-25T14:34:11.712147Z","kms_key_id":null,"zone":"nl-ams-1"}],"total_count":2}'
         headers:
             Content-Length:
                 - "1199"
@@ -1327,95 +1327,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:22 GMT
-            Server:
-                - Scaleway API Gateway (fr-par-3;edge02)
-            Strict-Transport-Security:
-                - max-age=63072000
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - DENY
-            X-Ratelimit-Limit:
-                - 50, 50;w=1
-            X-Ratelimit-Remaining:
-                - "49"
-            X-Ratelimit-Reset:
-                - "1"
-            X-Request-Id:
-                - eca3926d-f547-4af7-a5fd-5cdf678218c3
-        status: 200 OK
-        code: 200
-        duration: 120.591334ms
-    - id: 26
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        host: api.scaleway.com
-        headers:
-            User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/volumes/70b3606b-f36f-42ce-9acf-058a99217f1e
-        method: DELETE
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        content_length: 0
-        body: ""
-        headers:
-            Content-Security-Policy:
-                - default-src 'none'; frame-ancestors 'none'
-            Content-Type:
-                - application/json
-            Date:
-                - Tue, 24 Nov 2026 08:10:22 GMT
-            Server:
-                - Scaleway API Gateway (fr-par-3;edge02)
-            Strict-Transport-Security:
-                - max-age=63072000
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - DENY
-            X-Ratelimit-Limit:
-                - 50, 50;w=1
-            X-Ratelimit-Remaining:
-                - "48"
-            X-Ratelimit-Reset:
-                - "1"
-            X-Request-Id:
-                - 88d01766-e520-4af4-9b24-8a2612f259d6
-        status: 204 No Content
-        code: 204
-        duration: 107.029458ms
-    - id: 27
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        host: api.scaleway.com
-        headers:
-            User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/volumes/3d7da61a-1447-4c20-9952-edd41ea314a9
-        method: DELETE
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        content_length: 0
-        body: ""
-        headers:
-            Content-Security-Policy:
-                - default-src 'none'; frame-ancestors 'none'
-            Content-Type:
-                - application/json
-            Date:
-                - Tue, 24 Nov 2026 08:10:23 GMT
+                - Wed, 25 Nov 2026 14:34:13 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -1431,10 +1343,98 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 6c4171e2-dd46-4a59-b0b0-f3f430cbfbd2
+                - 806af045-3eb0-4dd4-bd5d-268b2e3d6239
+        status: 200 OK
+        code: 200
+        duration: 71.754792ms
+    - id: 26
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.scaleway.com
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/volumes/b6b673cc-9116-4a28-854b-b9645189eda6
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: 0
+        body: ""
+        headers:
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 25 Nov 2026 14:34:13 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-3;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "49"
+            X-Ratelimit-Reset:
+                - "1"
+            X-Request-Id:
+                - d6582b9a-5230-4aaf-88ba-c1cb02cbb794
         status: 204 No Content
         code: 204
-        duration: 123.271792ms
+        duration: 90.227666ms
+    - id: 27
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.scaleway.com
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/volumes/68dbe45f-f307-4638-a5b7-ec60d0329ce8
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: 0
+        body: ""
+        headers:
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 25 Nov 2026 14:34:13 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-3;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "47"
+            X-Ratelimit-Reset:
+                - "1"
+            X-Request-Id:
+                - 06d666b8-50a4-4b10-9b13-1248d7e4750b
+        status: 204 No Content
+        code: 204
+        duration: 105.896958ms
     - id: 28
       request:
         proto: HTTP/1.1
@@ -1463,7 +1463,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 517
-        body: '{"snapshots":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/c134d10a-0107-4587-bb35-799a5cc19019","id":"c134d10a-0107-4587-bb35-799a5cc19019","name":"named-snap-extra-volume-3","parent_volume":null,"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:10:12.186660Z","updated_at":"2026-11-24T08:10:21.711903Z","references":[],"status":"available","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}],"total_count":1}'
+        body: '{"snapshots":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/snapshots/636856e4-dce6-4b99-98fd-9b1ab51c4e22","id":"636856e4-dce6-4b99-98fd-9b1ab51c4e22","name":"named-snap-extra-volume-3","parent_volume":null,"size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:34:02.902644Z","updated_at":"2026-11-25T14:34:12.342180Z","references":[],"status":"available","tags":["test","packer","complete"],"class":"sbs","zone":"nl-ams-1","public":false,"kms_key_id":null}],"total_count":1}'
         headers:
             Content-Length:
                 - "517"
@@ -1472,51 +1472,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:23 GMT
-            Server:
-                - Scaleway API Gateway (fr-par-3;edge02)
-            Strict-Transport-Security:
-                - max-age=63072000
-            X-Content-Type-Options:
-                - nosniff
-            X-Frame-Options:
-                - DENY
-            X-Ratelimit-Limit:
-                - 50, 50;w=1
-            X-Ratelimit-Remaining:
-                - "47"
-            X-Ratelimit-Reset:
-                - "1"
-            X-Request-Id:
-                - 5e8e66d4-2f3d-4a21-a9a7-9eaf3c224960
-        status: 200 OK
-        code: 200
-        duration: 54.99525ms
-    - id: 29
-      request:
-        proto: HTTP/1.1
-        proto_major: 1
-        proto_minor: 1
-        content_length: 0
-        host: api.scaleway.com
-        headers:
-            User-Agent:
-                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots/c134d10a-0107-4587-bb35-799a5cc19019
-        method: DELETE
-      response:
-        proto: HTTP/2.0
-        proto_major: 2
-        proto_minor: 0
-        content_length: 0
-        body: ""
-        headers:
-            Content-Security-Policy:
-                - default-src 'none'; frame-ancestors 'none'
-            Content-Type:
-                - application/json
-            Date:
-                - Tue, 24 Nov 2026 08:10:23 GMT
+                - Wed, 25 Nov 2026 14:34:13 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -1532,10 +1488,54 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 962a8d3f-26ec-4cd1-8c39-7bf66e222285
+                - 6ebd8661-53a2-47c8-98f3-41bf0df93b3f
+        status: 200 OK
+        code: 200
+        duration: 66.998167ms
+    - id: 29
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: api.scaleway.com
+        headers:
+            User-Agent:
+                - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
+        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/snapshots/636856e4-dce6-4b99-98fd-9b1ab51c4e22
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: 0
+        body: ""
+        headers:
+            Content-Security-Policy:
+                - default-src 'none'; frame-ancestors 'none'
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 25 Nov 2026 14:34:13 GMT
+            Server:
+                - Scaleway API Gateway (fr-par-3;edge02)
+            Strict-Transport-Security:
+                - max-age=63072000
+            X-Content-Type-Options:
+                - nosniff
+            X-Frame-Options:
+                - DENY
+            X-Ratelimit-Limit:
+                - 50, 50;w=1
+            X-Ratelimit-Remaining:
+                - "47"
+            X-Ratelimit-Reset:
+                - "1"
+            X-Request-Id:
+                - 260e6ce4-a5b2-41d8-ac61-d31ff203835b
         status: 204 No Content
         code: 204
-        duration: 92.728041ms
+        duration: 74.619459ms
     - id: 30
       request:
         proto: HTTP/1.1
@@ -1564,7 +1564,7 @@ interactions:
         proto_major: 2
         proto_minor: 0
         content_length: 590
-        body: '{"volumes":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/c13fc87b-d43c-4fed-b875-d3e5b66d7c4e","id":"c13fc87b-d43c-4fed-b875-d3e5b66d7c4e","name":"named-extra-volume-1","type":"sbs_5k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-24T08:08:46.336137Z","updated_at":"2026-11-24T08:10:20.943203Z","references":[],"parent_snapshot_id":null,"status":"available","tags":["test","packer","complete"],"specs":{"perf_iops":5000,"class":"sbs"},"last_detached_at":"2026-11-24T08:10:20.943203Z","kms_key_id":null,"zone":"nl-ams-1"}],"total_count":1}'
+        body: '{"volumes":[{"srn":"srn://block.scw.eu/zones/nl-ams-1/volumes/71c6cf96-03c6-43a1-82e3-c06843e822c9","id":"71c6cf96-03c6-43a1-82e3-c06843e822c9","name":"named-extra-volume-1","type":"sbs_5k","size":10000000000,"project_id":"564aa517-68b0-4fd7-8c8c-d21c4bcdcbd5","created_at":"2026-11-25T14:32:26.547794Z","updated_at":"2026-11-25T14:34:11.614077Z","references":[],"parent_snapshot_id":null,"status":"available","tags":["test","packer","complete"],"specs":{"perf_iops":5000,"class":"sbs"},"last_detached_at":"2026-11-25T14:34:11.614077Z","kms_key_id":null,"zone":"nl-ams-1"}],"total_count":1}'
         headers:
             Content-Length:
                 - "590"
@@ -1573,7 +1573,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:23 GMT
+                - Wed, 25 Nov 2026 14:34:13 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -1589,10 +1589,10 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 96435ae6-dad1-46c8-9db0-765b839c2471
+                - 2f15d2a6-40f0-4195-bd15-556d4c025f88
         status: 200 OK
         code: 200
-        duration: 145.643291ms
+        duration: 53.37075ms
     - id: 31
       request:
         proto: HTTP/1.1
@@ -1603,7 +1603,7 @@ interactions:
         headers:
             User-Agent:
                 - scaleway-sdk-go/v1.0.0-beta.7+dev (go1.26.10; darwin; arm64)
-        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/volumes/c13fc87b-d43c-4fed-b875-d3e5b66d7c4e
+        url: https://api.scaleway.com/block/v1/zones/nl-ams-1/volumes/71c6cf96-03c6-43a1-82e3-c06843e822c9
         method: DELETE
       response:
         proto: HTTP/2.0
@@ -1617,7 +1617,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Tue, 24 Nov 2026 08:10:23 GMT
+                - Wed, 25 Nov 2026 14:34:13 GMT
             Server:
                 - Scaleway API Gateway (fr-par-3;edge02)
             Strict-Transport-Security:
@@ -1633,7 +1633,7 @@ interactions:
             X-Ratelimit-Reset:
                 - "1"
             X-Request-Id:
-                - 90468a1f-37a2-4167-abe3-145b0ffbe89c
+                - 18f7f57d-097a-4f00-acc0-9574f773a221
         status: 204 No Content
         code: 204
-        duration: 75.706041ms
+        duration: 72.805333ms
