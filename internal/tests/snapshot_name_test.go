@@ -36,7 +36,7 @@ func TestSnapshotNameBlock(t *testing.T) {
 			build {
 			  sources = ["source.scaleway.basic"]
 			}
-			`, zone, imageName, snapshotName, tagTest, tagSnapshotName, tagBlock),
+			`, zone, imageName, tagTest, tagSnapshotName, tagBlock, snapshotName),
 		Checks: []tester.PackerCheck{
 			checks.Image(zone, imageName).
 				Tags(e2eTagsSnapshotNameBlock).
@@ -83,7 +83,7 @@ func TestSnapshotNameLocal(t *testing.T) {
 			build {
 			  sources = ["source.scaleway.basic"]
 			}
-			`, zone, imageName, snapshotName, tagTest, tagSnapshotName, tagLocal),
+			`, zone, imageName, tagTest, tagSnapshotName, tagLocal, snapshotName),
 		Checks: []tester.PackerCheck{
 			checks.Image(zone, imageName).
 				Tags(e2eTagsSnapshotNameLocal).
