@@ -77,7 +77,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		return putErrorAndHalt(state, ui, fmt.Errorf("error creating server: %w", formatInstanceError(err)))
 	}
 
-	err = c.RootVolume.PostServerCreationSetup(block.NewAPI(state.Get("client").(*scw.Client)), createServerResp.Server)
+	err = c.RootVolume.PostServerCreationSetup(ctx, block.NewAPI(state.Get("client").(*scw.Client)), createServerResp.Server, c.ServerCreationTimeout, waitRetryInterval(state))
 	if err != nil {
 		return putErrorAndHalt(state, ui, fmt.Errorf("error during post server creation setup server: %w", err))
 	}
