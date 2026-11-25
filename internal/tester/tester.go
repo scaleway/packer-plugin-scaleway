@@ -65,8 +65,8 @@ func ExtractCtx(ctx context.Context) *PackerCtx {
 }
 
 type TestStep struct {
-	Config string
-	Args []string
+	Config      string
+	Args        []string
 	ExpectError *regexp.Regexp
 	Checks      []PackerCheck
 }
