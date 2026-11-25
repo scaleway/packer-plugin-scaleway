@@ -47,7 +47,7 @@ func TestWindows(t *testing.T) {
 		Checks: []tester.PackerCheck{
 			checks.Image(zone, imageName).
 				Tags(e2eTagsDevtools).
-				RootVolumeSnapshot(checks.BlockSnapshot(zone, apiGeneratedSnapshotNamePrefix).
+				RootVolumeSnapshot(checks.BlockSnapshot(zone, packerGeneratedResourceNamePrefix).
 					Tags(e2eTagsDevtools),
 				),
 			checks.Server(zone, serverName).
@@ -56,7 +56,7 @@ func TestWindows(t *testing.T) {
 		},
 		Cleanup: []tester.PackerCleanup{
 			cleanup.Image(zone, imageName),
-			cleanup.BlockSnapshot(zone, apiGeneratedSnapshotNamePrefix),
+			cleanup.BlockSnapshot(zone, packerGeneratedResourceNamePrefix),
 			cleanup.Server(zone, serverName),
 		},
 	})

@@ -43,7 +43,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		BootType:       &bootType,
 		CommercialType: c.CommercialType,
 		Name:           c.ServerName,
-		Image:          scw.StringPtr(c.Image),
+		Image:          new(c.Image),
 		Tags:           tags,
 		Zone:           scw.Zone(c.Zone),
 	}
@@ -77,7 +77,7 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 		return putErrorAndHalt(state, ui, fmt.Errorf("error creating server: %w", formatInstanceError(err)))
 	}
 
-	err = c.RootVolume.PostServerCreationSetup(ctx, block.NewAPI(state.Get("client").(*scw.Client)), createServerResp.Server, c.ServerCreationTimeout, waitRetryInterval(state))
+	err = c.RootVolume.PostServerCreationSetup(ctx, instanceAPI, block.NewAPI(state.Get("client").(*scw.Client)), createServerResp.Server, c.ServerCreationTimeout, waitRetryInterval(state))
 	if err != nil {
 		return putErrorAndHalt(state, ui, fmt.Errorf("error during post server creation setup server: %w", err))
 	}
@@ -109,10 +109,9 @@ func (s *stepCreateServer) Run(ctx context.Context, state multistep.StateBag) mu
 	}
 
 	waitServerRequest := &instance.WaitForServerRequest{
-		ServerID:      createServerResp.Server.ID,
-		Zone:          scw.Zone(c.Zone),
-		Timeout:       &c.ServerCreationTimeout,
-		RetryInterval: waitRetryInterval(state),
+		ServerID: createServerResp.Server.ID,
+		Zone:     scw.Zone(c.Zone),
+		Timeout:  &c.ServerCreationTimeout,
 	}
 
 	server, err := instanceAPI.WaitForServer(waitServerRequest)

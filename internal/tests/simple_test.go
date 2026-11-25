@@ -11,18 +11,15 @@ import (
 )
 
 const (
-	rootVolumeNamePrefix                = "Ubuntu"
-	rootVolumeFromUbuntuJammyNamePrefix = "Ubuntu 22.04 Jammy Jellyfish"
-	packerGeneratedResourceNamePrefix   = "packer-"
-	apiGeneratedSnapshotNamePrefix      = "snp-"
-	tagTest                             = "test"
-	tagPacker                           = "packer"
-	tagComplete                         = "complete"
-	tagDevtools                         = "devtools"
-	tagProvider                         = "provider"
-	tagSnapshotName                     = "snapshot-name"
-	tagBlock                            = "block"
-	tagLocal                            = "local"
+	packerGeneratedResourceNamePrefix = "packer-"
+	tagTest                           = "test"
+	tagPacker                         = "packer"
+	tagComplete                       = "complete"
+	tagDevtools                       = "devtools"
+	tagProvider                       = "provider"
+	tagSnapshotName                   = "snapshot-name"
+	tagBlock                          = "block"
+	tagLocal                          = "local"
 )
 
 var (
@@ -56,14 +53,14 @@ func TestSimple(t *testing.T) {
 		Checks: []tester.PackerCheck{
 			checks.Image(zone, imageName).
 				Tags(e2eTagsDevtools).
-				RootVolumeSnapshot(checks.BlockSnapshot(zone, apiGeneratedSnapshotNamePrefix).
+				RootVolumeSnapshot(checks.BlockSnapshot(zone, packerGeneratedResourceNamePrefix).
 					Tags(e2eTagsDevtools),
 				),
 			checks.NoVolume(zone),
 		},
 		Cleanup: []tester.PackerCleanup{
 			cleanup.Image(zone, imageName),
-			cleanup.BlockSnapshot(zone, apiGeneratedSnapshotNamePrefix),
+			cleanup.BlockSnapshot(zone, packerGeneratedResourceNamePrefix),
 		},
 	})
 }

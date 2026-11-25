@@ -35,6 +35,7 @@ func TestComplete(t *testing.T) {
 
 			  root_volume {
 				type = "l_ssd"
+			    name = "named-root-volume-0"
 			    snapshot_name = "named-snap-root-volume-0"
 			    size_in_gb = %[3]d
 			  }
@@ -84,9 +85,9 @@ func TestComplete(t *testing.T) {
 					Name("named-snap-extra-volume-3").
 					Tags(e2eTagsComplete),
 				),
-			checks.InstanceVolume(zone, rootVolumeNamePrefix).
+			checks.InstanceVolume(zone, "named-root-volume").
 				SizeInGB(12).
-				Name(rootVolumeFromUbuntuJammyNamePrefix).
+				Name("named-root-volume-0").
 				Tags(e2eTagsComplete),
 			checks.BlockVolume(zone, "named-extra-volume").
 				SizeInGB(uint64(blockVolumeSize)).
@@ -108,7 +109,7 @@ func TestComplete(t *testing.T) {
 			cleanup.Server(zone, serverName),
 			cleanup.Image(zone, imageName),
 			cleanup.InstanceSnapshot(zone, "named"),
-			cleanup.InstanceVolume(zone, rootVolumeNamePrefix),
+			cleanup.InstanceVolume(zone, "named-root-volume"),
 			cleanup.BlockSnapshot(zone, packerGeneratedResourceNamePrefix),
 			cleanup.BlockVolume(zone, packerGeneratedResourceNamePrefix),
 			cleanup.BlockSnapshot(zone, "named"),

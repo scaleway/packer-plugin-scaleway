@@ -65,3 +65,27 @@ func TestBuilderPrepare_SnapshotName(t *testing.T) {
 		t.Fatalf("failed to parse int in template: %s", err)
 	}
 }
+
+func TestBuilderPrepare_RootVolumeName(t *testing.T) {
+	var b scaleway.Builder
+
+	config := testConfig()
+	config["root_volume"] = map[string]any{"name": "foo"}
+
+	_, warnings, err := b.Prepare(config)
+	if len(warnings) > 0 {
+		t.Fatalf("bad: %#v", warnings)
+	}
+
+	if err != nil {
+		t.Fatalf("should not have error: %s", err)
+	}
+
+	if b.Config.RootVolume.Name != "foo" {
+		t.Errorf("invalid root volume name: %s", b.Config.RootVolume.Name)
+	}
+
+	if b.Config.RootVolume.IsConfigured() {
+		t.Error("setting only the name should not configure the root volume template")
+	}
+}
